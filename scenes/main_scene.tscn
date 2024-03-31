@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://bj2p515w2nc8b"]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_1e8h8"]
+[ext_resource type="Texture2D" uid="uid://d2ouw1og8fl8h" path="res://assets/textures/sprites/ce4a4c7d-3906-4188-b538-63e88bc9721f.jpg" id="1_hmloa"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gq4ya"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hmloa")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c23k"]
+radius = 59.0
+height = 322.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
+size = Vector2(136.5, 46)
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Player" type="Node2D" parent="."]
+position = Vector2(183, 253)
+scale = Vector2(0.312727, 0.29267)
+script = ExtResource("1_1e8h8")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_gq4ya")
+
+[node name="Body" type="CharacterBody2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Body"]
+position = Vector2(5, -8)
+shape = SubResource("CapsuleShape2D_7c23k")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Player/Body"]
+position = Vector2(7.75, 140)
+shape = SubResource("RectangleShape2D_6pus8")
