@@ -4,11 +4,30 @@ using System;
 namespace Entity;
 
 
-public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 64) : Node2D
+public record struct PlayerMovementInput
+{
+  public required Vector2 Position;
+  public required bool IsRunning;
+  public required bool ForceMovementState;
+  public required MOVEMENT_STATE MovementState;
+}
+
+public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 30) : Node2D
 {
   public readonly Vector2 initialPosition = initialPosition;
 
   protected Vector2? _lastTrackedPosition;
+
+
+  /// <summary>
+  /// What is the movement state of the player. Helper to identify the best way to draw the player.
+  /// </summary>
+  protected MOVEMENT_STATE _lastMovementState = EntityDefaults.MovementState;
+
+  /// <summary>
+  /// What is the movement state of the player. Helper to identify the best way to draw the player.
+  /// </summary>
+  protected MOVEMENT_STATE _movementState = EntityDefaults.MovementState;
 
   /// <summary>
   /// Where player is going.
@@ -25,16 +44,24 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   /// </summary>
   protected int _cellWidth = gridMapCellWidth;
 
+  public bool HasTargetPosition
+  {
+    get
+    {
+      return _targetPosition != null;
+    }
+  }
+
   public Vector2 TargetPosition
   {
     get
     {
-      if (_targetPosition is null)
-      {
-        throw new Exception("Invalid target position.");
-      }
+      return _targetPosition ?? Position;
+    }
 
-      return (Vector2)_targetPosition;
+    set
+    {
+      _targetPosition = value;
     }
   }
 
@@ -56,7 +83,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   {
     get
     {
-      return _moveSpeed * _cellWidth;
+      return _cellWidth;
     }
   }
 
@@ -68,35 +95,51 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     }
   }
 
-  public EntityMovement TeleportTo(Vector2 position)
+  public EntityMovement ControlMovementState(PlayerMovementInput playerMovementInput)
   {
-    Position = position;
+    if (playerMovementInput.ForceMovementState)
+    {
+      _lastMovementState = _movementState;
+      _movementState = playerMovementInput.MovementState;
+      return this;
+    }
+
     return this;
   }
 
-  public EntityMovement MoveTo(Vector2 position)
+  public EntityMovement TeleportTo(PlayerMovementInput playerMovementInput)
   {
-    _targetPosition = position;
+    ControlMovementState(playerMovementInput);
+    Position = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovement MoveToNearestCell(Vector2 position)
+  public EntityMovement MoveTo(PlayerMovementInput playerMovementInput)
   {
+    ControlMovementState(playerMovementInput);
+    _targetPosition = playerMovementInput.Position;
+    return this;
+  }
+
+  public EntityMovement MoveToNearestCell(PlayerMovementInput playerMovementInput)
+  {
+    ControlMovementState(playerMovementInput);
     _targetPosition = new Vector2
     {
-      X = Mathf.Round(position.X / _cellWidth) * _cellWidth + HalfCellWidth,
-      Y = Mathf.Round(position.Y / _cellWidth) * _cellWidth + HalfCellWidth
+      X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
+      Y = Mathf.Round(playerMovementInput.Position.Y / _cellWidth) * _cellWidth + HalfCellWidth
     };
 
     return this;
   }
 
-  public EntityMovement TeleportToNearestCell(Vector2 position)
+  public EntityMovement TeleportToNearestCell(PlayerMovementInput playerMovementInput)
   {
+    ControlMovementState(playerMovementInput);
     Position = new Vector2
     {
-      X = Mathf.Round(position.X / _cellWidth) * _cellWidth + HalfCellWidth,
-      Y = Mathf.Round(position.Y / _cellWidth) * _cellWidth + HalfCellWidth
+      X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
+      Y = Mathf.Round(playerMovementInput.Position.Y / _cellWidth) * _cellWidth + HalfCellWidth
     };
 
     return this;
@@ -114,7 +157,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     // Calculate the direction vector towards the target position
     Vector2 direction = (TargetPosition - Position).Normalized();
 
-    float distanceToMove = StepSize * (float)delta;
+    float distanceToMove = StepSize * MoveSpeed * (float)delta;
 
     if (Position.DistanceTo(TargetPosition) <= distanceToMove)
     {
