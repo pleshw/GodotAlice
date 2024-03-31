@@ -4,7 +4,7 @@ namespace Entity;
 
 public record struct EntityDefaults()
 {
-  public const int MovementSpeed = 28;
+  public const int MovementSpeed = 20;
   public const int MovementRunModifier = 2;
   public const MOVEMENT_STATE MovementState = MOVEMENT_STATE.IDLE;
 }

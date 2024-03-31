@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace Entity;
 
@@ -12,12 +11,11 @@ public record struct PlayerMovementInput
   public required MOVEMENT_STATE MovementState;
 }
 
-public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 30) : Node2D
+public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 20) : Node2D
 {
   public readonly Vector2 initialPosition = initialPosition;
 
   protected Vector2? _lastTrackedPosition;
-
 
   /// <summary>
   /// What is the movement state of the player. Helper to identify the best way to draw the player.
@@ -43,6 +41,11 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   /// Grid cell width used for speed reference on player movement.
   /// </summary>
   protected int _cellWidth = gridMapCellWidth;
+
+  /// <summary>
+  /// Distance where the entity movement starts to slowdown 
+  /// </summary>
+  private float easingDistance = 15.0f;
 
   public bool HasTargetPosition
   {
@@ -92,6 +95,14 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     get
     {
       return _moveSpeed;
+    }
+  }
+
+  public int MaxSpeed
+  {
+    get
+    {
+      return MoveSpeed * StepSize;
     }
   }
 
@@ -157,9 +168,9 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     // Calculate the direction vector towards the target position
     Vector2 direction = (TargetPosition - Position).Normalized();
 
-    float distanceToMove = StepSize * MoveSpeed * (float)delta;
-
-    if (Position.DistanceTo(TargetPosition) <= distanceToMove)
+    float distanceToMove = MaxSpeed * (float)delta;
+    float distanceToTarget = Position.DistanceTo(TargetPosition);
+    if (distanceToTarget <= distanceToMove)
     {
       Position = TargetPosition;
       _lastTrackedPosition = TargetPosition;
