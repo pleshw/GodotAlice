@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drtn3tmn7spu8"
-path="res://.godot/imported/TX Plant.png-e47333cbad3275e586126f08aaf2bce8.ctex"
+uid="uid://c0wl1muuthcdm"
+path="res://.godot/imported/TX Player.png-b769359f824cc35b1997435133f36ebb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/raw_sprites/TX Plant.png"
-dest_files=["res://.godot/imported/TX Plant.png-e47333cbad3275e586126f08aaf2bce8.ctex"]
+source_file="res://assets/textures/imports/TX Player.png"
+dest_files=["res://.godot/imported/TX Player.png-b769359f824cc35b1997435133f36ebb.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dia7j1gf2spyo"
-path="res://.godot/imported/TX Shadow.png-ee0dd6c68b80f963c97f91e38de02e45.ctex"
+uid="uid://1bsld646i4v"
+path="res://.godot/imported/TX Tileset Wall.png-f58800a6bd0aa45e972aaac7a5cd7483.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/raw_sprites/TX Shadow.png"
-dest_files=["res://.godot/imported/TX Shadow.png-ee0dd6c68b80f963c97f91e38de02e45.ctex"]
+source_file="res://assets/textures/imports/TX Tileset Wall.png"
+dest_files=["res://.godot/imported/TX Tileset Wall.png-f58800a6bd0aa45e972aaac7a5cd7483.ctex"]
 
 [params]
 
