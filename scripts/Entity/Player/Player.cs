@@ -5,12 +5,15 @@ namespace Entity;
 
 public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
 {
+
   public Player() : this(Vector2.Zero)
   {
   }
 
   public override void _Ready()
   {
+    base._Ready();
+
     movementKeyBind.BindDefaults();
     TeleportToNearestCell(new PlayerMovementInput
     {
@@ -32,6 +35,18 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
       else
       {
         keysPressed.Remove(inputEventKey.Keycode);
+      }
+    }
+
+    if (@event is InputEventMouseButton inputEventClick)
+    {
+      if (inputEventClick.Pressed)
+      {
+        var clickEventType = inputEventClick.ButtonIndex;
+        if (clickEventType == MouseButton.Left)
+        {
+          Camera.MakeCurrent();
+        }
       }
     }
   }

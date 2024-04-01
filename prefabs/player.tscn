@@ -10,7 +10,17 @@ animations = [{
 "texture": ExtResource("2_wv2nb")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Run",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Walk",
 "speed": 5.0
 }]
 
@@ -26,18 +36,22 @@ position = Vector2(41, 59)
 scale = Vector2(0.312727, 0.29267)
 script = ExtResource("1_vut44")
 
+[node name="Camera" type="Camera2D" parent="."]
+scale = Vector2(1, 1)
+
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(6.39537, -1.70842)
 scale = Vector2(0.606538, 0.983051)
 sprite_frames = SubResource("SpriteFrames_gq4ya")
-frame_progress = 0.09519
+animation = &"Idle"
+autoplay = "Idle"
 
-[node name="Body" type="CharacterBody2D" parent="."]
+[node name="CollisionBody" type="CharacterBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionBody"]
 position = Vector2(9.59303, -20.5009)
 shape = SubResource("CapsuleShape2D_7c23k")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Body"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
 position = Vector2(7.99422, 140)
 shape = SubResource("RectangleShape2D_6pus8")

@@ -5,9 +5,13 @@ using Godot;
 
 namespace Entity;
 
-public partial class Entity : EntityMovement
+public partial class Entity : EntityMovement, IEntityBaseNode
 {
-	public AnimatedSprite2D sprite;
+	public Camera2D Camera { get; set; }
+	public AnimatedSprite2D Sprite { get; set; }
+	public CharacterBody2D CollisionBody { get; set; }
+	public CollisionShape2D[] CollisionShapes { get; set; }
+
 	public DIRECTIONS facing = DIRECTIONS.BOTTOM;
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
@@ -25,7 +29,12 @@ public partial class Entity : EntityMovement
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		sprite = GetNode<AnimatedSprite2D>("Sprite");
+		base._Ready();
+
+		Camera = GetNode<Camera2D>("Camera");
+		Sprite = GetNode<AnimatedSprite2D>("Sprite");
+		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
+		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 	}
 
 
