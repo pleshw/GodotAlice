@@ -12,7 +12,7 @@ public partial class Entity : EntityMovement
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
 
-	public Entity() : base(new Vector2 { X = 0, Y = 0 })
+	public Entity() : base(Vector2.Zero)
 	{
 		movementKeyBind = new MovementCommandKeybind(this);
 	}
@@ -26,15 +26,6 @@ public partial class Entity : EntityMovement
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("Sprite");
-		TeleportTo(new PlayerMovementInput
-		{
-			Position = initialPosition,
-			IsRunning = false,
-			ForceMovementState = true,
-			MovementState = MOVEMENT_STATE.IDLE,
-		});
-
-		movementKeyBind.BindDefaults();
 	}
 
 

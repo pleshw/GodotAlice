@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://mow1eqd27r6s"]
 
-[ext_resource type="Script" path="res://scripts/Entity/Entity.cs" id="1_2a4ls"]
+[ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vut44"]
 [ext_resource type="Texture2D" uid="uid://d2ouw1og8fl8h" path="res://assets/textures/sprites/ce4a4c7d-3906-4188-b538-63e88bc9721f.jpg" id="2_wv2nb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gq4ya"]
@@ -15,26 +15,29 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c23k"]
-radius = 59.0
-height = 322.0
+radius = 41.5698
+height = 300.68
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(136.5, 46)
+size = Vector2(92.7327, 46)
 
 [node name="Player" type="Node2D"]
-position = Vector2(425, 314)
+position = Vector2(41, 59)
 scale = Vector2(0.312727, 0.29267)
-script = ExtResource("1_2a4ls")
+script = ExtResource("1_vut44")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(6.39537, -1.70842)
+scale = Vector2(0.606538, 0.983051)
 sprite_frames = SubResource("SpriteFrames_gq4ya")
+frame_progress = 0.09519
 
 [node name="Body" type="CharacterBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
-position = Vector2(5, -8)
+position = Vector2(9.59303, -20.5009)
 shape = SubResource("CapsuleShape2D_7c23k")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Body"]
-position = Vector2(7.75, 140)
+position = Vector2(7.99422, 140)
 shape = SubResource("RectangleShape2D_6pus8")

@@ -13,7 +13,7 @@ public record struct PlayerMovementInput
 
 public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 20) : Node2D
 {
-  public readonly Vector2 initialPosition = initialPosition;
+  public Vector2 initialPosition = initialPosition;
 
   protected Vector2? _lastTrackedPosition;
 

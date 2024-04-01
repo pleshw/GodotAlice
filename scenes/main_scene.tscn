@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bj2p515w2nc8b"]
 
-[ext_resource type="PackedScene" uid="uid://mow1eqd27r6s" path="res://prefabs/player.tscn" id="1_x3738"]
+[ext_resource type="PackedScene" uid="uid://b7go7klurvvjl" path="res://prefabs/game_map.tscn" id="1_nitg8"]
 
 [node name="MainScene" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_x3738")]
+[node name="GameMap" parent="." instance=ExtResource("1_nitg8")]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7go7klurvvjl"]
+
+[ext_resource type="Script" path="res://scripts/GameManager/PlayerManager.cs" id="1_o0kbg"]
+
+[node name="GameMap" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -3.8147e-06)
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("1_o0kbg")
