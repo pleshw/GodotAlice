@@ -1,26 +1,66 @@
-[gd_scene load_steps=6 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=12 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vut44"]
-[ext_resource type="Texture2D" uid="uid://d2ouw1og8fl8h" path="res://assets/textures/sprites/ce4a4c7d-3906-4188-b538-63e88bc9721f.jpg" id="2_wv2nb"]
+[ext_resource type="Texture2D" uid="uid://d2ouw1og8fl8h" path="res://assets/textures/sprites/idle.jpg" id="2_4u6ax"]
+[ext_resource type="Texture2D" uid="uid://cx8b85tqnrvrk" path="res://icon.svg" id="2_5g7sr"]
+[ext_resource type="Texture2D" uid="uid://bus5otv5b48dp" path="res://assets/textures/sprites/down.png" id="4_bq1xd"]
+[ext_resource type="Texture2D" uid="uid://4rk6koeugo3l" path="res://assets/textures/sprites/sides.png" id="4_kfj4a"]
+[ext_resource type="Texture2D" uid="uid://dup6b4ned4h0w" path="res://assets/textures/sprites/up.png" id="5_jexpe"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_gq4ya"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_gowgf"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_wv2nb")
+"texture": ExtResource("2_4u6ax")
 }],
 "loop": true,
-"name": &"Idle",
+"name": &"Default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0vfec"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_bq1xd")
+}],
+"loop": true,
+"name": &"Bottom",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_kfj4a")
+}],
 "loop": true,
-"name": &"Run",
+"name": &"Left",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_kfj4a")
+}],
 "loop": true,
-"name": &"Walk",
+"name": &"Right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_jexpe")
+}],
+"loop": true,
+"name": &"Top",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_07txw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5g7sr")
+}],
+"loop": true,
+"name": &"default",
 "speed": 5.0
 }]
 
@@ -29,7 +69,7 @@ radius = 41.5698
 height = 300.68
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(92.7327, 46)
+size = Vector2(99.128, 50.4241)
 
 [node name="Player" type="Node2D"]
 position = Vector2(41, 59)
@@ -39,19 +79,39 @@ script = ExtResource("1_vut44")
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(1, 1)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(6.39537, -1.70842)
-scale = Vector2(0.606538, 0.983051)
-sprite_frames = SubResource("SpriteFrames_gq4ya")
-animation = &"Idle"
-autoplay = "Idle"
+[node name="Animations" type="Node2D" parent="."]
+scale = Vector2(1, 1)
+
+[node name="Movement" type="Node2D" parent="Animations"]
+
+[node name="Idle" type="AnimatedSprite2D" parent="Animations/Movement"]
+visible = false
+position = Vector2(9.59303, 3.8147e-06)
+scale = Vector2(0.648282, 1.03023)
+sprite_frames = SubResource("SpriteFrames_gowgf")
+animation = &"Default"
+
+[node name="Walking" type="AnimatedSprite2D" parent="Animations/Movement"]
+visible = false
+position = Vector2(41, 59)
+scale = Vector2(0.312727, 0.29267)
+sprite_frames = SubResource("SpriteFrames_0vfec")
+animation = &"Right"
+
+[node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
+visible = false
+position = Vector2(41, 59)
+scale = Vector2(0.312727, 0.29267)
+sprite_frames = SubResource("SpriteFrames_07txw")
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
+scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionBody"]
 position = Vector2(9.59303, -20.5009)
 shape = SubResource("CapsuleShape2D_7c23k")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(7.99422, 140)
+position = Vector2(11.1918, 142.212)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_6pus8")

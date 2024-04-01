@@ -106,6 +106,28 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     }
   }
 
+  public MOVEMENT_STATE MovementState
+  {
+    get
+    {
+      return _movementState;
+    }
+
+    protected set
+    {
+      _movementState = value;
+    }
+  }
+
+
+  public MOVEMENT_STATE LastMovementState
+  {
+    get
+    {
+      return _lastMovementState;
+    }
+  }
+
   public EntityMovement ControlMovementState(PlayerMovementInput playerMovementInput)
   {
     if (playerMovementInput.ForceMovementState)

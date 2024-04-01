@@ -8,22 +8,23 @@ namespace Entity;
 public partial class Entity : EntityMovement, IEntityBaseNode
 {
 	public Camera2D Camera { get; set; }
-	public AnimatedSprite2D Sprite { get; set; }
+	public Dictionary<StringName, AnimatedSprite2D> MovementAnimations { get; set; } = [];
 	public CharacterBody2D CollisionBody { get; set; }
 	public CollisionShape2D[] CollisionShapes { get; set; }
-
-	public DIRECTIONS facing = DIRECTIONS.BOTTOM;
+	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
 
 	public Entity() : base(Vector2.Zero)
 	{
 		movementKeyBind = new MovementCommandKeybind(this);
+		movementAnimator = new EntityMovementAnimator(this);
 	}
 
 	public Entity(Vector2 initialPosition) : base(initialPosition)
 	{
 		movementKeyBind = new MovementCommandKeybind(this);
+		movementAnimator = new EntityMovementAnimator(this);
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -32,7 +33,18 @@ public partial class Entity : EntityMovement, IEntityBaseNode
 		base._Ready();
 
 		Camera = GetNode<Camera2D>("Camera");
-		Sprite = GetNode<AnimatedSprite2D>("Sprite");
+
+		Node animationNode = GetNode<Node2D>("Animations");
+		if (animationNode != null && animationNode.GetNode<Node2D>("Movement") is Node2D movementAnimations)
+		{
+			MovementAnimations = movementAnimations.GetChildren()
+				.Select(c => c as AnimatedSprite2D)
+				.ToDictionary(sprite => sprite.Name, sprite => sprite);
+		}
+
+		movementAnimator.Init();
+		movementAnimator.PlayIdle();
+
 		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 	}

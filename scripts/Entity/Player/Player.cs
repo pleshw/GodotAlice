@@ -1,5 +1,6 @@
 using Godot;
 using Entity;
+using System;
 
 namespace Entity;
 
@@ -45,7 +46,7 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
         var clickEventType = inputEventClick.ButtonIndex;
         if (clickEventType == MouseButton.Left)
         {
-          Camera.MakeCurrent();
+          // Camera.MakeCurrent();
         }
       }
     }
@@ -59,6 +60,16 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
       movementKeyBind.Execute(key);
     }
 
-    DefaultMovementProcess(delta, out _);
+    DefaultMovementProcess(delta, out bool hasPlayerWalked);
+
+    if (!hasPlayerWalked)
+    {
+      MovementState = MOVEMENT_STATE.IDLE;
+    }
+
+    if (LastMovementState != MovementState || movementAnimator.facingDirection != movementAnimator.lastFacingDirection)
+    {
+      movementAnimator.ChangeAnimationProcess();
+    }
   }
 }

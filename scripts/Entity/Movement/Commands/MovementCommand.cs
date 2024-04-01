@@ -13,7 +13,8 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
 {
   public override void Execute()
   {
-    entityToMove.facing &= DIRECTIONS.TOP;
+    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
+    entityToMove.movementAnimator.facingDirection = DIRECTIONS.TOP;
 
     entityToMove.MoveTo(new PlayerMovementInput
     {
@@ -32,7 +33,8 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
 {
   public override void Execute()
   {
-    entityToMove.facing &= DIRECTIONS.RIGHT;
+    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
+    entityToMove.movementAnimator.facingDirection = DIRECTIONS.RIGHT;
 
     entityToMove.MoveTo(new PlayerMovementInput
     {
@@ -52,7 +54,8 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
 {
   public override void Execute()
   {
-    entityToMove.facing &= DIRECTIONS.BOTTOM;
+    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
+    entityToMove.movementAnimator.facingDirection = DIRECTIONS.BOTTOM;
 
     entityToMove.MoveTo(new PlayerMovementInput
     {
@@ -71,7 +74,8 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
 {
   public override void Execute()
   {
-    entityToMove.facing &= DIRECTIONS.LEFT;
+    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
+    entityToMove.movementAnimator.facingDirection = DIRECTIONS.LEFT;
 
     entityToMove.MoveTo(new PlayerMovementInput
     {

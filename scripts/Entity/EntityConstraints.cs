@@ -20,7 +20,6 @@ public enum MOVEMENT_STATE
   GRABBING
 }
 
-[Flags]
 public enum DIRECTIONS
 {
   TOP,
