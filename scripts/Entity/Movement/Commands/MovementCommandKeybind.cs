@@ -14,6 +14,14 @@ public class MovementCommandKeybind(Entity entity) : EntityCommandKeybind(entity
     BindKey(Key.A, movementController.WalkLeft);
   }
 
+  public void BindArrows()
+  {
+    BindKey(Key.Up, movementController.WalkTop);
+    BindKey(Key.Right, movementController.WalkRight);
+    BindKey(Key.Down, movementController.WalkBottom);
+    BindKey(Key.Left, movementController.WalkLeft);
+  }
+
   public void BindKeyWalkTop(Key key)
   {
     BindKey(key, movementController.WalkTop);

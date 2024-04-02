@@ -16,7 +16,7 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
     entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
     entityToMove.movementAnimator.facingDirection = DIRECTIONS.TOP;
 
-    entityToMove.MoveTo(new PlayerMovementInput
+    entityToMove.MoveTo(new EntityMovementInput
     {
       Position = entityToMove.TargetPosition with
       {
@@ -36,7 +36,7 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
     entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
     entityToMove.movementAnimator.facingDirection = DIRECTIONS.RIGHT;
 
-    entityToMove.MoveTo(new PlayerMovementInput
+    entityToMove.MoveTo(new EntityMovementInput
     {
       Position = entityToMove.TargetPosition with
       {
@@ -57,7 +57,7 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
     entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
     entityToMove.movementAnimator.facingDirection = DIRECTIONS.BOTTOM;
 
-    entityToMove.MoveTo(new PlayerMovementInput
+    entityToMove.MoveTo(new EntityMovementInput
     {
       Position = entityToMove.TargetPosition with
       {
@@ -77,7 +77,7 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
     entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
     entityToMove.movementAnimator.facingDirection = DIRECTIONS.LEFT;
 
-    entityToMove.MoveTo(new PlayerMovementInput
+    entityToMove.MoveTo(new EntityMovementInput
     {
       Position = entityToMove.TargetPosition with
       {

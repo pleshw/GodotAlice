@@ -3,10 +3,8 @@ using Godot;
 
 namespace GameManagers;
 
-public partial class PlayerManager : EntityManager<Player>
+public partial class EnemyManager : EntityManager<Enemy>
 {
-  public Player playerInstance;
-
   protected Vector2 playerSpawnPoint = new()
   {
     X = 0,
@@ -17,7 +15,5 @@ public partial class PlayerManager : EntityManager<Player>
   public override void _Ready()
   {
     base._Ready();
-
-    TrySpawnAtPosition(playerSpawnPoint, out playerInstance, 1);
   }
 }

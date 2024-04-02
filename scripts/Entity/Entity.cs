@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entity.Commands.Movement;
@@ -5,15 +6,22 @@ using Godot;
 
 namespace Entity;
 
-public partial class Entity : EntityMovement, IEntityBaseNode
+public abstract partial class Entity : EntityMovement, IEntityBaseNode
 {
+	public Guid Id = Guid.NewGuid();
 	public Camera2D Camera { get; set; }
 	public Dictionary<StringName, AnimatedSprite2D> MovementAnimations { get; set; } = [];
 	public CharacterBody2D CollisionBody { get; set; }
 	public CollisionShape2D[] CollisionShapes { get; set; }
+	public abstract StringName ResourceName { get; set; }
+
 	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
+
+	public bool ReadyToSpawn { get; set; } = false;
+
+	public bool Spawned { get; set; } = false;
 
 	public Entity() : base(Vector2.Zero)
 	{

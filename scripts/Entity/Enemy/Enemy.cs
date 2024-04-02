@@ -4,8 +4,9 @@ using System;
 
 namespace Entity;
 
-public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
+public partial class Enemy(Vector2 initialPosition) : Entity(initialPosition)
 {
+
   private StringName _resourceName = "res://prefabs/player.tscn";
 
   public override StringName ResourceName
@@ -14,18 +15,27 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
     set { }
   }
 
-  public Player() : this(Vector2.Zero)
+  protected readonly Vector2 _spawnPoint;
+
+  public Vector2 SpawnPoint
   {
+    get
+    {
+      return _spawnPoint;
+    }
+  }
+
+
+  public Enemy() : this(Vector2.Zero)
+  {
+    _spawnPoint = initialPosition;
   }
 
   public override void _Ready()
   {
     base._Ready();
 
-    movementKeyBind.BindDefaults();
-
-    ReadyToSpawn = true;
-
+    movementKeyBind.BindArrows();
     TeleportToNearestCell(new EntityMovementInput
     {
       Position = initialPosition,

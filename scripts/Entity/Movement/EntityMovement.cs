@@ -3,7 +3,7 @@ using Godot;
 namespace Entity;
 
 
-public record struct PlayerMovementInput
+public record struct EntityMovementInput
 {
   public required Vector2 Position;
   public required bool IsRunning;
@@ -128,7 +128,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     }
   }
 
-  public EntityMovement ControlMovementState(PlayerMovementInput playerMovementInput)
+  public EntityMovement ControlMovementState(EntityMovementInput playerMovementInput)
   {
     if (playerMovementInput.ForceMovementState)
     {
@@ -140,21 +140,21 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     return this;
   }
 
-  public EntityMovement TeleportTo(PlayerMovementInput playerMovementInput)
+  public EntityMovement TeleportTo(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     Position = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovement MoveTo(PlayerMovementInput playerMovementInput)
+  public EntityMovement MoveTo(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     _targetPosition = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovement MoveToNearestCell(PlayerMovementInput playerMovementInput)
+  public EntityMovement MoveToNearestCell(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     _targetPosition = new Vector2
@@ -166,7 +166,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     return this;
   }
 
-  public EntityMovement TeleportToNearestCell(PlayerMovementInput playerMovementInput)
+  public EntityMovement TeleportToNearestCell(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     Position = new Vector2
