@@ -1,21 +1,22 @@
 using System.Linq;
+using Animation;
 using Godot;
 
 namespace Entity;
 
 
-public partial class EntityMovementAnimator(Entity entity)
+public partial class EntityMovementAnimator(Entity entity) : Animator(entity)
 {
-  readonly Entity _entity = entity;
-
-  private AnimatedSprite2D _lastPlayedAnimation;
-
   private AnimatedSprite2D _idleAnimations;
-
   private AnimatedSprite2D _walkingAnimations;
-
   public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
   public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
+
+  public override int Priority
+  {
+    get => 1;
+    set { }
+  }
 
   public void Init()
   {
@@ -39,10 +40,7 @@ public partial class EntityMovementAnimator(Entity entity)
       return;
     }
 
-    HideLastPlayedAnimation();
-    _idleAnimations.Visible = true;
-    _idleAnimations.Play("Default");
-    _lastPlayedAnimation = _idleAnimations;
+    TryPlayAnimation(_idleAnimations, "Default");
   }
 
   public void ChangeAnimationProcess()
@@ -67,46 +65,31 @@ public partial class EntityMovementAnimator(Entity entity)
       return;
     }
 
-    HideLastPlayedAnimation();
-    _walkingAnimations.Visible = true;
-
     switch (facingDirection)
     {
       case DIRECTIONS.TOP:
-        _walkingAnimations.Play("Top");
+        TryPlayAnimation(_walkingAnimations, "Top");
         break;
       case DIRECTIONS.RIGHT:
-        _walkingAnimations.Play("Right");
+        TryPlayAnimation(_walkingAnimations, "Right");
         break;
       case DIRECTIONS.BOTTOM:
-        _walkingAnimations.Play("Bottom");
+        TryPlayAnimation(_walkingAnimations, "Bottom");
         break;
       case DIRECTIONS.LEFT:
-        _walkingAnimations.Play("Left");
+        TryPlayAnimation(_walkingAnimations, "Left");
         break;
       default:
-        _walkingAnimations.Play("Bottom");
+        TryPlayAnimation(_walkingAnimations, "Bottom");
         break;
     }
-
-    _lastPlayedAnimation = _walkingAnimations;
   }
 
-  private void HideAllAnimations()
+  public override void HideAllAnimations()
   {
     foreach (var anim in _entity.MovementAnimations)
     {
       anim.Value.Visible = false;
     }
-  }
-
-  private void HideLastPlayedAnimation()
-  {
-    if (_lastPlayedAnimation == null)
-    {
-      return;
-    }
-
-    _lastPlayedAnimation.Visible = false;
   }
 }
