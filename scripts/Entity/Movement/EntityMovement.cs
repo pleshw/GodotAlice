@@ -11,7 +11,7 @@ public record struct EntityMovementInput
   public required MOVEMENT_STATE MovementState;
 }
 
-public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 20) : Node2D
+public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 16) : Node2D
 {
   public Vector2 initialPosition = initialPosition;
 
@@ -41,11 +41,6 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   /// Grid cell width used for speed reference on player movement.
   /// </summary>
   protected int _cellWidth = gridMapCellWidth;
-
-  /// <summary>
-  /// Distance where the entity movement starts to slowdown 
-  /// </summary>
-  private float easingDistance = 15.0f;
 
   public bool HasTargetPosition
   {

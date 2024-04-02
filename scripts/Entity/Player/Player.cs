@@ -33,6 +33,8 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.IDLE,
     });
+
+    DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
   }
 
   public override void _Input(InputEvent @event)
