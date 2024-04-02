@@ -4,12 +4,19 @@ using Godot;
 
 namespace Animation;
 
+public class AnimationData
+{
+  public required AnimatorNode Animator;
+  public required StringName Name;
+  public required AnimatedSprite2D Animation;
+  public AnimationData PlayNext;
+}
+
 public struct PlayAnimationRequest
 {
   public required Entity.Entity Entity;
-  public required Animator Animator;
-  public required AnimatedSprite2D Animation;
-  public required StringName AnimationName;
+  public required AnimatorNode Animator;
+  public required AnimationData AnimationData;
 }
 
 public static class AnimationMediator
@@ -28,18 +35,38 @@ public static class AnimationMediator
     return GetInfo(entity);
   }
 
-  public static bool TryPlayAnimationOn(PlayAnimationRequest request, out EntityAnimationInfo animationInfo)
+  public static void PlayAnimation(PlayAnimationRequest request, out EntityAnimationInfo animationInfo)
   {
     animationInfo = GetInfo(request.Entity);
 
-    if (animationInfo.AnimationPlaying != null && animationInfo.AnimatorPlaying.Priority > request.Animator.Priority)
+    /// Nothing playing condition
+    if (animationInfo.AnimationPlaying == null)
     {
-      return false;
+      animationInfo.AnimationEnqueued = null;
+      animationInfo.SwitchAnimation(request.AnimationData);
+      return;
     }
 
-    animationInfo.SwitchAnimation(request.Animator, request.Animation, request.AnimationName);
-    animationInfo.AnimationPlaying.Play(request.AnimationName);
+    /// Over priority condition
+    if (request.Animator.Priority >= animationInfo.AnimatorPlaying.Priority)
+    {
+      animationInfo.AnimationEnqueued = null;
+      animationInfo.SwitchAnimation(request.AnimationData);
+      return;
+    }
 
-    return true;
+    /// Empty queue condition
+    if (animationInfo.AnimationEnqueued == null)
+    {
+      animationInfo.AnimationEnqueued = request.AnimationData;
+      return;
+    }
+
+    /// Queue priority condition
+    if (request.Animator.Priority >= animationInfo.AnimationEnqueued.Animator.Priority)
+    {
+      animationInfo.AnimationEnqueued = request.AnimationData;
+      return;
+    }
   }
 }

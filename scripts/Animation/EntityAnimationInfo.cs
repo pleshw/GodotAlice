@@ -6,43 +6,73 @@ namespace Animation;
 
 public class EntityAnimationInfo
 {
-  public Animator AnimatorPlaying { get; set; } = null;
-  public AnimatedSprite2D AnimationPlaying { get; set; } = null;
+  public AnimatorNode AnimatorPlaying { get; set; } = null;
+  public AnimationData AnimationPlaying { get; set; } = null;
 
-  public Animator LastPlayedAnimator { get; set; } = null;
-  public AnimatedSprite2D LastPlayedAnimation { get; set; } = null;
+  public AnimatorNode LastPlayedAnimator { get; set; } = null;
+  public AnimationData LastPlayedAnimation { get; set; } = null;
+
+  public AnimationData AnimationEnqueued { get; set; } = null;
+
+  public static void StopAnimation(AnimatedSprite2D animation)
+  {
+    animation.Pause();
+    animation.Frame = 0;
+    animation.Visible = false;
+  }
 
   public void StopCurrentAnimation()
   {
-    if (AnimatorPlaying != null)
-    {
-      LastPlayedAnimator = AnimatorPlaying;
-      AnimatorPlaying = null;
-    }
-
     if (AnimationPlaying != null)
     {
-      AnimationPlaying.Pause();
-      AnimationPlaying.Frame = 0;
-      AnimationPlaying.Visible = false;
+      StopAnimation(AnimationPlaying.Animation);
       LastPlayedAnimation = AnimationPlaying;
     }
 
+    if (AnimatorPlaying != null)
+    {
+      LastPlayedAnimator = AnimatorPlaying;
+    }
+
+    AnimatorPlaying = null;
     AnimationPlaying = null;
   }
 
-  public void PlayAnimation(Animator animatorPlaying, AnimatedSprite2D animationToPlay, StringName animationName)
+  public void PlayAnimation(AnimationData animationToPlay)
   {
-    AnimatorPlaying = animatorPlaying;
+    AnimatorPlaying = animationToPlay.Animator;
     AnimationPlaying = animationToPlay;
 
-    AnimationPlaying.Visible = true;
-    AnimationPlaying.Play(animationName);
+    AnimationPlaying.Animation.Visible = true;
+    AnimationPlaying.Animation.Play(AnimationPlaying.Name);
+
+    AnimationPlaying.Animation.AnimationFinished -= OnCurrentAnimationFinished;
+
+    AnimationPlaying.Animation.AnimationFinished += OnCurrentAnimationFinished;
   }
 
-  public void SwitchAnimation(Animator animatorPlaying, AnimatedSprite2D animationToPlay, StringName animationName)
+  public void OnCurrentAnimationFinished()
+  {
+    if (AnimationEnqueued == null)
+    {
+      var playNext = AnimationPlaying.PlayNext;
+      StopCurrentAnimation();
+      if (playNext == null)
+      {
+        return;
+      }
+
+      PlayAnimation(playNext);
+    }
+    else
+    {
+      PlayAnimation(AnimationEnqueued);
+    }
+  }
+
+  public void SwitchAnimation(AnimationData animationToPlay)
   {
     StopCurrentAnimation();
-    PlayAnimation(animatorPlaying, animationToPlay, animationName);
+    PlayAnimation(animationToPlay);
   }
 }

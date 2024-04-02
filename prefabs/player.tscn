@@ -25,7 +25,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_ujjfy")
 }],
-"loop": true,
+"loop": false,
 "name": &"Bottom",
 "speed": 5.0
 }, {
@@ -33,7 +33,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_x72rr")
 }],
-"loop": true,
+"loop": false,
 "name": &"Left",
 "speed": 5.0
 }, {
@@ -41,7 +41,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("5_cguou")
 }],
-"loop": true,
+"loop": false,
 "name": &"Right",
 "speed": 5.0
 }, {
@@ -49,7 +49,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("6_5bahd")
 }],
-"loop": true,
+"loop": false,
 "name": &"Top",
 "speed": 5.0
 }]
@@ -60,7 +60,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_5g7sr")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }]
@@ -81,20 +81,23 @@ script = ExtResource("1_vut44")
 
 [node name="Animations" type="Node2D" parent="."]
 
-[node name="Movement" type="Node2D" parent="Animations"]
+[node name="Idle" type="Node2D" parent="Animations"]
+scale = Vector2(1, 1)
 
-[node name="Idle" type="AnimatedSprite2D" parent="Animations/Movement"]
-visible = false
-position = Vector2(9.59303, 3.8147e-06)
+[node name="Idle" type="AnimatedSprite2D" parent="Animations/Idle"]
+position = Vector2(9.59303, 0)
 scale = Vector2(0.648282, 1.03023)
 sprite_frames = SubResource("SpriteFrames_gowgf")
 animation = &"Default"
 
+[node name="Movement" type="Node2D" parent="Animations"]
+
 [node name="Walking" type="AnimatedSprite2D" parent="Animations/Movement"]
+visible = false
 position = Vector2(9.59303, -3.8147e-06)
 scale = Vector2(0.827304, 2.80787)
 sprite_frames = SubResource("SpriteFrames_0vfec")
-animation = &"Top"
+animation = &"Right"
 
 [node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
 visible = false

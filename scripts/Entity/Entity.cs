@@ -10,11 +10,12 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 {
 	public Guid Id = Guid.NewGuid();
 	public Camera2D Camera { get; set; }
-	public Dictionary<StringName, AnimatedSprite2D> MovementAnimations { get; set; } = [];
+	public Dictionary<StringName, AnimatedSprite2D> Animations { get; set; } = [];
 	public CharacterBody2D CollisionBody { get; set; }
 	public CollisionShape2D[] CollisionShapes { get; set; }
 	public abstract StringName ResourceName { get; set; }
 
+	public EntityIdleAnimator idleAnimator;
 	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
@@ -27,12 +28,69 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 	{
 		movementKeyBind = new MovementCommandKeybind(this);
 		movementAnimator = new EntityMovementAnimator(this);
+		idleAnimator = new EntityIdleAnimator(this);
 	}
 
 	public Entity(Vector2 initialPosition) : base(initialPosition)
 	{
 		movementKeyBind = new MovementCommandKeybind(this);
 		movementAnimator = new EntityMovementAnimator(this);
+		idleAnimator = new EntityIdleAnimator(this);
+	}
+
+	public Node AnimationsNode
+	{
+		get
+		{
+			return GetNode<Node2D>("Animations");
+		}
+	}
+
+	public Node2D IdleAnimationsNode
+	{
+		get
+		{
+			return AnimationsNode.GetNode<Node2D>("Idle");
+		}
+	}
+
+	public Node2D MovementAnimationsNode
+	{
+		get
+		{
+			return AnimationsNode.GetNode<Node2D>("Movement");
+		}
+	}
+
+	public Dictionary<StringName, AnimatedSprite2D> MovementAnimations
+	{
+		get
+		{
+			return GetDictAnimationsByNameFromNode(MovementAnimationsNode);
+		}
+	}
+
+	public Dictionary<StringName, AnimatedSprite2D> IdleAnimations
+	{
+		get
+		{
+			return GetDictAnimationsByNameFromNode(IdleAnimationsNode);
+		}
+	}
+
+	public static Dictionary<StringName, AnimatedSprite2D> GetDictAnimationsByNameFromNode(Node2D node)
+	{
+		return node.GetChildren()
+				.Select(c => c as AnimatedSprite2D)
+				.ToDictionary(sprite => sprite.Name, sprite => sprite);
+	}
+
+	public void AddAnimations(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
+	{
+		foreach (var kvp in dictAnimations)
+		{
+			Animations[kvp.Key] = kvp.Value;
+		}
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -42,16 +100,14 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 
 		Camera = GetNode<Camera2D>("Camera");
 
-		Node animationNode = GetNode<Node2D>("Animations");
-		if (animationNode != null && animationNode.GetNode<Node2D>("Movement") is Node2D movementAnimations)
-		{
-			MovementAnimations = movementAnimations.GetChildren()
-				.Select(c => c as AnimatedSprite2D)
-				.ToDictionary(sprite => sprite.Name, sprite => sprite);
-		}
+		AddAnimations(IdleAnimations);
+		AddAnimations(MovementAnimations);
 
-		movementAnimator.Init();
-		movementAnimator.PlayIdle();
+		idleAnimator.OnReady();
+		movementAnimator.OnReady();
+		movementAnimator.PlayNext = idleAnimator.IdleAnimationData;
+
+		idleAnimator.PlayIdle();
 
 		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
