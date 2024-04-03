@@ -41,13 +41,15 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         PlayWalkAnimationByName("Top");
         break;
       case DIRECTIONS.RIGHT:
-        PlayWalkAnimationByName("Right");
+        AnimationSprites["Walking"].FlipH = false;
+        PlayWalkAnimationByName("Sides");
         break;
       case DIRECTIONS.BOTTOM:
         PlayWalkAnimationByName("Bottom");
         break;
       case DIRECTIONS.LEFT:
-        PlayWalkAnimationByName("Left");
+        AnimationSprites["Walking"].FlipH = true;
+        PlayWalkAnimationByName("Sides");
         break;
       default:
         PlayWalkAnimationByName("Bottom");

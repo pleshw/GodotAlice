@@ -55,6 +55,12 @@ public static class AnimationMediator
     }
   }
 
+  public static void ForcePlayAnimation(PlayAnimationRequest request, out EntityAnimationInfo animationInfo)
+  {
+    animationInfo = GetInfo(request.Entity);
+    animationInfo.SwitchAnimation(request.AnimationData);
+  }
+
   public static bool HaveHigherPriority(AnimatorNode a1, AnimatorNode a2)
   {
     if (a1 == null)

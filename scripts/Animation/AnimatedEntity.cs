@@ -23,6 +23,19 @@ public abstract partial class AnimatedEntity : Entity.Entity
     {
       item.Value.AnimationFinished += AnimationInfo.OnAnimationFinished;
     }
+
+    MovementUpdated += () =>
+    {
+      AnimationInfo.CanUpdateAnimation = true;
+    };
+
+    MovementInputTriggered += () =>
+    {
+      if (lastFacingDirection != facingDirection)
+      {
+        AnimationInfo.CanUpdateAnimation = true;
+      }
+    };
   }
 
   public override void _Process(double delta)
@@ -42,7 +55,7 @@ public abstract partial class AnimatedEntity : Entity.Entity
         }
         break;
       case MOVEMENT_STATE.IDLE:
-        if (AnimationInfo.CanUpdateAnimation && AnimationInfo.AnimationPlaying.Animation != idleAnimator.IdleAnimationData.Animation)
+        if (AnimationInfo.AnimationPlaying.Animation != idleAnimator.IdleAnimationData.Animation)
         {
           idleAnimator.Play();
         }

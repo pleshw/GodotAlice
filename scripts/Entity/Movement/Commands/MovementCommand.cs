@@ -18,6 +18,8 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
     entityToMove.lastFacingDirection = entityToMove.facingDirection;
     entityToMove.facingDirection = DIRECTIONS.TOP;
 
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
+
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -37,6 +39,8 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
   {
     entityToMove.lastFacingDirection = entityToMove.facingDirection;
     entityToMove.facingDirection = DIRECTIONS.RIGHT;
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
 
     MovementController.MoveTo(new EntityMovementInput
     {
@@ -59,6 +63,8 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
     entityToMove.lastFacingDirection = entityToMove.facingDirection;
     entityToMove.facingDirection = DIRECTIONS.BOTTOM;
 
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
+
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -78,6 +84,8 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
   {
     entityToMove.lastFacingDirection = entityToMove.facingDirection;
     entityToMove.facingDirection = DIRECTIONS.LEFT;
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
 
     MovementController.MoveTo(new EntityMovementInput
     {

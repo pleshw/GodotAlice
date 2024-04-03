@@ -53,6 +53,16 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
     {
       return;
     }
+    switch (Entity.facingDirection)
+    {
+      case DIRECTIONS.RIGHT:
+        IdleAnimation.FlipH = false;
+        break;
+      case DIRECTIONS.LEFT:
+        IdleAnimation.FlipH = true;
+        break;
+      default: break;
+    }
 
     TryPlayAnimation(IdleAnimationData);
   }

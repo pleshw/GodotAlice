@@ -112,6 +112,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
     set
     {
+      _lastMovementState = _movementState;
       _movementState = value;
     }
   }
@@ -137,8 +138,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   {
     if (playerMovementInput.ForceMovementState)
     {
-      _lastMovementState = _movementState;
-      _movementState = playerMovementInput.MovementState;
+      MovementState = playerMovementInput.MovementState;
       return this;
     }
 

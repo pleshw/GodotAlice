@@ -34,7 +34,7 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
       MovementState = MOVEMENT_STATE.IDLE,
     });
 
-    DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
+    // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
   }
 
   public override void _Input(InputEvent @event)

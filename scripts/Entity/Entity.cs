@@ -151,9 +151,21 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 			MovementController.MovementState = MOVEMENT_STATE.IDLE;
 		}
 
-		if (MovementController.MovementStateUpdated && facingDirection != lastFacingDirection)
+
+		if (MovementController.MovementStateUpdated)
 		{
-			MovementController.MovementState = MOVEMENT_STATE.WALKING;
+			EmitSignal(SignalName.MovementUpdated);
+
+			if (facingDirection != lastFacingDirection)
+			{
+				MovementController.MovementState = MOVEMENT_STATE.WALKING;
+			}
 		}
 	}
+
+	[Signal]
+	public delegate void MovementUpdatedEventHandler();
+
+	[Signal]
+	public delegate void MovementInputTriggeredEventHandler();
 }
