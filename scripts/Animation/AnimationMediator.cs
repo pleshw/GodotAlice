@@ -9,7 +9,7 @@ public class AnimationData
   public required AnimatorNode Animator;
   public required StringName Name;
   public required AnimatedSprite2D Animation;
-  public AnimationData PlayNext;
+  public required bool WaitToFinish;
 }
 
 public struct PlayAnimationRequest
@@ -32,10 +32,6 @@ public static class AnimationMediator
 
     EntityAnimationInfo animationInfo = new();
     entityAnimationInfoById.Add(entity.Id, animationInfo);
-    foreach (var item in entity.Animations)
-    {
-      item.Value.AnimationFinished += animationInfo.OnAnimationFinished;
-    }
 
     return GetInfo(entity);
   }
@@ -47,7 +43,6 @@ public static class AnimationMediator
     /// Nothing playing condition
     if (animationInfo.AnimationPlaying == null || animationInfo.CanUpdateAnimation)
     {
-      animationInfo.AnimationEnqueued = request.AnimationData.PlayNext;
       animationInfo.SwitchAnimation(request.AnimationData);
       return;
     }

@@ -1,18 +1,29 @@
-[gd_scene load_steps=13 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=14 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vut44"]
-[ext_resource type="Texture2D" uid="uid://d2ouw1og8fl8h" path="res://assets/textures/sprites/idle.jpg" id="2_4u6ax"]
 [ext_resource type="Texture2D" uid="uid://cx8b85tqnrvrk" path="res://icon.svg" id="2_5g7sr"]
+[ext_resource type="Texture2D" uid="uid://bug4v8s7tw21t" path="res://assets/spritesheets/red_hood.png" id="2_xhq4f"]
 [ext_resource type="Texture2D" uid="uid://clvl3g8ouve2t" path="res://assets/textures/sprites/Bottom.png" id="3_ujjfy"]
 [ext_resource type="Texture2D" uid="uid://do1ddwoxp4x72" path="res://assets/textures/sprites/Left.png" id="4_x72rr"]
 [ext_resource type="Texture2D" uid="uid://bnksjmdhohe8b" path="res://assets/textures/sprites/Right.png" id="5_cguou"]
 [ext_resource type="Texture2D" uid="uid://dt6n6q1g6gy7o" path="res://assets/textures/sprites/Top.png" id="6_5bahd"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3pcq"]
+atlas = ExtResource("2_xhq4f")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ypgk"]
+atlas = ExtResource("2_xhq4f")
+region = Rect2(32, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_gowgf"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_4u6ax")
+"texture": SubResource("AtlasTexture_o3pcq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ypgk")
 }],
 "loop": true,
 "name": &"Default",
@@ -65,12 +76,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c23k"]
-radius = 41.5698
-height = 300.68
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(99.128, 50.4241)
+size = Vector2(124.709, 273.345)
 
 [node name="Player" type="Node2D"]
 position = Vector2(41, 59)
@@ -82,13 +89,13 @@ script = ExtResource("1_vut44")
 [node name="Animations" type="Node2D" parent="."]
 
 [node name="Idle" type="Node2D" parent="Animations"]
-scale = Vector2(1, 1)
 
 [node name="Idle" type="AnimatedSprite2D" parent="Animations/Idle"]
-position = Vector2(9.59303, 0)
-scale = Vector2(0.648282, 1.03023)
+position = Vector2(5.59591, -8.54206)
+scale = Vector2(7.34466, 9.07592)
 sprite_frames = SubResource("SpriteFrames_gowgf")
 animation = &"Default"
+frame_progress = 0.0713886
 
 [node name="Movement" type="Node2D" parent="Animations"]
 
@@ -97,7 +104,7 @@ visible = false
 position = Vector2(9.59303, -3.8147e-06)
 scale = Vector2(0.827304, 2.80787)
 sprite_frames = SubResource("SpriteFrames_0vfec")
-animation = &"Right"
+animation = &"Top"
 
 [node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
 visible = false
@@ -107,10 +114,6 @@ sprite_frames = SubResource("SpriteFrames_07txw")
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(9.59303, -20.5009)
-shape = SubResource("CapsuleShape2D_7c23k")
-
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(11.1918, 142.212)
+position = Vector2(-1.52588e-05, -1.14441e-05)
 shape = SubResource("RectangleShape2D_6pus8")

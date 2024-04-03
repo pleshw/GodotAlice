@@ -13,8 +13,6 @@ public class EntityAnimationInfo
   public AnimatorNode LastPlayedAnimator { get; set; } = null;
   public AnimationData LastPlayedAnimation { get; set; } = null;
 
-  public AnimationData AnimationEnqueued { get; set; } = null;
-
   public static void StopAnimation(AnimatedSprite2D animation)
   {
     animation.Pause();
@@ -42,7 +40,8 @@ public class EntityAnimationInfo
 
   public void PlayAnimation(AnimationData animationToPlay)
   {
-    CanUpdateAnimation = false;
+    CanUpdateAnimation = !animationToPlay.WaitToFinish;
+
     AnimatorPlaying = animationToPlay.Animator;
     AnimationPlaying = animationToPlay;
 

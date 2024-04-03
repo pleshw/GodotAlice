@@ -61,7 +61,8 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     {
       Animator = this,
       Animation = AnimationSprites["Walking"],
-      Name = animationName
+      Name = animationName,
+      WaitToFinish = true
     });
   }
 

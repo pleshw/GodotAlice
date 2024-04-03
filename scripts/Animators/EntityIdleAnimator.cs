@@ -23,8 +23,17 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
       {
         Animator = this,
         Animation = AnimationSprites["Idle"],
-        Name = "Default"
+        Name = "Default",
+        WaitToFinish = false
       };
+    }
+  }
+
+  public AnimatedSprite2D IdleAnimation
+  {
+    get
+    {
+      return IdleAnimationData.Animation;
     }
   }
 
