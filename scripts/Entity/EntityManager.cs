@@ -29,7 +29,7 @@ public partial class EntityManager<EntityType> : Node where EntityType : Entity,
 
 		entityInstance = AddInstance();
 
-		entityInstance.initialPosition = position;
+		entityInstance.MovementController.initialPosition = position;
 
 		CallDeferred(nameof(Spawn), entityInstance);
 

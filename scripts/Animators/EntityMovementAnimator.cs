@@ -5,8 +5,7 @@ namespace Entity;
 
 public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
-  public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
+  public bool IsUpdated { get; set; }
 
   public override int Priority
   {
@@ -29,27 +28,14 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     HideAllAnimations();
   }
 
-
-  public void ChangeAnimationProcess()
-  {
-    switch (_entity.MovementState)
-    {
-      case MOVEMENT_STATE.WALKING:
-        PlayWalkingAnimation();
-        break;
-      default:
-        return;
-    }
-  }
-
-  public void PlayWalkingAnimation()
+  public override void Play()
   {
     if (AnimationSprites == null)
     {
       return;
     }
 
-    switch (facingDirection)
+    switch (Entity.facingDirection)
     {
       case DIRECTIONS.TOP:
         PlayWalkAnimationByName("Top");
@@ -75,8 +61,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     {
       Animator = this,
       Animation = AnimationSprites["Walking"],
-      Name = animationName,
-      PlayNext = PlayNext
+      Name = animationName
     });
   }
 

@@ -3,17 +3,15 @@ using Godot;
 
 namespace Animation;
 
-using AnimatedEntity = Entity.Entity;
 
 public abstract partial class AnimatorNode : Node
 {
-  public static readonly Dictionary<AnimatedEntity, List<AnimatorNode>> ObserversByEntity = [];
-  protected AnimatedEntity _entity;
-  public AnimationData PlayNext { get; set; } = null;
+  public static readonly Dictionary<Entity.Entity, List<AnimatorNode>> ObserversByEntity = [];
+  protected Entity.Entity _entity;
 
   protected Dictionary<string, AnimatedSprite2D> AnimationSprites = [];
 
-  public AnimatedEntity Entity
+  public Entity.Entity Entity
   {
     get
     {
@@ -23,7 +21,7 @@ public abstract partial class AnimatorNode : Node
 
   public abstract void OnReady();
 
-  public AnimatorNode(AnimatedEntity entity)
+  public AnimatorNode(Entity.Entity entity)
   {
     _entity = entity;
     AddObserver(_entity, this);
@@ -65,7 +63,7 @@ public abstract partial class AnimatorNode : Node
     }, out _);
   }
 
-  public static List<AnimatorNode> GetObserver(AnimatedEntity entity)
+  public static List<AnimatorNode> GetObserver(Entity.Entity entity)
   {
     if (ObserversByEntity.TryGetValue(entity, out List<AnimatorNode> animators))
     {
@@ -77,7 +75,7 @@ public abstract partial class AnimatorNode : Node
     return GetObserver(entity);
   }
 
-  public static List<AnimatorNode> AddObserver(AnimatedEntity entity, AnimatorNode animator)
+  public static List<AnimatorNode> AddObserver(Entity.Entity entity, AnimatorNode animator)
   {
     if (ObserversByEntity.TryGetValue(entity, out List<AnimatorNode> animators))
     {
@@ -91,6 +89,8 @@ public abstract partial class AnimatorNode : Node
   }
 
   public abstract void HideAllAnimations();
+
+  public abstract void Play();
 
   [Signal]
   public delegate void AnimationEndedEventHandler(AnimatedSprite2D animation);

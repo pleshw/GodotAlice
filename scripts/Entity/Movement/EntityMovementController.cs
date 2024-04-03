@@ -11,8 +11,10 @@ public record struct EntityMovementInput
   public required MOVEMENT_STATE MovementState;
 }
 
-public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidth = 16) : Node2D
+public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16)
 {
+  public Entity Entity { get; set; } = entity;
+
   public Vector2 initialPosition = initialPosition;
 
   protected Vector2? _lastTrackedPosition;
@@ -54,7 +56,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   {
     get
     {
-      return _targetPosition ?? Position;
+      return _targetPosition ?? Entity.Position;
     }
 
     set
@@ -108,7 +110,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
       return _movementState;
     }
 
-    protected set
+    set
     {
       _movementState = value;
     }
@@ -123,7 +125,15 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     }
   }
 
-  public EntityMovement ControlMovementState(EntityMovementInput playerMovementInput)
+  public bool MovementStateUpdated
+  {
+    get
+    {
+      return LastMovementState != MovementState;
+    }
+  }
+
+  public EntityMovementController ControlMovementState(EntityMovementInput playerMovementInput)
   {
     if (playerMovementInput.ForceMovementState)
     {
@@ -135,21 +145,21 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     return this;
   }
 
-  public EntityMovement TeleportTo(EntityMovementInput playerMovementInput)
+  public EntityMovementController TeleportTo(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
-    Position = playerMovementInput.Position;
+    Entity.Position = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovement MoveTo(EntityMovementInput playerMovementInput)
+  public EntityMovementController MoveTo(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     _targetPosition = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovement MoveToNearestCell(EntityMovementInput playerMovementInput)
+  public EntityMovementController MoveToNearestCell(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
     _targetPosition = new Vector2
@@ -161,10 +171,10 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     return this;
   }
 
-  public EntityMovement TeleportToNearestCell(EntityMovementInput playerMovementInput)
+  public EntityMovementController TeleportToNearestCell(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
-    Position = new Vector2
+    Entity.Position = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
       Y = Mathf.Round(playerMovementInput.Position.Y / _cellWidth) * _cellWidth + HalfCellWidth
@@ -174,7 +184,7 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
   }
 
 
-  protected EntityMovement DefaultMovementProcess(double delta, out bool hasMoved)
+  public EntityMovementController DefaultMovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
     if (_targetPosition == null)
@@ -183,19 +193,19 @@ public partial class EntityMovement(Vector2 initialPosition, int gridMapCellWidt
     }
 
     // Calculate the direction vector towards the target position
-    Vector2 direction = (TargetPosition - Position).Normalized();
+    Vector2 direction = (TargetPosition - Entity.Position).Normalized();
 
     float distanceToMove = MaxSpeed * (float)delta;
-    float distanceToTarget = Position.DistanceTo(TargetPosition);
+    float distanceToTarget = Entity.Position.DistanceTo(TargetPosition);
     if (distanceToTarget <= distanceToMove)
     {
-      Position = TargetPosition;
+      Entity.Position = TargetPosition;
       _lastTrackedPosition = TargetPosition;
       _targetPosition = null;
     }
     else
     {
-      Position += direction * distanceToMove;
+      Entity.Position += direction * distanceToMove;
     }
 
     hasMoved = true;

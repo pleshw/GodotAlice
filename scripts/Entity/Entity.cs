@@ -6,8 +6,13 @@ using Godot;
 
 namespace Entity;
 
-public abstract partial class Entity : EntityMovement, IEntityBaseNode
+public abstract partial class Entity : Node2D, IEntityBaseNode
 {
+	public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
+	public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
+
+	public EntityMovementController MovementController;
+
 	public Guid Id = Guid.NewGuid();
 	public Camera2D Camera { get; set; }
 	public Dictionary<StringName, AnimatedSprite2D> Animations { get; set; } = [];
@@ -24,15 +29,17 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 
 	public bool Spawned { get; set; } = false;
 
-	public Entity() : base(Vector2.Zero)
+	public Entity()
 	{
+		MovementController = new EntityMovementController(this, Vector2.Zero, 32);
 		movementKeyBind = new MovementCommandKeybind(this);
 		movementAnimator = new EntityMovementAnimator(this);
 		idleAnimator = new EntityIdleAnimator(this);
 	}
 
-	public Entity(Vector2 initialPosition) : base(initialPosition)
+	public Entity(Vector2 initialPosition)
 	{
+		MovementController = new EntityMovementController(this, initialPosition, 32);
 		movementKeyBind = new MovementCommandKeybind(this);
 		movementAnimator = new EntityMovementAnimator(this);
 		idleAnimator = new EntityIdleAnimator(this);
@@ -105,9 +112,8 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 
 		idleAnimator.OnReady();
 		movementAnimator.OnReady();
-		movementAnimator.PlayNext = idleAnimator.IdleAnimationData;
 
-		idleAnimator.PlayIdle();
+		idleAnimator.Play();
 
 		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
@@ -132,11 +138,22 @@ public abstract partial class Entity : EntityMovement, IEntityBaseNode
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		base._Process(delta);
 		foreach (var key in keysPressed)
 		{
 			movementKeyBind.Execute(key);
 		}
 
-		DefaultMovementProcess(delta, out _);
+		MovementController.DefaultMovementProcess(delta, out bool hasPlayerWalked);
+
+		if (!hasPlayerWalked)
+		{
+			MovementController.MovementState = MOVEMENT_STATE.IDLE;
+		}
+
+		if (MovementController.MovementStateUpdated && facingDirection != lastFacingDirection)
+		{
+			MovementController.MovementState = MOVEMENT_STATE.WALKING;
+		}
 	}
 }

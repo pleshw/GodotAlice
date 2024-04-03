@@ -30,7 +30,12 @@ public static class AnimationMediator
       return animInfo;
     }
 
-    entityAnimationInfoById.Add(entity.Id, new());
+    EntityAnimationInfo animationInfo = new();
+    entityAnimationInfoById.Add(entity.Id, animationInfo);
+    foreach (var item in entity.Animations)
+    {
+      item.Value.AnimationFinished += animationInfo.OnAnimationFinished;
+    }
 
     return GetInfo(entity);
   }
@@ -40,33 +45,38 @@ public static class AnimationMediator
     animationInfo = GetInfo(request.Entity);
 
     /// Nothing playing condition
-    if (animationInfo.AnimationPlaying == null)
+    if (animationInfo.AnimationPlaying == null || animationInfo.CanUpdateAnimation)
     {
-      animationInfo.AnimationEnqueued = null;
+      animationInfo.AnimationEnqueued = request.AnimationData.PlayNext;
       animationInfo.SwitchAnimation(request.AnimationData);
       return;
     }
 
-    /// Over priority condition
-    if (request.Animator.Priority >= animationInfo.AnimatorPlaying.Priority)
+    bool isRequestHigherPriorityThanPlaying = HaveHigherPriority(request.Animator, animationInfo.AnimatorPlaying);
+    if (isRequestHigherPriorityThanPlaying)
     {
-      animationInfo.AnimationEnqueued = null;
       animationInfo.SwitchAnimation(request.AnimationData);
       return;
     }
+  }
 
-    /// Empty queue condition
-    if (animationInfo.AnimationEnqueued == null)
+  public static bool HaveHigherPriority(AnimatorNode a1, AnimatorNode a2)
+  {
+    if (a1 == null)
     {
-      animationInfo.AnimationEnqueued = request.AnimationData;
-      return;
+      return false;
     }
 
-    /// Queue priority condition
-    if (request.Animator.Priority >= animationInfo.AnimationEnqueued.Animator.Priority)
+    if (a2 == null)
     {
-      animationInfo.AnimationEnqueued = request.AnimationData;
-      return;
+      return true;
     }
+
+    if (a1.Priority >= a2.Priority)
+    {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -6,6 +6,7 @@ namespace Animation;
 
 public class EntityAnimationInfo
 {
+  public bool CanUpdateAnimation = true;
   public AnimatorNode AnimatorPlaying { get; set; } = null;
   public AnimationData AnimationPlaying { get; set; } = null;
 
@@ -36,38 +37,22 @@ public class EntityAnimationInfo
 
     AnimatorPlaying = null;
     AnimationPlaying = null;
+    CanUpdateAnimation = true;
   }
 
   public void PlayAnimation(AnimationData animationToPlay)
   {
+    CanUpdateAnimation = false;
     AnimatorPlaying = animationToPlay.Animator;
     AnimationPlaying = animationToPlay;
 
     AnimationPlaying.Animation.Visible = true;
     AnimationPlaying.Animation.Play(AnimationPlaying.Name);
-
-    AnimationPlaying.Animation.AnimationFinished -= OnCurrentAnimationFinished;
-
-    AnimationPlaying.Animation.AnimationFinished += OnCurrentAnimationFinished;
   }
 
-  public void OnCurrentAnimationFinished()
+  public void OnAnimationFinished()
   {
-    if (AnimationEnqueued == null)
-    {
-      var playNext = AnimationPlaying.PlayNext;
-      StopCurrentAnimation();
-      if (playNext == null)
-      {
-        return;
-      }
-
-      PlayAnimation(playNext);
-    }
-    else
-    {
-      PlayAnimation(AnimationEnqueued);
-    }
+    CanUpdateAnimation = true;
   }
 
   public void SwitchAnimation(AnimationData animationToPlay)

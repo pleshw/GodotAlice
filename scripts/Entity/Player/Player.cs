@@ -1,12 +1,12 @@
 using Godot;
-using Entity;
-using System;
+using Animation;
 
 namespace Entity;
 
-public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
+public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPosition)
 {
   private StringName _resourceName = "res://prefabs/player.tscn";
+  private readonly Vector2 initialPosition = initialPosition;
 
   public override StringName ResourceName
   {
@@ -26,7 +26,7 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
 
     ReadyToSpawn = true;
 
-    TeleportToNearestCell(new EntityMovementInput
+    MovementController.TeleportToNearestCell(new EntityMovementInput
     {
       Position = initialPosition,
       IsRunning = false,
@@ -67,21 +67,6 @@ public partial class Player(Vector2 initialPosition) : Entity(initialPosition)
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
   {
-    foreach (var key in keysPressed)
-    {
-      movementKeyBind.Execute(key);
-    }
-
-    DefaultMovementProcess(delta, out bool hasPlayerWalked);
-
-    if (!hasPlayerWalked)
-    {
-      MovementState = MOVEMENT_STATE.IDLE;
-    }
-
-    if (LastMovementState != MovementState || movementAnimator.facingDirection != movementAnimator.lastFacingDirection)
-    {
-      movementAnimator.ChangeAnimationProcess();
-    }
+    base._Process(delta);
   }
 }

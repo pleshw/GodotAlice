@@ -6,6 +6,8 @@ public abstract class EntityMovementCommand(Entity entityToMove) : IEntityComman
 {
   public Entity entityToMove = entityToMove;
 
+  public EntityMovementController MovementController = entityToMove.MovementController;
+
   public abstract void Execute();
 }
 
@@ -13,14 +15,14 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
 {
   public override void Execute()
   {
-    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
-    entityToMove.movementAnimator.facingDirection = DIRECTIONS.TOP;
+    entityToMove.lastFacingDirection = entityToMove.facingDirection;
+    entityToMove.facingDirection = DIRECTIONS.TOP;
 
-    entityToMove.MoveTo(new EntityMovementInput
+    MovementController.MoveTo(new EntityMovementInput
     {
-      Position = entityToMove.TargetPosition with
+      Position = MovementController.TargetPosition with
       {
-        Y = entityToMove.Position.Y - entityToMove.StepSize
+        Y = entityToMove.Position.Y - MovementController.StepSize
       },
       IsRunning = false,
       ForceMovementState = true,
@@ -33,14 +35,14 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
 {
   public override void Execute()
   {
-    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
-    entityToMove.movementAnimator.facingDirection = DIRECTIONS.RIGHT;
+    entityToMove.lastFacingDirection = entityToMove.facingDirection;
+    entityToMove.facingDirection = DIRECTIONS.RIGHT;
 
-    entityToMove.MoveTo(new EntityMovementInput
+    MovementController.MoveTo(new EntityMovementInput
     {
-      Position = entityToMove.TargetPosition with
+      Position = MovementController.TargetPosition with
       {
-        X = entityToMove.Position.X + entityToMove.StepSize
+        X = entityToMove.Position.X + MovementController.StepSize
       },
       IsRunning = false,
       ForceMovementState = true,
@@ -54,14 +56,14 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
 {
   public override void Execute()
   {
-    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
-    entityToMove.movementAnimator.facingDirection = DIRECTIONS.BOTTOM;
+    entityToMove.lastFacingDirection = entityToMove.facingDirection;
+    entityToMove.facingDirection = DIRECTIONS.BOTTOM;
 
-    entityToMove.MoveTo(new EntityMovementInput
+    MovementController.MoveTo(new EntityMovementInput
     {
-      Position = entityToMove.TargetPosition with
+      Position = MovementController.TargetPosition with
       {
-        Y = entityToMove.Position.Y + entityToMove.StepSize
+        Y = entityToMove.Position.Y + MovementController.StepSize
       },
       IsRunning = false,
       ForceMovementState = true,
@@ -74,14 +76,14 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
 {
   public override void Execute()
   {
-    entityToMove.movementAnimator.lastFacingDirection = entityToMove.movementAnimator.facingDirection;
-    entityToMove.movementAnimator.facingDirection = DIRECTIONS.LEFT;
+    entityToMove.lastFacingDirection = entityToMove.facingDirection;
+    entityToMove.facingDirection = DIRECTIONS.LEFT;
 
-    entityToMove.MoveTo(new EntityMovementInput
+    MovementController.MoveTo(new EntityMovementInput
     {
-      Position = entityToMove.TargetPosition with
+      Position = MovementController.TargetPosition with
       {
-        X = entityToMove.Position.X - entityToMove.StepSize
+        X = entityToMove.Position.X - MovementController.StepSize
       },
       IsRunning = false,
       ForceMovementState = true,

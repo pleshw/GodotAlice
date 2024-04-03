@@ -38,7 +38,7 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
     HideAllAnimations();
   }
 
-  public void PlayIdle()
+  public override void Play()
   {
     if (AnimationSprites == null)
     {
@@ -46,18 +46,6 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
     }
 
     TryPlayAnimation(IdleAnimationData);
-  }
-
-  public void ChangeAnimationProcess()
-  {
-    switch (_entity.MovementState)
-    {
-      case MOVEMENT_STATE.IDLE:
-        PlayIdle();
-        return;
-      default:
-        return;
-    }
   }
 
   public override void HideAllAnimations()
