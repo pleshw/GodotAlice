@@ -26,6 +26,7 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
       MovementState = MOVEMENT_STATE.WALKING,
     });
 
+    entityToMove.LastCommandDirection = DIRECTIONS.TOP;
     entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
@@ -45,6 +46,7 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
       MovementState = MOVEMENT_STATE.WALKING,
     });
 
+    entityToMove.LastCommandDirection = DIRECTIONS.RIGHT;
     entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
@@ -65,6 +67,7 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
       MovementState = MOVEMENT_STATE.WALKING,
     });
 
+    entityToMove.LastCommandDirection = DIRECTIONS.BOTTOM;
     entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
@@ -83,7 +86,7 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.WALKING,
     });
-
+    entityToMove.LastCommandDirection = DIRECTIONS.LEFT;
     entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }

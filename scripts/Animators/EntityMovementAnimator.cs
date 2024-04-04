@@ -27,8 +27,9 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
 
     Animations.Add(WalkTop.Name, WalkTop);
-    Animations.Add(WalkSides.Name, WalkSides);
+    Animations.Add(WalkRight.Name, WalkRight);
     Animations.Add(WalkBottom.Name, WalkBottom);
+    Animations.Add(WalkLeft.Name, WalkLeft);
 
     ConfirmAnimations();
     HideAllAnimations();
@@ -41,19 +42,19 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       return;
     }
 
-    switch (Entity.FacingDirection)
+    switch (Entity.LastCommandDirection)
     {
       case DIRECTIONS.TOP:
         PlayAnimation(WalkTop);
         break;
       case DIRECTIONS.RIGHT:
-        PlayAnimation(WalkSides);
+        PlayAnimation(WalkRight);
         break;
       case DIRECTIONS.BOTTOM:
         PlayAnimation(WalkBottom);
         break;
       case DIRECTIONS.LEFT:
-        PlayAnimation(WalkSides);
+        PlayAnimation(WalkLeft);
         break;
       default:
         PlayAnimation(Entity.idleAnimator.Idle);
@@ -103,7 +104,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  public AnimationData WalkSides
+  public AnimationData WalkLeft
   {
     get
     {
@@ -111,7 +112,28 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       {
         Animator = this,
         Animation = AnimationSprites["Walking"],
-        Name = "Sides",
+        Name = "Left",
+        CanBeInterrupted = true,
+        Priority = 1,
+        Entity = Entity,
+        CanPlayConcurrently = false,
+        BeforeAnimationStart = () =>
+        {
+          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
+        }
+      };
+    }
+  }
+
+  public AnimationData WalkRight
+  {
+    get
+    {
+      return new AnimationData
+      {
+        Animator = this,
+        Animation = AnimationSprites["Walking"],
+        Name = "Right",
         CanBeInterrupted = true,
         Priority = 1,
         Entity = Entity,

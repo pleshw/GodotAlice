@@ -26,32 +26,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		}
 	}
 
-	public DIRECTIONS FacingDirection
-	{
-		get
-		{
-			if (FacingDirectionAngle >= 45 && FacingDirectionAngle < 135)
-			{
-				// Facing top
-				return DIRECTIONS.TOP;
-			}
-			else if (FacingDirectionAngle >= 135 && FacingDirectionAngle < 225)
-			{
-				// Facing right
-				return DIRECTIONS.RIGHT;
-			}
-			else if (FacingDirectionAngle >= 225 && FacingDirectionAngle < 315)
-			{
-				// Facing bottom
-				return DIRECTIONS.BOTTOM;
-			}
-			else
-			{
-				// Facing left
-				return DIRECTIONS.LEFT;
-			}
-		}
-	}
+	public DIRECTIONS LastCommandDirection { get; set; } = DIRECTIONS.RIGHT;
 
 	public DIRECTIONS FacingSide
 	{
@@ -214,30 +189,12 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 			movementKeyBind.Execute(key);
 		}
 
-		MovementController.DefaultMovementProcess(delta, out bool hasPlayerWalked);
-
-		if (!hasPlayerWalked)
-		{
-			MovementController.MovementState = MOVEMENT_STATE.IDLE;
-
-			if (MovementController.MovementStateUpdated)
-			{
-				EmitSignal(SignalName.MovementStateUpdated);
-			}
-		}
-
-
-		if (MovementController.MovementStateUpdated)
-		{
-			EmitSignal(SignalName.MovementStateUpdated);
-
-			if (FacingDirection != LastFacingDirection)
-			{
-				MovementController.MovementState = MOVEMENT_STATE.WALKING;
-			}
-		}
+		MovementController.DefaultMovementProcess(delta, out bool _);
 	}
 
+
+	[Signal]
+	public delegate void EntityStoppedEventHandler();
 
 	[Signal]
 	public delegate void EntityMovedEventHandler(Vector2 from, Vector2 to);

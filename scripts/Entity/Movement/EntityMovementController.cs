@@ -189,11 +189,14 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     hasMoved = false;
     if (_targetPosition == null)
     {
+      MovementState = MOVEMENT_STATE.IDLE;
+      entity.EmitSignal(Entity.SignalName.EntityStopped);
       return this;
     }
 
     // Calculate the direction vector towards the target position
-    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
+    MovementState = MOVEMENT_STATE.WALKING;
+    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized().Inverse();
 
     float distanceToMove = MaxSpeed * (float)delta;
     float distanceToTarget = entity.Position.DistanceTo(TargetPosition);
@@ -207,7 +210,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
     else
     {
-      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
+      Vector2 displacement = entity.FacingDirectionVector.Inverse() * distanceToMove;
       LastTrackedPosition = entity.Position;
 
       Vector2 entityNewPosition = LastTrackedPosition + displacement;

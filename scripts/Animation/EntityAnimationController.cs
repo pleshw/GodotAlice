@@ -1,4 +1,5 @@
 using System;
+using Entity;
 using Godot;
 
 namespace Animation;
@@ -24,14 +25,14 @@ public class EntityAnimationController
   public static void PlayAnimation(AnimatedSprite2D animation)
   {
     animation.Visible = true;
-    animation.Play();
+    animation.Play(animation.Name);
   }
 
   public void PlayMainAnimation()
   {
     AnimationInfo.MainAnimationData.BeforeAnimationStart();
     AnimationInfo.MainAnimationData.Animation.Visible = true;
-    AnimationInfo.MainAnimationData.Animation.Play();
+    AnimationInfo.MainAnimationData.Animation.Play(AnimationInfo.MainAnimationData.Name);
   }
 
   public void StopMainAnimation()
@@ -71,11 +72,10 @@ public class EntityAnimationController
 
     if (EntityAnimationInfo.HaveSamePriority(animationData, AnimationInfo.MainAnimationData))
     {
-      if (animationData.Animation == AnimationInfo.MainAnimationData.Animation)
+      if (animationData.Name == AnimationInfo.MainAnimationData.Name && AnimationInfo.MainAnimationData.Animation.IsPlaying())
       {
         return;
       }
-
       StopMainAnimation();
       AnimationInfo.MainAnimationData = animationData;
       ConnectOnFinishedToMain();

@@ -17,6 +17,12 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.E
 
     AnimationState = EntityAnimationInfo.GetInfoFrom(this);
 
+
+    EntityStopped += () =>
+    {
+      idleAnimator.Play();
+    };
+
     EntityMoved += (Vector2 from, Vector2 to) =>
     {
       movementAnimator.Play();
