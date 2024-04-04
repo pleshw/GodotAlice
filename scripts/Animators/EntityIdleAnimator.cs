@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Animation;
 using Godot;
@@ -15,7 +16,7 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
     set { }
   }
 
-  public AnimationData IdleAnimationData
+  public AnimationData Idle
   {
     get
     {
@@ -24,26 +25,38 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
         Animator = this,
         Animation = AnimationSprites["Idle"],
         Name = "Default",
-        WaitToFinish = false
+        CanBeInterrupted = true,
+        Priority = 1,
+        Entity = Entity,
+        CanPlayConcurrently = false,
+        BeforeAnimationStart = () =>
+        {
+          IdleSprite2D.FlipH = Entity.facingDirection == DIRECTIONS.LEFT;
+        }
       };
     }
   }
 
-  public AnimatedSprite2D IdleAnimation
+  public AnimatedSprite2D IdleSprite2D
   {
     get
     {
-      return IdleAnimationData.Animation;
+      return Idle.Animation;
     }
   }
 
+  protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
+
   public override void OnReady()
   {
-    if (_entity.Animations.TryGetValue("Idle", out AnimatedSprite2D idleAnimations))
+    if (_entity.AnimationsByName.TryGetValue("Idle", out AnimatedSprite2D idleAnimations))
     {
       AnimationSprites.Add("Idle", idleAnimations);
     }
 
+    Animations.Add(Idle.Name, Idle);
+
+    ConfirmAnimations();
     HideAllAnimations();
   }
 
@@ -53,23 +66,13 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
     {
       return;
     }
-    switch (Entity.facingDirection)
-    {
-      case DIRECTIONS.RIGHT:
-        IdleAnimation.FlipH = false;
-        break;
-      case DIRECTIONS.LEFT:
-        IdleAnimation.FlipH = true;
-        break;
-      default: break;
-    }
 
-    TryPlayAnimation(IdleAnimationData);
+    PlayAnimation(Idle);
   }
 
   public override void HideAllAnimations()
   {
-    foreach (var anim in _entity.Animations)
+    foreach (var anim in _entity.AnimationsByName)
     {
       anim.Value.Visible = false;
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Animation;
 using Godot;
 
@@ -13,18 +14,25 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     set { }
   }
 
+  protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
+
   public override void OnReady()
   {
-    if (_entity.Animations.TryGetValue("Walking", out AnimatedSprite2D walkingAnimations))
+    if (_entity.AnimationsByName.TryGetValue("Walking", out AnimatedSprite2D walkingAnimations))
     {
       AnimationSprites.Add("Walking", walkingAnimations);
     }
 
-    if (_entity.Animations.TryGetValue("Running", out AnimatedSprite2D runningAnimations))
+    if (_entity.AnimationsByName.TryGetValue("Running", out AnimatedSprite2D runningAnimations))
     {
       AnimationSprites.Add("Running", runningAnimations);
     }
 
+    Animations.Add(WalkTop.Name, WalkTop);
+    Animations.Add(WalkSides.Name, WalkSides);
+    Animations.Add(WalkBottom.Name, WalkBottom);
+
+    ConfirmAnimations();
     HideAllAnimations();
   }
 
@@ -38,39 +46,89 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     switch (Entity.facingDirection)
     {
       case DIRECTIONS.TOP:
-        PlayWalkAnimationByName("Top");
+        PlayAnimation(WalkTop);
         break;
       case DIRECTIONS.RIGHT:
-        AnimationSprites["Walking"].FlipH = false;
-        PlayWalkAnimationByName("Sides");
+        PlayAnimation(WalkSides);
         break;
       case DIRECTIONS.BOTTOM:
-        PlayWalkAnimationByName("Bottom");
+        PlayAnimation(WalkBottom);
         break;
       case DIRECTIONS.LEFT:
-        AnimationSprites["Walking"].FlipH = true;
-        PlayWalkAnimationByName("Sides");
+        PlayAnimation(WalkSides);
         break;
       default:
-        PlayWalkAnimationByName("Bottom");
+        PlayAnimation(Entity.idleAnimator.Idle);
         break;
     }
   }
 
-  public void PlayWalkAnimationByName(StringName animationName)
+  public AnimationData WalkTop
   {
-    TryPlayAnimation(new AnimationData
+    get
     {
-      Animator = this,
-      Animation = AnimationSprites["Walking"],
-      Name = animationName,
-      WaitToFinish = true
-    });
+      return new AnimationData
+      {
+        Animator = this,
+        Animation = AnimationSprites["Walking"],
+        Name = "Top",
+        CanBeInterrupted = true,
+        Priority = 1,
+        Entity = Entity,
+        CanPlayConcurrently = false,
+        BeforeAnimationStart = () =>
+        {
+          AnimationSprites["Walking"].FlipH = Entity.lastFacingDirection == DIRECTIONS.LEFT;
+        }
+      };
+    }
+  }
+
+  public AnimationData WalkBottom
+  {
+    get
+    {
+      return new AnimationData
+      {
+        Animator = this,
+        Animation = AnimationSprites["Walking"],
+        Name = "Bottom",
+        CanBeInterrupted = true,
+        Priority = 1,
+        Entity = Entity,
+        CanPlayConcurrently = false,
+        BeforeAnimationStart = () =>
+        {
+          AnimationSprites["Walking"].FlipH = Entity.lastFacingDirection == DIRECTIONS.LEFT;
+        }
+      };
+    }
+  }
+
+  public AnimationData WalkSides
+  {
+    get
+    {
+      return new AnimationData
+      {
+        Animator = this,
+        Animation = AnimationSprites["Walking"],
+        Name = "Sides",
+        CanBeInterrupted = true,
+        Priority = 1,
+        Entity = Entity,
+        CanPlayConcurrently = false,
+        BeforeAnimationStart = () =>
+        {
+          AnimationSprites["Walking"].FlipH = Entity.facingDirection == DIRECTIONS.LEFT;
+        }
+      };
+    }
   }
 
   public override void HideAllAnimations()
   {
-    foreach (var anim in _entity.Animations)
+    foreach (var anim in _entity.AnimationsByName)
     {
       anim.Value.Visible = false;
     }

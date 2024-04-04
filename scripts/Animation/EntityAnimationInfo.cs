@@ -6,57 +6,116 @@ namespace Animation;
 
 public class EntityAnimationInfo
 {
-  public bool CanUpdateAnimation = true;
-  public AnimatorNode AnimatorPlaying { get; set; } = null;
-  public AnimationData AnimationPlaying { get; set; } = null;
+  private static readonly Dictionary<Guid, EntityAnimationInfo> entityAnimationInfoById = [];
 
-  public AnimatorNode LastPlayedAnimator { get; set; } = null;
-  public AnimationData LastPlayedAnimation { get; set; } = null;
+  public required AnimationData DefaultAnimationData;
+  public AnimatorNode MainAnimator { get; set; } = null;
+  public AnimationData MainAnimationData { get; set; } = null;
+  public AnimationData ConcurrentAnimations { get; set; } = null;
+  public readonly EntityAnimationController Controller;
 
-  public static void StopAnimation(AnimatedSprite2D animation)
+  public SortedSet<AnimationData> AnimationSet = new(Comparer<AnimationData>.Create((a, b) => a.Priority.CompareTo(b.Priority)));
+
+  public EntityAnimationInfo()
   {
-    animation.Pause();
-    animation.Frame = 0;
-    animation.Visible = false;
+    Controller = new(this);
   }
 
-  public void StopCurrentAnimation()
+  public void OnAnimationFinished(AnimatedSprite2D finishedAnimation)
   {
-    if (AnimationPlaying != null)
+    if (MainAnimationData.Animation == finishedAnimation)
     {
-      StopAnimation(AnimationPlaying.Animation);
-      LastPlayedAnimation = AnimationPlaying;
+      Controller.StopMainAnimation();
+      MainAnimationData = DefaultAnimationData;
+      Controller.PlayMainAnimation();
+    }
+  }
+
+  public void OnAnimationLoop(AnimatedSprite2D loopedAnimation)
+  {
+
+  }
+
+  public void AddNew()
+  {
+    AnimationSet.Remove(MainAnimationData);
+  }
+
+
+  public static EntityAnimationInfo GetInfoFrom(Entity.Entity entity)
+  {
+    if (entityAnimationInfoById.TryGetValue(entity.Id, out EntityAnimationInfo animInfo))
+    {
+      return animInfo;
     }
 
-    if (AnimatorPlaying != null)
+    EntityAnimationInfo animationInfo = new()
     {
-      LastPlayedAnimator = AnimatorPlaying;
+      DefaultAnimationData = entity.idleAnimator.Idle
+    };
+
+    entityAnimationInfoById.Add(entity.Id, animationInfo);
+
+    return GetInfoFrom(entity);
+  }
+
+  public static bool HaveHigherPriority(AnimationData a1, AnimationData a2)
+  {
+    if (a1 == null)
+    {
+      return false;
     }
 
-    AnimatorPlaying = null;
-    AnimationPlaying = null;
-    CanUpdateAnimation = true;
+    if (a2 == null)
+    {
+      return true;
+    }
+
+    if (a1.Priority > a2.Priority)
+    {
+      return true;
+    }
+
+    return false;
   }
 
-  public void PlayAnimation(AnimationData animationToPlay)
+  public static bool HaveSamePriority(AnimationData a1, AnimationData a2)
   {
-    CanUpdateAnimation = !animationToPlay.WaitToFinish;
+    if (a1 == null)
+    {
+      return false;
+    }
 
-    AnimatorPlaying = animationToPlay.Animator;
-    AnimationPlaying = animationToPlay;
+    if (a2 == null)
+    {
+      return true;
+    }
 
-    AnimationPlaying.Animation.Visible = true;
-    AnimationPlaying.Animation.Play(AnimationPlaying.Name);
+    if (a1.Priority == a2.Priority)
+    {
+      return true;
+    }
+
+    return false;
   }
 
-  public void OnAnimationFinished()
+  public static bool HaveLessPriority(AnimationData a1, AnimationData a2)
   {
-    CanUpdateAnimation = true;
-  }
+    if (a1 == null)
+    {
+      return true;
+    }
 
-  public void SwitchAnimation(AnimationData animationToPlay)
-  {
-    StopCurrentAnimation();
-    PlayAnimation(animationToPlay);
+    if (a2 == null)
+    {
+      return false;
+    }
+
+    if (a1.Priority < a2.Priority)
+    {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -27,3 +27,9 @@ public enum DIRECTIONS
   BOTTOM,
   LEFT
 }
+
+public enum SIDES
+{
+  RIGHT,
+  LEFT
+}

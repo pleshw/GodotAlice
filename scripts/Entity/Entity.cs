@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Animation;
 using Entity.Commands.Movement;
 using Godot;
 
@@ -10,12 +11,14 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 {
 	public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
 	public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
+	public SIDES lastFacingSide = SIDES.RIGHT;
 
 	public EntityMovementController MovementController;
 
 	public Guid Id = Guid.NewGuid();
 	public Camera2D Camera { get; set; }
-	public Dictionary<StringName, AnimatedSprite2D> Animations { get; set; } = [];
+	protected Dictionary<StringName, AnimatedSprite2D> _animationsByName = [];
+	public Dictionary<StringName, AnimationData> Animations { get; set; } = [];
 	public CharacterBody2D CollisionBody { get; set; }
 	public CollisionShape2D[] CollisionShapes { get; set; }
 	public abstract StringName ResourceName { get; set; }
@@ -24,6 +27,14 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybind movementKeyBind;
 	public HashSet<Key> keysPressed = [];
+
+	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
+	{
+		get
+		{
+			return _animationsByName;
+		}
+	}
 
 	public bool ReadyToSpawn { get; set; } = false;
 
@@ -73,30 +84,30 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	{
 		get
 		{
-			return GetDictAnimationsByNameFromNode(MovementAnimationsNode);
+			return GetDictAnimationSpritesByName(MovementAnimationsNode);
 		}
 	}
 
-	public Dictionary<StringName, AnimatedSprite2D> IdleAnimations
+	public Dictionary<StringName, AnimatedSprite2D> IdleAnimationsSpritesByName
 	{
 		get
 		{
-			return GetDictAnimationsByNameFromNode(IdleAnimationsNode);
+			return GetDictAnimationSpritesByName(IdleAnimationsNode);
 		}
 	}
 
-	public static Dictionary<StringName, AnimatedSprite2D> GetDictAnimationsByNameFromNode(Node2D node)
+	public static Dictionary<StringName, AnimatedSprite2D> GetDictAnimationSpritesByName(Node2D node)
 	{
 		return node.GetChildren()
 				.Select(c => c as AnimatedSprite2D)
 				.ToDictionary(sprite => sprite.Name, sprite => sprite);
 	}
 
-	public void AddAnimations(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
+	private void AddAnimationSprites(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
 	{
 		foreach (var kvp in dictAnimations)
 		{
-			Animations[kvp.Key] = kvp.Value;
+			_animationsByName[kvp.Key] = kvp.Value;
 		}
 	}
 
@@ -107,8 +118,8 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		Camera = GetNode<Camera2D>("Camera");
 
-		AddAnimations(IdleAnimations);
-		AddAnimations(MovementAnimations);
+		AddAnimationSprites(IdleAnimationsSpritesByName);
+		AddAnimationSprites(MovementAnimations);
 
 		idleAnimator.OnReady();
 		movementAnimator.OnReady();
@@ -154,7 +165,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		if (MovementController.MovementStateUpdated)
 		{
-			EmitSignal(SignalName.MovementUpdated);
+			EmitSignal(SignalName.MovementStateUpdated);
 
 			if (facingDirection != lastFacingDirection)
 			{
@@ -164,7 +175,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	}
 
 	[Signal]
-	public delegate void MovementUpdatedEventHandler();
+	public delegate void MovementStateUpdatedEventHandler();
 
 	[Signal]
 	public delegate void MovementInputTriggeredEventHandler();

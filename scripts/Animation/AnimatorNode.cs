@@ -10,6 +10,7 @@ public abstract partial class AnimatorNode : Node
   protected Entity.Entity _entity;
 
   protected Dictionary<string, AnimatedSprite2D> AnimationSprites = [];
+  protected abstract Dictionary<string, AnimationData> Animations { get; set; }
 
   public Entity.Entity Entity
   {
@@ -41,21 +42,13 @@ public abstract partial class AnimatorNode : Node
   {
     get
     {
-      return AnimationMediator.GetInfo(_entity);
+      return EntityAnimationInfo.GetInfoFrom(_entity);
     }
   }
 
-  public AnimationData LastPlayedAnimation
+  public void PlayAnimation(AnimationData animationData)
   {
-    get
-    {
-      return AnimationInfo.LastPlayedAnimation;
-    }
-  }
-
-  public void TryPlayAnimation(AnimationData animationData)
-  {
-    AnimationMediator.PlayAnimation(new PlayAnimationRequest
+    EntityAnimationController.RequestPlayAnimation(new PlayAnimationRequest
     {
       Entity = _entity,
       Animator = this,
@@ -91,6 +84,14 @@ public abstract partial class AnimatorNode : Node
   public abstract void HideAllAnimations();
 
   public abstract void Play();
+
+  public void ConfirmAnimations()
+  {
+    foreach (var anim in Animations)
+    {
+      _entity.Animations.Add(anim.Key, anim.Value);
+    }
+  }
 
   [Signal]
   public delegate void AnimationEndedEventHandler(AnimatedSprite2D animation);

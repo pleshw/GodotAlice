@@ -5,60 +5,47 @@ using System;
 
 namespace Animation;
 
-public abstract partial class AnimatedEntity : Entity.Entity
+public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.Entity(initialPosition)
 {
   public abstract override StringName ResourceName { get; set; }
-
-  public EntityAnimationInfo AnimationInfo;
-
-  public AnimatedEntity(Vector2 initialPosition) : base(initialPosition)
-  {
-    AnimationInfo = AnimationMediator.GetInfo(this);
-  }
+  public AnimationData IdleState;
+  public EntityAnimationInfo AnimationState;
 
   public override void _Ready()
   {
     base._Ready();
-    foreach (var item in Animations)
+
+    foreach (var item in _animationsByName)
     {
-      item.Value.AnimationFinished += AnimationInfo.OnAnimationFinished;
+      item.Value.AnimationFinished += () => AnimationState.OnAnimationFinished(item.Value);
     }
 
-    MovementUpdated += () =>
-    {
-      AnimationInfo.CanUpdateAnimation = true;
-    };
+    AnimationState = EntityAnimationInfo.GetInfoFrom(this);
+
+    MovementStateUpdated += UpdateAnimation;
 
     MovementInputTriggered += () =>
     {
-      if (lastFacingDirection != facingDirection)
-      {
-        AnimationInfo.CanUpdateAnimation = true;
-      }
+      UpdateAnimation();
     };
   }
 
   public override void _Process(double delta)
   {
     base._Process(delta);
-    QueueMovementStateAnimations();
   }
 
-  public void QueueMovementStateAnimations()
+
+
+  public void UpdateAnimation()
   {
     switch (MovementController.MovementState)
     {
       case MOVEMENT_STATE.WALKING:
-        if (AnimationInfo.CanUpdateAnimation)
-        {
-          movementAnimator.Play();
-        }
+        movementAnimator.Play();
         break;
       case MOVEMENT_STATE.IDLE:
-        if (AnimationInfo.AnimationPlaying.Animation != idleAnimator.IdleAnimationData.Animation)
-        {
-          idleAnimator.Play();
-        }
+        idleAnimator.Play();
         break;
       default:
         return;
