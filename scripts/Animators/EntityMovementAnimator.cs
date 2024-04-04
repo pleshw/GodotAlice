@@ -6,8 +6,6 @@ namespace Entity;
 
 public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public bool IsUpdated { get; set; }
-
   public override int Priority
   {
     get => 2;
@@ -43,7 +41,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       return;
     }
 
-    switch (Entity.facingDirection)
+    switch (Entity.FacingDirection)
     {
       case DIRECTIONS.TOP:
         PlayAnimation(WalkTop);
@@ -78,7 +76,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         CanPlayConcurrently = false,
         BeforeAnimationStart = () =>
         {
-          AnimationSprites["Walking"].FlipH = Entity.lastFacingDirection == DIRECTIONS.LEFT;
+          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
         }
       };
     }
@@ -99,7 +97,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         CanPlayConcurrently = false,
         BeforeAnimationStart = () =>
         {
-          AnimationSprites["Walking"].FlipH = Entity.lastFacingDirection == DIRECTIONS.LEFT;
+          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
         }
       };
     }
@@ -120,7 +118,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         CanPlayConcurrently = false,
         BeforeAnimationStart = () =>
         {
-          AnimationSprites["Walking"].FlipH = Entity.facingDirection == DIRECTIONS.LEFT;
+          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
         }
       };
     }

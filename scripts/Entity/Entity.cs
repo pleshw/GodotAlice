@@ -9,9 +9,68 @@ namespace Entity;
 
 public abstract partial class Entity : Node2D, IEntityBaseNode
 {
-	public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
-	public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
-	public SIDES lastFacingSide = SIDES.RIGHT;
+
+	public float FacingDirectionAngle
+	{
+		get
+		{
+			float angle = Mathf.Atan2(FacingDirectionVector.Y, FacingDirectionVector.X);
+			float degrees = Mathf.RadToDeg(angle);
+
+			if (degrees < 0)
+			{
+				degrees += 360;
+			}
+
+			return degrees;
+		}
+	}
+
+	public DIRECTIONS FacingDirection
+	{
+		get
+		{
+			if (FacingDirectionAngle >= 45 && FacingDirectionAngle < 135)
+			{
+				// Facing top
+				return DIRECTIONS.TOP;
+			}
+			else if (FacingDirectionAngle >= 135 && FacingDirectionAngle < 225)
+			{
+				// Facing right
+				return DIRECTIONS.RIGHT;
+			}
+			else if (FacingDirectionAngle >= 225 && FacingDirectionAngle < 315)
+			{
+				// Facing bottom
+				return DIRECTIONS.BOTTOM;
+			}
+			else
+			{
+				// Facing left
+				return DIRECTIONS.LEFT;
+			}
+		}
+	}
+
+	public DIRECTIONS FacingSide
+	{
+		get
+		{
+			if (FacingDirectionVector.X >= 0)
+			{
+				return DIRECTIONS.RIGHT;
+			}
+			else
+			{
+				return DIRECTIONS.LEFT;
+			}
+		}
+	}
+
+	public DIRECTIONS LastFacingDirection { get; } = DIRECTIONS.BOTTOM;
+
+	public Vector2 FacingDirectionVector { get; set; } = Vector2.Zero;
 
 	public EntityMovementController MovementController;
 
@@ -160,6 +219,11 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		if (!hasPlayerWalked)
 		{
 			MovementController.MovementState = MOVEMENT_STATE.IDLE;
+
+			if (MovementController.MovementStateUpdated)
+			{
+				EmitSignal(SignalName.MovementStateUpdated);
+			}
 		}
 
 
@@ -167,12 +231,16 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		{
 			EmitSignal(SignalName.MovementStateUpdated);
 
-			if (facingDirection != lastFacingDirection)
+			if (FacingDirection != LastFacingDirection)
 			{
 				MovementController.MovementState = MOVEMENT_STATE.WALKING;
 			}
 		}
 	}
+
+
+	[Signal]
+	public delegate void EntityMovedEventHandler(Vector2 from, Vector2 to);
 
 	[Signal]
 	public delegate void MovementStateUpdatedEventHandler();

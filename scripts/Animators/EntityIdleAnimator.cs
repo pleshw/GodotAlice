@@ -7,9 +7,6 @@ namespace Entity;
 
 public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public DIRECTIONS facingDirection = DIRECTIONS.BOTTOM;
-  public DIRECTIONS lastFacingDirection = DIRECTIONS.BOTTOM;
-
   public override int Priority
   {
     get => 1;
@@ -31,7 +28,7 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
         CanPlayConcurrently = false,
         BeforeAnimationStart = () =>
         {
-          IdleSprite2D.FlipH = Entity.facingDirection == DIRECTIONS.LEFT;
+          IdleSprite2D.FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
         }
       };
     }

@@ -10,13 +10,11 @@ public class EntityAnimationController(EntityAnimationInfo animationInfo)
   public static void StopAnimation(AnimatedSprite2D animation)
   {
     animation.Pause();
-    animation.Frame = 0;
     animation.Visible = false;
   }
 
   public static void PlayAnimation(AnimatedSprite2D animation)
   {
-    animation.Frame = 0;
     animation.Visible = true;
     animation.Play();
   }
@@ -24,7 +22,6 @@ public class EntityAnimationController(EntityAnimationInfo animationInfo)
   public void PlayMainAnimation()
   {
     AnimationInfo.MainAnimationData.BeforeAnimationStart();
-    AnimationInfo.MainAnimationData.Animation.Frame = 0;
     AnimationInfo.MainAnimationData.Animation.Visible = true;
     AnimationInfo.MainAnimationData.Animation.Play();
   }

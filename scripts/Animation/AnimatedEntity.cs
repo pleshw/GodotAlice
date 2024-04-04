@@ -22,33 +22,14 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.E
 
     AnimationState = EntityAnimationInfo.GetInfoFrom(this);
 
-    MovementStateUpdated += UpdateAnimation;
-
-    MovementInputTriggered += () =>
+    EntityMoved += (Vector2 from, Vector2 to) =>
     {
-      UpdateAnimation();
+      movementAnimator.Play();
     };
   }
 
   public override void _Process(double delta)
   {
     base._Process(delta);
-  }
-
-
-
-  public void UpdateAnimation()
-  {
-    switch (MovementController.MovementState)
-    {
-      case MOVEMENT_STATE.WALKING:
-        movementAnimator.Play();
-        break;
-      case MOVEMENT_STATE.IDLE:
-        idleAnimator.Play();
-        break;
-      default:
-        return;
-    }
   }
 }

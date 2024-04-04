@@ -13,11 +13,11 @@ public record struct EntityMovementInput
 
 public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16)
 {
-  public Entity Entity { get; set; } = entity;
+  public Entity entity = entity;
 
   public Vector2 initialPosition = initialPosition;
 
-  protected Vector2? _lastTrackedPosition;
+  protected Vector2 LastTrackedPosition { get; set; } = Vector2.Zero;
 
   /// <summary>
   /// What is the movement state of the player. Helper to identify the best way to draw the player.
@@ -56,7 +56,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   {
     get
     {
-      return _targetPosition ?? Entity.Position;
+      return _targetPosition ?? entity.Position;
     }
 
     set
@@ -148,7 +148,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   public EntityMovementController TeleportTo(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
-    Entity.Position = playerMovementInput.Position;
+    entity.Position = playerMovementInput.Position;
     return this;
   }
 
@@ -174,7 +174,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   public EntityMovementController TeleportToNearestCell(EntityMovementInput playerMovementInput)
   {
     ControlMovementState(playerMovementInput);
-    Entity.Position = new Vector2
+    entity.Position = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
       Y = Mathf.Round(playerMovementInput.Position.Y / _cellWidth) * _cellWidth + HalfCellWidth
@@ -193,19 +193,28 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
 
     // Calculate the direction vector towards the target position
-    Vector2 direction = (TargetPosition - Entity.Position).Normalized();
+    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
 
     float distanceToMove = MaxSpeed * (float)delta;
-    float distanceToTarget = Entity.Position.DistanceTo(TargetPosition);
+    float distanceToTarget = entity.Position.DistanceTo(TargetPosition);
     if (distanceToTarget <= distanceToMove)
     {
-      Entity.Position = TargetPosition;
-      _lastTrackedPosition = TargetPosition;
+      LastTrackedPosition = entity.Position;
+      entity.Position = TargetPosition;
       _targetPosition = null;
+
+      entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
     }
     else
     {
-      Entity.Position += direction * distanceToMove;
+      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
+      LastTrackedPosition = entity.Position;
+
+      Vector2 entityNewPosition = LastTrackedPosition + displacement;
+
+      entity.Position = entityNewPosition;
+
+      entity.EmitSignal(Entity.SignalName.EntityMoved, LastTrackedPosition, entity.Position);
     }
 
     hasMoved = true;
