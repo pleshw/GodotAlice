@@ -28,17 +28,28 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public DIRECTIONS LastCommandDirection { get; set; } = DIRECTIONS.RIGHT;
 
+	public DIRECTIONS LastFacedDirection { get; set; } = DIRECTIONS.RIGHT;
+
 	public DIRECTIONS FacingSide
 	{
 		get
 		{
-			if (FacingDirectionVector.X >= 0)
+			if (FacingDirectionVector.X == float.PositiveInfinity)
 			{
-				return DIRECTIONS.RIGHT;
+				return LastFacedDirection;
+			}
+
+			if (FacingDirectionVector.X > 0)
+			{
+				return LastFacedDirection = DIRECTIONS.RIGHT;
+			}
+			else if (FacingDirectionVector.X < 0)
+			{
+				return LastFacedDirection = DIRECTIONS.LEFT;
 			}
 			else
 			{
-				return DIRECTIONS.LEFT;
+				return LastFacedDirection;
 			}
 		}
 	}

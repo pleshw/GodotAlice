@@ -183,7 +183,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Bottom",
-"speed": 3.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -212,7 +212,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Left",
-"speed": 3.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -241,7 +241,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Right",
-"speed": 3.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -270,7 +270,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Top",
-"speed": 3.0
+"speed": 10.0
 }]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_07txw"]
@@ -313,7 +313,7 @@ visible = false
 position = Vector2(4.79652, -8.54207)
 scale = Vector2(7.2947, 9.07592)
 sprite_frames = SubResource("SpriteFrames_0vfec")
-animation = &"Right"
+animation = &"Top"
 
 [node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
 visible = false
