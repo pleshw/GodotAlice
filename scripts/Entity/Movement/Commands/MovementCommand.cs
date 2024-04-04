@@ -15,8 +15,6 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
 {
   public override void Execute()
   {
-    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
-
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -27,6 +25,8 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.WALKING,
     });
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
 
@@ -34,8 +34,6 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
 {
   public override void Execute()
   {
-    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
-
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -46,6 +44,8 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.WALKING,
     });
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
 
@@ -54,8 +54,6 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
 {
   public override void Execute()
   {
-    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
-
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -66,6 +64,8 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.WALKING,
     });
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }
 
@@ -73,8 +73,6 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
 {
   public override void Execute()
   {
-    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
-
     MovementController.MoveTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
@@ -85,5 +83,7 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.WALKING,
     });
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
   }
 }

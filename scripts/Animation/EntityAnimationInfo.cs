@@ -14,6 +14,7 @@ public class EntityAnimationInfo
   public AnimationData ConcurrentAnimations { get; set; } = null;
   public readonly EntityAnimationController Controller;
 
+
   public SortedSet<AnimationData> AnimationSet = new(Comparer<AnimationData>.Create((a, b) => a.Priority.CompareTo(b.Priority)));
 
   public EntityAnimationInfo()
@@ -21,20 +22,6 @@ public class EntityAnimationInfo
     Controller = new(this);
   }
 
-  public void OnAnimationFinished(AnimatedSprite2D finishedAnimation)
-  {
-    if (MainAnimationData.Animation == finishedAnimation)
-    {
-      Controller.StopMainAnimation();
-      MainAnimationData = DefaultAnimationData;
-      Controller.PlayMainAnimation();
-    }
-  }
-
-  public void OnAnimationLoop(AnimatedSprite2D loopedAnimation)
-  {
-
-  }
 
   public void AddNew()
   {

@@ -3,13 +3,21 @@ using Godot;
 
 namespace Animation;
 
-public class EntityAnimationController(EntityAnimationInfo animationInfo)
+public class EntityAnimationController
 {
-  public readonly EntityAnimationInfo AnimationInfo = animationInfo;
+  public Callable CallOnMainAnimationFinish;
+
+  public readonly EntityAnimationInfo AnimationInfo;
+
+  public EntityAnimationController(EntityAnimationInfo animationInfo)
+  {
+    AnimationInfo = animationInfo;
+    CallOnMainAnimationFinish = Callable.From(OnMainAnimationFinished);
+  }
 
   public static void StopAnimation(AnimatedSprite2D animation)
   {
-    animation.Pause();
+    animation.Stop();
     animation.Visible = false;
   }
 
@@ -70,8 +78,40 @@ public class EntityAnimationController(EntityAnimationInfo animationInfo)
 
       StopMainAnimation();
       AnimationInfo.MainAnimationData = animationData;
+      ConnectOnFinishedToMain();
+
       PlayMainAnimation();
     }
+  }
+
+  public void ConnectOnFinishedToMain()
+  {
+    if (!AnimationInfo.MainAnimationData.Animation.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    {
+      AnimationInfo.MainAnimationData.Animation.Connect(
+       AnimatedSprite2D.SignalName.AnimationFinished,
+       CallOnMainAnimationFinish
+     );
+    }
+  }
+
+  public void DisconnectOnFinishedFromMain()
+  {
+    if (AnimationInfo.MainAnimationData.Animation.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    {
+      AnimationInfo.MainAnimationData.Animation.Disconnect(
+       AnimatedSprite2D.SignalName.AnimationFinished,
+       CallOnMainAnimationFinish
+     );
+    }
+  }
+
+  public void OnMainAnimationFinished()
+  {
+    DisconnectOnFinishedFromMain();
+    StopMainAnimation();
+    AnimationInfo.MainAnimationData = AnimationInfo.DefaultAnimationData;
+    PlayMainAnimation();
   }
 
   public static void RequestPlayAnimation(PlayAnimationRequest request, out EntityAnimationInfo animationInfo)

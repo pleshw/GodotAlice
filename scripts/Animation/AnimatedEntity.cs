@@ -15,11 +15,6 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.E
   {
     base._Ready();
 
-    foreach (var item in _animationsByName)
-    {
-      item.Value.AnimationFinished += () => AnimationState.OnAnimationFinished(item.Value);
-    }
-
     AnimationState = EntityAnimationInfo.GetInfoFrom(this);
 
     EntityMoved += (Vector2 from, Vector2 to) =>
