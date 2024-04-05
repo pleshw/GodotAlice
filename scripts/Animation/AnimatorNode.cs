@@ -36,8 +36,6 @@ public abstract partial class AnimatorNode : Node
     }
   }
 
-  public abstract int Priority { get; set; }
-
   public EntityAnimationInfo AnimationInfo
   {
     get

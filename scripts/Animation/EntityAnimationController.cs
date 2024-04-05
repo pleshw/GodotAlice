@@ -31,15 +31,15 @@ public class EntityAnimationController
   public void PlayMainAnimation()
   {
     AnimationInfo.MainAnimationData.BeforeAnimationStart();
-    AnimationInfo.MainAnimationData.Animation.Visible = true;
-    AnimationInfo.MainAnimationData.Animation.Play(AnimationInfo.MainAnimationData.Name);
+    AnimationInfo.MainAnimationData.Sprites.Visible = true;
+    AnimationInfo.MainAnimationData.Sprites.Play(AnimationInfo.MainAnimationData.Name);
   }
 
   public void StopMainAnimation()
   {
     if (AnimationInfo.MainAnimationData != null)
     {
-      StopAnimation(AnimationInfo.MainAnimationData.Animation);
+      StopAnimation(AnimationInfo.MainAnimationData.Sprites);
     }
   }
 
@@ -82,7 +82,7 @@ public class EntityAnimationController
         return;
       }
 
-      if (animationData.Name == AnimationInfo.MainAnimationData.Name && AnimationInfo.MainAnimationData.Animation.IsPlaying())
+      if (animationData.Name == AnimationInfo.MainAnimationData.Name && AnimationInfo.MainAnimationData.Sprites.IsPlaying())
       {
         return;
       }
@@ -97,9 +97,9 @@ public class EntityAnimationController
 
   public void ConnectOnFinishedToMain()
   {
-    if (!AnimationInfo.MainAnimationData.Animation.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    if (!AnimationInfo.MainAnimationData.Sprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
     {
-      AnimationInfo.MainAnimationData.Animation.Connect(
+      AnimationInfo.MainAnimationData.Sprites.Connect(
        AnimatedSprite2D.SignalName.AnimationFinished,
        CallOnMainAnimationFinish
      );
@@ -108,9 +108,9 @@ public class EntityAnimationController
 
   public void DisconnectOnFinishedFromMain()
   {
-    if (AnimationInfo.MainAnimationData.Animation.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    if (AnimationInfo.MainAnimationData.Sprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
     {
-      AnimationInfo.MainAnimationData.Animation.Disconnect(
+      AnimationInfo.MainAnimationData.Sprites.Disconnect(
        AnimatedSprite2D.SignalName.AnimationFinished,
        CallOnMainAnimationFinish
      );

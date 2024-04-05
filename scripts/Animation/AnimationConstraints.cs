@@ -16,7 +16,7 @@ public record class AnimationData
   public bool CanBeInterrupted = true;
   public required Entity.Entity Entity;
   public required AnimatorNode Animator;
-  public required AnimatedSprite2D Animation;
+  public required AnimatedSprite2D Sprites;
   public required bool CanPlayConcurrently = false;
   public Action BeforeAnimationStart = () => { };
 

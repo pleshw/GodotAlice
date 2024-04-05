@@ -7,38 +7,11 @@ namespace Entity;
 
 public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public override int Priority
-  {
-    get => 1;
-    set { }
-  }
-
   public AnimationData Idle
   {
     get
     {
-      return new AnimationData
-      {
-        Animator = this,
-        Animation = AnimationSprites["Idle"],
-        Name = "Default",
-        CanBeInterrupted = true,
-        Priority = 1,
-        Entity = Entity,
-        CanPlayConcurrently = false,
-        BeforeAnimationStart = () =>
-        {
-          IdleSprite2D.FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
-        }
-      };
-    }
-  }
-
-  public AnimatedSprite2D IdleSprite2D
-  {
-    get
-    {
-      return Idle.Animation;
+      return Animations["IdleDefault"];
     }
   }
 
@@ -46,16 +19,45 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
 
   public override void OnReady()
   {
-    if (_entity.AnimationsByName.TryGetValue("Idle", out AnimatedSprite2D idleAnimations))
-    {
-      AnimationSprites.Add("Idle", idleAnimations);
-    }
-
-    Animations.Add(Idle.Name, Idle);
+    AddIdleAnimation("Idle");
 
     ConfirmAnimations();
     HideAllAnimations();
   }
+
+
+  public void AddIdleAnimation(string animationName, int animationPriority = 1, bool animationCanBeInterrupted = true)
+  {
+    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedSprite2D dashingAnimations))
+    {
+      AnimationSprites.Add(animationName, dashingAnimations);
+      SpriteFrames animations = dashingAnimations.SpriteFrames;
+      string[] animationNames = animations.GetAnimationNames();
+      foreach (string name in animationNames)
+      {
+        Animations.Add(animationName + name, GetIdleAnimationData(animationName, name, animationPriority, animationCanBeInterrupted));
+      }
+    }
+  }
+
+  private AnimationData GetIdleAnimationData(string spritesKey, string animationName, int priority = 1, bool canBeInterrupted = true)
+  {
+    return new AnimationData
+    {
+      Sprites = AnimationSprites[spritesKey],
+      Name = animationName,
+      Animator = this,
+      Priority = priority,
+      Entity = Entity,
+      CanPlayConcurrently = false,
+      CanBeInterrupted = canBeInterrupted,
+      BeforeAnimationStart = () =>
+      {
+        AnimationSprites[spritesKey].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
+      }
+    };
+  }
+
 
   public override void Play()
   {

@@ -15,7 +15,7 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
 {
   public override void Execute()
   {
-    MovementController.MoveTo(new EntityMovementInput
+    MovementController.WalkTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
       {
@@ -35,7 +35,7 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
 {
   public override void Execute()
   {
-    MovementController.MoveTo(new EntityMovementInput
+    MovementController.WalkTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
       {
@@ -56,7 +56,7 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
 {
   public override void Execute()
   {
-    MovementController.MoveTo(new EntityMovementInput
+    MovementController.WalkTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
       {
@@ -76,7 +76,7 @@ public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entity
 {
   public override void Execute()
   {
-    MovementController.MoveTo(new EntityMovementInput
+    MovementController.WalkTo(new EntityMovementInput
     {
       Position = MovementController.TargetPosition with
       {

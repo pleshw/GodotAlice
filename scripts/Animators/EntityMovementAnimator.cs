@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Animation;
 using Godot;
 
@@ -6,50 +7,48 @@ namespace Entity;
 
 public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public override int Priority
-  {
-    get => 2;
-    set { }
-  }
-
-  private AnimationData _walkTop;
-  private AnimationData _walkBottom;
-  private AnimationData _walkLeft;
-  private AnimationData _walkRight;
-
-
-  public AnimationData WalkTop { get { return _walkTop; } }
-  public AnimationData WalkBottom { get { return _walkBottom; } }
-  public AnimationData WalkLeft { get { return _walkLeft; } }
-  public AnimationData WalkRight { get { return _walkRight; } }
-
   protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
 
   public override void OnReady()
   {
-    if (_entity.AnimationsByName.TryGetValue("Walking", out AnimatedSprite2D walkingAnimations))
-    {
-      AnimationSprites.Add("Walking", walkingAnimations);
-    }
-
-    if (_entity.AnimationsByName.TryGetValue("Running", out AnimatedSprite2D runningAnimations))
-    {
-      AnimationSprites.Add("Running", runningAnimations);
-    }
-
-    Animations.Add(WalkTopData.Name, WalkTop);
-    Animations.Add(WalkRightData.Name, WalkRight);
-    Animations.Add(WalkBottomData.Name, WalkBottom);
-    Animations.Add(WalkLeftData.Name, WalkLeft);
-
-
-    _walkTop = WalkTopData;
-    _walkBottom = WalkBottomData;
-    _walkLeft = WalkLeftData;
-    _walkRight = WalkRightData;
+    AddMovementAnimation("Walking");
+    AddMovementAnimation("Running");
+    AddMovementAnimation("Dashing", 3, false);
 
     ConfirmAnimations();
     HideAllAnimations();
+  }
+
+  public void AddMovementAnimation(string animationName, int animationPriority = 1, bool animationCanBeInterrupted = true)
+  {
+    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedSprite2D dashingAnimations))
+    {
+      AnimationSprites.Add(animationName, dashingAnimations);
+      SpriteFrames animations = dashingAnimations.SpriteFrames;
+      string[] animationNames = animations.GetAnimationNames();
+      foreach (string name in animationNames)
+      {
+        Animations.Add(animationName + name, GetMovementAnimationData(animationName, name, animationPriority, animationCanBeInterrupted));
+      }
+    }
+  }
+
+  private AnimationData GetMovementAnimationData(string spritesKey, string animationName, int priority = 1, bool canBeInterrupted = true)
+  {
+    return new AnimationData
+    {
+      Sprites = AnimationSprites[spritesKey],
+      Name = animationName,
+      Animator = this,
+      Priority = priority,
+      Entity = Entity,
+      CanPlayConcurrently = false,
+      CanBeInterrupted = canBeInterrupted,
+      BeforeAnimationStart = () =>
+      {
+        AnimationSprites[spritesKey].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
+      }
+    };
   }
 
   public override void Play()
@@ -59,19 +58,37 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       return;
     }
 
+    if (Entity.MovementController.State == MOVEMENT_STATE.WALKING)
+    {
+      PlayWalkAnimation();
+    }
+
+    if (Entity.MovementController.State == MOVEMENT_STATE.DASHING)
+    {
+      PlayDashAnimation();
+    }
+  }
+
+  private void PlayDashAnimation()
+  {
+    PlayAnimation(Animations["DashingDefault"]);
+  }
+
+  private void PlayWalkAnimation()
+  {
     switch (Entity.LastCommandDirection)
     {
       case DIRECTIONS.TOP:
-        PlayAnimation(WalkTopData);
+        PlayAnimation(Animations["WalkingTop"]);
         break;
       case DIRECTIONS.RIGHT:
-        PlayAnimation(WalkRightData);
+        PlayAnimation(Animations["WalkingRight"]);
         break;
       case DIRECTIONS.BOTTOM:
-        PlayAnimation(WalkBottomData);
+        PlayAnimation(Animations["WalkingBottom"]);
         break;
       case DIRECTIONS.LEFT:
-        PlayAnimation(WalkLeftData);
+        PlayAnimation(Animations["WalkingLeft"]);
         break;
       default:
         PlayAnimation(Entity.idleAnimator.Idle);
@@ -79,85 +96,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  private AnimationData WalkTopData
-  {
-    get
-    {
-      return new AnimationData
-      {
-        Animator = this,
-        Animation = AnimationSprites["Walking"],
-        Name = "Top",
-        Priority = 1,
-        Entity = Entity,
-        CanPlayConcurrently = false,
-        BeforeAnimationStart = () =>
-        {
-          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
-        }
-      };
-    }
-  }
-
-  private AnimationData WalkBottomData
-  {
-    get
-    {
-      return new AnimationData
-      {
-        Animator = this,
-        Animation = AnimationSprites["Walking"],
-        Name = "Bottom",
-        Priority = 1,
-        Entity = Entity,
-        CanPlayConcurrently = false,
-        BeforeAnimationStart = () =>
-        {
-          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
-        }
-      };
-    }
-  }
-
-  private AnimationData WalkLeftData
-  {
-    get
-    {
-      return new AnimationData
-      {
-        Animator = this,
-        Animation = AnimationSprites["Walking"],
-        Name = "Left",
-        Priority = 1,
-        Entity = Entity,
-        CanPlayConcurrently = false,
-        BeforeAnimationStart = () =>
-        {
-          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
-        }
-      };
-    }
-  }
-
-  private AnimationData WalkRightData
-  {
-    get
-    {
-      return new AnimationData
-      {
-        Animator = this,
-        Animation = AnimationSprites["Walking"],
-        Name = "Right",
-        Priority = 1,
-        Entity = Entity,
-        CanPlayConcurrently = false,
-        BeforeAnimationStart = () =>
-        {
-          AnimationSprites["Walking"].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
-        }
-      };
-    }
-  }
 
   public override void HideAllAnimations()
   {

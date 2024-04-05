@@ -200,7 +200,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 			movementKeyBind.Execute(key);
 		}
 
-		MovementController.DefaultMovementProcess(delta, out bool _);
+		MovementController.MovementProcess(delta, out bool _);
 	}
 
 

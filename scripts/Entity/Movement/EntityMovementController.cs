@@ -22,12 +22,12 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   /// <summary>
   /// What is the movement state of the player. Helper to identify the best way to draw the player.
   /// </summary>
-  protected MOVEMENT_STATE _lastMovementState = EntityDefaults.MovementState;
+  protected MOVEMENT_STATE _lastState = EntityDefaults.MovementState;
 
   /// <summary>
   /// What is the movement state of the player. Helper to identify the best way to draw the player.
   /// </summary>
-  protected MOVEMENT_STATE _movementState = EntityDefaults.MovementState;
+  protected MOVEMENT_STATE _state = EntityDefaults.MovementState;
 
   /// <summary>
   /// Where player is going.
@@ -103,42 +103,42 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
   }
 
-  public MOVEMENT_STATE MovementState
+  public MOVEMENT_STATE State
   {
     get
     {
-      return _movementState;
+      return _state;
     }
 
     set
     {
-      _lastMovementState = _movementState;
-      _movementState = value;
+      _lastState = _state;
+      _state = value;
     }
   }
 
 
-  public MOVEMENT_STATE LastMovementState
+  public MOVEMENT_STATE LastState
   {
     get
     {
-      return _lastMovementState;
+      return _lastState;
     }
   }
 
-  public bool MovementStateUpdated
+  public bool StateUpdated
   {
     get
     {
-      return LastMovementState != MovementState;
+      return LastState != State;
     }
   }
 
-  public EntityMovementController ControlMovementState(EntityMovementInput playerMovementInput)
+  public EntityMovementController SetState(EntityMovementInput playerMovementInput)
   {
     if (playerMovementInput.ForceMovementState)
     {
-      MovementState = playerMovementInput.MovementState;
+      State = playerMovementInput.MovementState;
       return this;
     }
 
@@ -147,21 +147,21 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public EntityMovementController TeleportTo(EntityMovementInput playerMovementInput)
   {
-    ControlMovementState(playerMovementInput);
+    SetState(playerMovementInput);
     entity.Position = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovementController MoveTo(EntityMovementInput playerMovementInput)
+  public EntityMovementController WalkTo(EntityMovementInput playerMovementInput)
   {
-    ControlMovementState(playerMovementInput);
+    SetState(playerMovementInput);
     _targetPosition = playerMovementInput.Position;
     return this;
   }
 
-  public EntityMovementController MoveToNearestCell(EntityMovementInput playerMovementInput)
+  public EntityMovementController WalkToNearestCell(EntityMovementInput playerMovementInput)
   {
-    ControlMovementState(playerMovementInput);
+    SetState(playerMovementInput);
     _targetPosition = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
@@ -173,7 +173,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public EntityMovementController TeleportToNearestCell(EntityMovementInput playerMovementInput)
   {
-    ControlMovementState(playerMovementInput);
+    SetState(playerMovementInput);
     entity.Position = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
@@ -184,18 +184,18 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   }
 
 
-  public EntityMovementController DefaultMovementProcess(double delta, out bool hasMoved)
+  public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
     if (_targetPosition == null)
     {
-      MovementState = MOVEMENT_STATE.IDLE;
+      State = MOVEMENT_STATE.IDLE;
       entity.EmitSignal(Entity.SignalName.EntityStopped);
       return this;
     }
 
     // Calculate the direction vector towards the target position
-    MovementState = MOVEMENT_STATE.WALKING;
+    State = MOVEMENT_STATE.WALKING;
     entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized().Inverse();
 
     float distanceToMove = MaxSpeed * (float)delta;
