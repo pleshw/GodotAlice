@@ -85,7 +85,13 @@ public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMo
       return; // Action is still on cooldown or entity is already dashing
     }
 
-    MovementController.WalkTo(new EntityMovementInput
+    Vector2 enPos = entityToMove.Position;
+    Vector2 vec = enPos + (entityToMove.FacingDirectionVector.Normalized() * entityToMove.DashDistance);
+    GD.Print("pos: " + enPos.X + " | " + enPos.Y);
+    GD.Print("target: " + vec.X + " | " + vec.Y);
+    GD.Print("facing: " + entityToMove.FacingDirectionVector.Normalized().X + " | " + entityToMove.FacingDirectionVector.Normalized().Y);
+
+    MovementController.DashTo(new EntityMovementInput
     {
       Position = entityToMove.Position + (entityToMove.FacingDirectionVector.Normalized() * entityToMove.DashDistance),
       IsRunning = entityToMove.MovementController.States.Contains(MOVEMENT_STATE.RUNNING),

@@ -21,6 +21,10 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     { MOVEMENT_STATE.IDLE }
   };
 
+  /// <summary>
+  /// Where player is going.
+  /// </summary>
+  protected Vector2? _dashTargetPosition;
 
   /// <summary>
   /// Where player is going.
@@ -36,6 +40,9 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   /// Grid cell width used for speed reference on player movement.
   /// </summary>
   protected int _cellWidth = gridMapCellWidth;
+  private bool _isMovementDisabled = false;
+
+  public bool IsMovementDisabled { get { return _isMovementDisabled; } }
 
   public bool HasTargetPosition
   {
@@ -55,6 +62,19 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     set
     {
       _targetPosition = value;
+    }
+  }
+
+  public Vector2 DashTargetPosition
+  {
+    get
+    {
+      return _dashTargetPosition ?? entity.Position;
+    }
+
+    set
+    {
+      _dashTargetPosition = value;
     }
   }
 
@@ -138,6 +158,13 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     return this;
   }
 
+  public EntityMovementController DashTo(EntityMovementInput playerMovementInput)
+  {
+    SetState(playerMovementInput);
+    _dashTargetPosition = playerMovementInput.Position;
+    return this;
+  }
+
   public EntityMovementController WalkToNearestCell(EntityMovementInput playerMovementInput)
   {
     SetState(playerMovementInput);
@@ -199,21 +226,23 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
-    if (_targetPosition == null)
+    if ((_targetPosition == null && _dashTargetPosition == null) || IsMovementDisabled)
     {
       Idled();
       return this;
     }
 
     // Calculate the direction vector towards the target position
-    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
+
 
     switch (States.Max)
     {
       case MOVEMENT_STATE.WALKING:
+        entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
         DefaultMovement((float)delta);
         break;
       case MOVEMENT_STATE.DASHING:
+        entity.FacingDirectionVector = (DashTargetPosition - entity.Position).Normalized();
         DashMovement((float)delta);
         break;
     }
@@ -222,16 +251,27 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     return this;
   }
 
+  public void DisableMovement()
+  {
+    _isMovementDisabled = true;
+  }
+
+  public void EnableMovement()
+  {
+    _isMovementDisabled = false;
+  }
+
   private void DashMovement(float delta)
   {
     float distanceToMove = DashSpeed * delta;
-    float distanceToTarget = entity.Position.DistanceTo(TargetPosition);
+    float distanceToTarget = entity.Position.DistanceTo(DashTargetPosition);
     if (distanceToTarget <= distanceToMove)
     {
       LastTrackedPosition = entity.Position;
-      entity.Position = TargetPosition;
-      _targetPosition = null;
+      entity.Position = DashTargetPosition;
+      _dashTargetPosition = null;
 
+      GD.Print("target end: " + TargetPosition.X + " | " + TargetPosition.Y);
       Dashed();
       BlockStates = false;
       _states.Remove(MOVEMENT_STATE.DASHING);
@@ -243,6 +283,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
 
+      GD.Print("target during: " + entityNewPosition.X + " | " + entityNewPosition.Y);
       Dashed();
       BlockStates = true;
     }
