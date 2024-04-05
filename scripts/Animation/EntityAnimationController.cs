@@ -64,6 +64,11 @@ public class EntityAnimationController
 
     if (EntityAnimationInfo.HaveHigherPriority(animationData, AnimationInfo.MainAnimationData))
     {
+      if (AnimationInfo.MainAnimationData != null && !AnimationInfo.MainAnimationData.CanBeInterrupted)
+      {
+        return;
+      }
+
       StopMainAnimation();
       AnimationInfo.MainAnimationData = animationData;
       PlayMainAnimation();
@@ -72,10 +77,16 @@ public class EntityAnimationController
 
     if (EntityAnimationInfo.HaveSamePriority(animationData, AnimationInfo.MainAnimationData))
     {
+      if (AnimationInfo.MainAnimationData != null && !AnimationInfo.MainAnimationData.CanBeInterrupted)
+      {
+        return;
+      }
+
       if (animationData.Name == AnimationInfo.MainAnimationData.Name && AnimationInfo.MainAnimationData.Animation.IsPlaying())
       {
         return;
       }
+
       StopMainAnimation();
       AnimationInfo.MainAnimationData = animationData;
       ConnectOnFinishedToMain();
@@ -110,7 +121,18 @@ public class EntityAnimationController
   {
     DisconnectOnFinishedFromMain();
     StopMainAnimation();
-    AnimationInfo.MainAnimationData = AnimationInfo.DefaultAnimationData;
+
+    if (AnimationInfo.MainAnimationData.Sequel == null)
+    {
+      AnimationInfo.MainAnimationData = AnimationInfo.DefaultAnimationData;
+    }
+    else
+    {
+      AnimationInfo.MainAnimationData = AnimationInfo.MainAnimationData.Sequel;
+      AnimationInfo.MainAnimationData.CanBeInterrupted = false;
+      ConnectOnFinishedToMain();
+    }
+
     PlayMainAnimation();
   }
 

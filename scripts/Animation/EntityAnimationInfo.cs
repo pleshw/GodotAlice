@@ -23,12 +23,6 @@ public class EntityAnimationInfo
   }
 
 
-  public void AddNew()
-  {
-    AnimationSet.Remove(MainAnimationData);
-  }
-
-
   public static EntityAnimationInfo GetInfoFrom(Entity.Entity entity)
   {
     if (entityAnimationInfoById.TryGetValue(entity.Id, out EntityAnimationInfo animInfo))

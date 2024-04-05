@@ -12,6 +12,17 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     set { }
   }
 
+  private AnimationData _walkTop;
+  private AnimationData _walkBottom;
+  private AnimationData _walkLeft;
+  private AnimationData _walkRight;
+
+
+  public AnimationData WalkTop { get { return _walkTop; } }
+  public AnimationData WalkBottom { get { return _walkBottom; } }
+  public AnimationData WalkLeft { get { return _walkLeft; } }
+  public AnimationData WalkRight { get { return _walkRight; } }
+
   protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
 
   public override void OnReady()
@@ -26,10 +37,16 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       AnimationSprites.Add("Running", runningAnimations);
     }
 
-    Animations.Add(WalkTop.Name, WalkTop);
-    Animations.Add(WalkRight.Name, WalkRight);
-    Animations.Add(WalkBottom.Name, WalkBottom);
-    Animations.Add(WalkLeft.Name, WalkLeft);
+    Animations.Add(WalkTopData.Name, WalkTop);
+    Animations.Add(WalkRightData.Name, WalkRight);
+    Animations.Add(WalkBottomData.Name, WalkBottom);
+    Animations.Add(WalkLeftData.Name, WalkLeft);
+
+
+    _walkTop = WalkTopData;
+    _walkBottom = WalkBottomData;
+    _walkLeft = WalkLeftData;
+    _walkRight = WalkRightData;
 
     ConfirmAnimations();
     HideAllAnimations();
@@ -45,16 +62,16 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     switch (Entity.LastCommandDirection)
     {
       case DIRECTIONS.TOP:
-        PlayAnimation(WalkTop);
+        PlayAnimation(WalkTopData);
         break;
       case DIRECTIONS.RIGHT:
-        PlayAnimation(WalkRight);
+        PlayAnimation(WalkRightData);
         break;
       case DIRECTIONS.BOTTOM:
-        PlayAnimation(WalkBottom);
+        PlayAnimation(WalkBottomData);
         break;
       case DIRECTIONS.LEFT:
-        PlayAnimation(WalkLeft);
+        PlayAnimation(WalkLeftData);
         break;
       default:
         PlayAnimation(Entity.idleAnimator.Idle);
@@ -62,7 +79,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  public AnimationData WalkTop
+  private AnimationData WalkTopData
   {
     get
     {
@@ -71,7 +88,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         Animator = this,
         Animation = AnimationSprites["Walking"],
         Name = "Top",
-        CanBeInterrupted = true,
         Priority = 1,
         Entity = Entity,
         CanPlayConcurrently = false,
@@ -83,7 +99,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  public AnimationData WalkBottom
+  private AnimationData WalkBottomData
   {
     get
     {
@@ -92,7 +108,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         Animator = this,
         Animation = AnimationSprites["Walking"],
         Name = "Bottom",
-        CanBeInterrupted = true,
         Priority = 1,
         Entity = Entity,
         CanPlayConcurrently = false,
@@ -104,7 +119,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  public AnimationData WalkLeft
+  private AnimationData WalkLeftData
   {
     get
     {
@@ -113,7 +128,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         Animator = this,
         Animation = AnimationSprites["Walking"],
         Name = "Left",
-        CanBeInterrupted = true,
         Priority = 1,
         Entity = Entity,
         CanPlayConcurrently = false,
@@ -125,7 +139,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
-  public AnimationData WalkRight
+  private AnimationData WalkRightData
   {
     get
     {
@@ -134,7 +148,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         Animator = this,
         Animation = AnimationSprites["Walking"],
         Name = "Right",
-        CanBeInterrupted = true,
         Priority = 1,
         Entity = Entity,
         CanPlayConcurrently = false,
