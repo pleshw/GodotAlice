@@ -58,14 +58,14 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       return;
     }
 
-    if (Entity.MovementController.State == MOVEMENT_STATE.WALKING)
+    switch (Entity.MovementController.State)
     {
-      PlayWalkAnimation();
-    }
-
-    if (Entity.MovementController.State == MOVEMENT_STATE.DASHING)
-    {
-      PlayDashAnimation();
+      case MOVEMENT_STATE.WALKING:
+        PlayWalkAnimation();
+        return;
+      case MOVEMENT_STATE.DASHING:
+        PlayDashAnimation();
+        return;
     }
   }
 

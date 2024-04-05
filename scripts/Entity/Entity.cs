@@ -178,15 +178,12 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public override void _Input(InputEvent @event)
 	{
+		keysPressed.Clear();
 		if (@event is InputEventKey inputEventKey)
 		{
 			if (inputEventKey.Pressed)
 			{
 				keysPressed.Add(inputEventKey.Keycode);
-			}
-			else
-			{
-				keysPressed.Remove(inputEventKey.Keycode);
 			}
 		}
 	}

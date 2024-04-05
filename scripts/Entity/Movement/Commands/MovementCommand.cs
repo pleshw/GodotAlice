@@ -72,6 +72,22 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
   }
 }
 
+public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
+{
+  public override void Execute()
+  {
+    MovementController.WalkTo(new EntityMovementInput
+    {
+      Position = MovementController.TargetPosition,
+      IsRunning = entityToMove.MovementController.State == MOVEMENT_STATE.RUNNING,
+      ForceMovementState = true,
+      MovementState = MOVEMENT_STATE.DASHING,
+    });
+
+    entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
+  }
+}
+
 public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
   public override void Execute()

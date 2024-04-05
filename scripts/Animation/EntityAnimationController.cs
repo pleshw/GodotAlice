@@ -71,20 +71,23 @@ public class EntityAnimationController
 
       StopMainAnimation();
       AnimationInfo.MainAnimationData = animationData;
+      ConnectOnFinishedToMain();
+
       PlayMainAnimation();
       return;
     }
 
     if (EntityAnimationInfo.HaveSamePriority(animationData, AnimationInfo.MainAnimationData))
     {
-      if (AnimationInfo.MainAnimationData != null && !AnimationInfo.MainAnimationData.CanBeInterrupted)
+      if (AnimationInfo.MainAnimationData != null)
       {
-        return;
-      }
+        bool isMainAnimationPlaying = AnimationInfo.MainAnimationData.Sprites.IsPlaying();
+        bool canAnimationBeInterrupted = AnimationInfo.MainAnimationData.CanBeInterrupted;
 
-      if (animationData.Name == AnimationInfo.MainAnimationData.Name && AnimationInfo.MainAnimationData.Sprites.IsPlaying())
-      {
-        return;
+        if ((animationData.Name == AnimationInfo.MainAnimationData.Name && isMainAnimationPlaying) || (isMainAnimationPlaying && !canAnimationBeInterrupted))
+        {
+          return;
+        }
       }
 
       StopMainAnimation();

@@ -195,7 +195,6 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
 
     // Calculate the direction vector towards the target position
-    State = MOVEMENT_STATE.WALKING;
     entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized().Inverse();
 
     float distanceToMove = MaxSpeed * (float)delta;

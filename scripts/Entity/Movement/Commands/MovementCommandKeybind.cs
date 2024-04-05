@@ -12,6 +12,7 @@ public class MovementCommandKeybind(Entity entity) : EntityCommandKeybind(entity
     BindKey(Key.D, movementController.WalkRight);
     BindKey(Key.S, movementController.WalkBottom);
     BindKey(Key.A, movementController.WalkLeft);
+    BindKey(Key.Shift, movementController.Dash);
   }
 
   public void BindArrows()
@@ -20,6 +21,7 @@ public class MovementCommandKeybind(Entity entity) : EntityCommandKeybind(entity
     BindKey(Key.Right, movementController.WalkRight);
     BindKey(Key.Down, movementController.WalkBottom);
     BindKey(Key.Left, movementController.WalkLeft);
+    BindKey(Key.Shift, movementController.Dash);
   }
 
   public void BindKeyWalkTop(Key key)
@@ -38,6 +40,12 @@ public class MovementCommandKeybind(Entity entity) : EntityCommandKeybind(entity
   }
 
   public void BindKeyWalkLeft(Key key)
+  {
+    BindKey(key, movementController.WalkLeft);
+  }
+
+
+  public void BindKeyDash(Key key)
   {
     BindKey(key, movementController.WalkLeft);
   }
