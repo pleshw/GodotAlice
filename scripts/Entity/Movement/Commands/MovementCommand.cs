@@ -74,17 +74,29 @@ public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(enti
 
 public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
+  private float lastDashTime = -1.0f;
+  private readonly float cooldownTime = 1f; // Set your cooldown time here
+
   public override void Execute()
   {
+    float currentTime = Time.GetTicksMsec() / 1000.0f; // Get current time in seconds
+    if (currentTime - lastDashTime < cooldownTime || entityToMove.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
+    {
+      return; // Action is still on cooldown or entity is already dashing
+    }
+
     MovementController.WalkTo(new EntityMovementInput
     {
-      Position = MovementController.TargetPosition,
-      IsRunning = entityToMove.MovementController.State == MOVEMENT_STATE.RUNNING,
+      Position = entityToMove.Position + (entityToMove.FacingDirectionVector.Normalized() * entityToMove.DashDistance),
+      IsRunning = entityToMove.MovementController.States.Contains(MOVEMENT_STATE.RUNNING),
       ForceMovementState = true,
       MovementState = MOVEMENT_STATE.DASHING,
     });
 
     entityToMove.EmitSignal(Entity.SignalName.MovementInputTriggered);
+
+
+    lastDashTime = currentTime; // Record the time of this dash
   }
 }
 

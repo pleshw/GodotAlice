@@ -1,15 +1,9 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace Entity;
 
-
-public record struct EntityMovementInput
-{
-  public required Vector2 Position;
-  public required bool IsRunning;
-  public required bool ForceMovementState;
-  public required MOVEMENT_STATE MovementState;
-}
 
 public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16)
 {
@@ -22,12 +16,11 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   /// <summary>
   /// What is the movement state of the player. Helper to identify the best way to draw the player.
   /// </summary>
-  protected MOVEMENT_STATE _lastState = EntityDefaults.MovementState;
+  protected EntityStateList<MOVEMENT_STATE> _states = new(entity, Comparer<MOVEMENT_STATE>.Create((a, b) => EntityMovementConstraints.MovementStatesPriorities[a].CompareTo(EntityMovementConstraints.MovementStatesPriorities[b])))
+  {
+    { MOVEMENT_STATE.IDLE }
+  };
 
-  /// <summary>
-  /// What is the movement state of the player. Helper to identify the best way to draw the player.
-  /// </summary>
-  protected MOVEMENT_STATE _state = EntityDefaults.MovementState;
 
   /// <summary>
   /// Where player is going.
@@ -95,7 +88,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
   }
 
-  public int MaxSpeed
+  public float MaxSpeed
   {
     get
     {
@@ -103,42 +96,28 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
   }
 
-  public MOVEMENT_STATE State
+  public float DashSpeed
   {
     get
     {
-      return _state;
-    }
-
-    set
-    {
-      _lastState = _state;
-      _state = value;
+      return entity.DashSpeedModifier * MoveSpeed * StepSize;
     }
   }
 
-
-  public MOVEMENT_STATE LastState
+  public EntityStateList<MOVEMENT_STATE> States
   {
     get
     {
-      return _lastState;
+      return _states;
     }
   }
 
-  public bool StateUpdated
-  {
-    get
-    {
-      return LastState != State;
-    }
-  }
 
   public EntityMovementController SetState(EntityMovementInput playerMovementInput)
   {
     if (playerMovementInput.ForceMovementState)
     {
-      State = playerMovementInput.MovementState;
+      _states.Add(playerMovementInput.MovementState);
       return this;
     }
 
@@ -183,21 +162,69 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     return this;
   }
 
+  public bool BlockStates { get; set; } = false;
+
+  public void Idled()
+  {
+    if (BlockStates)
+    {
+      return;
+    }
+
+    _states.Add(MOVEMENT_STATE.IDLE);
+    _states.Remove(MOVEMENT_STATE.WALKING);
+    entity.EmitSignal(Entity.SignalName.EntityStopped);
+  }
+
+  public void Moved()
+  {
+    if (BlockStates)
+    {
+      return;
+    }
+
+    _states.Add(MOVEMENT_STATE.WALKING);
+    _states.Remove(MOVEMENT_STATE.IDLE);
+    entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
+  }
+
+  public void Dashed()
+  {
+    _states.Add(MOVEMENT_STATE.DASHING);
+    _states.Remove(MOVEMENT_STATE.IDLE);
+    _states.Remove(MOVEMENT_STATE.WALKING);
+    entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
+  }
 
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
     if (_targetPosition == null)
     {
-      State = MOVEMENT_STATE.IDLE;
-      entity.EmitSignal(Entity.SignalName.EntityStopped);
+      Idled();
       return this;
     }
 
     // Calculate the direction vector towards the target position
-    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized().Inverse();
+    entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
 
-    float distanceToMove = MaxSpeed * (float)delta;
+    switch (States.Max)
+    {
+      case MOVEMENT_STATE.WALKING:
+        DefaultMovement((float)delta);
+        break;
+      case MOVEMENT_STATE.DASHING:
+        DashMovement((float)delta);
+        break;
+    }
+
+    hasMoved = true;
+    return this;
+  }
+
+  private void DashMovement(float delta)
+  {
+    float distanceToMove = DashSpeed * delta;
     float distanceToTarget = entity.Position.DistanceTo(TargetPosition);
     if (distanceToTarget <= distanceToMove)
     {
@@ -205,21 +232,42 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       entity.Position = TargetPosition;
       _targetPosition = null;
 
-      entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
+      Dashed();
+      BlockStates = false;
+      _states.Remove(MOVEMENT_STATE.DASHING);
     }
     else
     {
-      Vector2 displacement = entity.FacingDirectionVector.Inverse() * distanceToMove;
+      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
       LastTrackedPosition = entity.Position;
-
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
-
       entity.Position = entityNewPosition;
 
-      entity.EmitSignal(Entity.SignalName.EntityMoved, LastTrackedPosition, entity.Position);
+      Dashed();
+      BlockStates = true;
     }
+  }
 
-    hasMoved = true;
-    return this;
+  public void DefaultMovement(float delta)
+  {
+    float distanceToMove = MaxSpeed * delta;
+    float distanceToTarget = entity.Position.DistanceTo(TargetPosition);
+    if (distanceToTarget <= distanceToMove)
+    {
+      LastTrackedPosition = entity.Position;
+      entity.Position = TargetPosition;
+      _targetPosition = null;
+
+      Moved();
+    }
+    else
+    {
+      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
+      LastTrackedPosition = entity.Position;
+      Vector2 entityNewPosition = LastTrackedPosition + displacement;
+      entity.Position = entityNewPosition;
+
+      Moved();
+    }
   }
 }

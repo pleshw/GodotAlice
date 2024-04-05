@@ -58,7 +58,8 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       return;
     }
 
-    switch (Entity.MovementController.State)
+    MOVEMENT_STATE movementState = Entity.MovementController.States.Max;
+    switch (movementState)
     {
       case MOVEMENT_STATE.WALKING:
         PlayWalkAnimation();

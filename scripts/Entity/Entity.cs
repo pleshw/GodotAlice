@@ -56,7 +56,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public DIRECTIONS LastFacingDirection { get; } = DIRECTIONS.BOTTOM;
 
-	public Vector2 FacingDirectionVector { get; set; } = Vector2.Zero;
+	public Vector2 FacingDirectionVector { get; set; } = new Vector2 { X = 1, Y = 0 };
 
 	public EntityMovementController MovementController;
 
@@ -84,6 +84,9 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public bool ReadyToSpawn { get; set; } = false;
 
 	public bool Spawned { get; set; } = false;
+
+	public float DashSpeedModifier { get; set; } = 6;
+	public float DashDistance { get { return MovementController.StepSize * 10f; } }
 
 	public Entity()
 	{
@@ -196,10 +199,18 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		{
 			movementKeyBind.Execute(key);
 		}
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		base._PhysicsProcess(delta);
 
 		MovementController.MovementProcess(delta, out bool _);
 	}
 
+
+	[Signal]
+	public delegate void StateChangedEventHandler();
 
 	[Signal]
 	public delegate void EntityStoppedEventHandler();
