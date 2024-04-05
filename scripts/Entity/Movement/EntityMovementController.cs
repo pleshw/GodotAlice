@@ -270,8 +270,6 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       LastTrackedPosition = entity.Position;
       entity.Position = DashTargetPosition;
       _dashTargetPosition = null;
-
-      GD.Print("target end: " + TargetPosition.X + " | " + TargetPosition.Y);
       Dashed();
       BlockStates = false;
       _states.Remove(MOVEMENT_STATE.DASHING);
@@ -282,8 +280,6 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       LastTrackedPosition = entity.Position;
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
-
-      GD.Print("target during: " + entityNewPosition.X + " | " + entityNewPosition.Y);
       Dashed();
       BlockStates = true;
     }
