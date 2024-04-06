@@ -8,12 +8,12 @@ public abstract class EntityMovementCommand(Entity entityToMove) : IEntityComman
 
   public EntityMovementController MovementController = entityToMove.MovementController;
 
-  public abstract void Execute();
+  public abstract void Execute(bool repeating);
 }
 
 public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
-  public override void Execute()
+  public override void Execute(bool repeating)
   {
     MovementController.WalkTo(new EntityMovementInput
     {
@@ -33,7 +33,7 @@ public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityT
 
 public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
-  public override void Execute()
+  public override void Execute(bool repeating)
   {
     MovementController.WalkTo(new EntityMovementInput
     {
@@ -54,7 +54,7 @@ public class WalkRightCommand(Entity entityToMove) : EntityMovementCommand(entit
 
 public class WalkBottomCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
-  public override void Execute()
+  public override void Execute(bool repeating)
   {
     MovementController.WalkTo(new EntityMovementInput
     {
@@ -77,10 +77,10 @@ public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMo
   private float lastDashTime = -1.0f;
   private readonly float cooldownTime = 1f; // Set your cooldown time here
 
-  public override void Execute()
+  public override void Execute(bool repeating)
   {
     float currentTime = Time.GetTicksMsec() / 1000.0f; // Get current time in seconds
-    if (currentTime - lastDashTime < cooldownTime || entityToMove.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
+    if (repeating || currentTime - lastDashTime < cooldownTime || entityToMove.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
     {
       return; // Action is still on cooldown or entity is already dashing
     }
@@ -101,7 +101,7 @@ public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMo
 
 public class WalkLeftCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
-  public override void Execute()
+  public override void Execute(bool repeating)
   {
     MovementController.WalkTo(new EntityMovementInput
     {

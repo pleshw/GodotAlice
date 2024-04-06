@@ -71,7 +71,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityIdleAnimator idleAnimator;
 	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybind movementKeyBind;
-	public HashSet<Key> keysPressed = [];
 
 	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
 	{
@@ -176,29 +175,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
-	}
-
-
-	public override void _Input(InputEvent @event)
-	{
-		keysPressed.Clear();
-		if (@event is InputEventKey inputEventKey)
-		{
-			if (inputEventKey.Pressed)
-			{
-				keysPressed.Add(inputEventKey.Keycode);
-			}
-		}
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
-		foreach (var key in keysPressed)
-		{
-			movementKeyBind.Execute(key);
-		}
 	}
 
 	public override void _PhysicsProcess(double delta)

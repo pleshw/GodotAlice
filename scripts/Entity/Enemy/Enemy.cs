@@ -44,33 +44,6 @@ public partial class Enemy(Vector2 initialPosition) : Entity
     });
   }
 
-  public override void _Input(InputEvent @event)
-  {
-    if (@event is InputEventKey inputEventKey)
-    {
-      if (inputEventKey.Pressed)
-      {
-        keysPressed.Add(inputEventKey.Keycode);
-      }
-      else
-      {
-        keysPressed.Remove(inputEventKey.Keycode);
-      }
-    }
-
-    if (@event is InputEventMouseButton inputEventClick)
-    {
-      if (inputEventClick.Pressed)
-      {
-        var clickEventType = inputEventClick.ButtonIndex;
-        if (clickEventType == MouseButton.Left)
-        {
-          // Camera.MakeCurrent();
-        }
-      }
-    }
-  }
-
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
   {

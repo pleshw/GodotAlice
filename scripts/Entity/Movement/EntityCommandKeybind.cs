@@ -15,11 +15,11 @@ public abstract class EntityCommandKeybind(Entity entity) : Dictionary<Key, IEnt
     }
   }
 
-  public void Execute(Key key)
+  public void Execute(Key key, bool repeating)
   {
     if (TryGetValue(key, out var command))
     {
-      command.Execute();
+      command.Execute(repeating);
     }
   }
 

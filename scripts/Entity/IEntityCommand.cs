@@ -2,5 +2,5 @@ namespace Entity;
 
 public interface IEntityCommand
 {
-  public void Execute();
+  public void Execute(bool repeating);
 }
