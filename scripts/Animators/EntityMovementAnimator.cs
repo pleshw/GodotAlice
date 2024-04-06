@@ -7,6 +7,8 @@ namespace Entity;
 
 public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity)
 {
+
+  /// The name of the AnimatedSprite2D + the name of the Animation
   protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
 
   public override void OnReady()
@@ -72,6 +74,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
 
   private void PlayDashAnimation()
   {
+    Animations["DashingDefault"].Sprites.SpeedScale = Entity.DashSpeedModifier / 2;
     PlayAnimation(Animations["DashingDefault"]);
   }
 
