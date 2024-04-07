@@ -80,7 +80,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
 
   private void PlayWalkAnimation()
   {
-    AnimationSprites["Walking"].SpeedScale = Entity.MovementController.MoveSpeed * 0.13f;
+    AnimationSprites["Walking"].SpeedScale = Mathf.Pow(Entity.MovementController.MoveSpeed, 2) / (Entity.MovementController.MoveSpeed * 10);
     switch (Entity.LastCommandDirection)
     {
       case DIRECTIONS.TOP:
