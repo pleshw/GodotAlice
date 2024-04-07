@@ -98,8 +98,8 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
 
       keysCommandExecuted[keyAndTime.Key] = true;
 
-      GD.Print("Key ", keyPressed, " is repeating: ", isKeyRepeating, ".");
-      GD.Print("Key ", keyPressed, " held for ", timeHeld.TotalSeconds, " seconds.");
+      // GD.Print("Key ", keyPressed, " is repeating: ", isKeyRepeating, ".");
+      // GD.Print("Key ", keyPressed, " held for ", timeHeld.TotalSeconds, " seconds.");
     }
   }
 }
