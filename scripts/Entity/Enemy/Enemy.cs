@@ -25,7 +25,7 @@ public partial class Enemy(Vector2 initialPosition) : Entity
     }
   }
 
-  public override EntityInventory Inventory { get; set; }
+  public override EntityInventoryBase Inventory { get; set; }
 
   public Enemy() : this(Vector2.Zero)
   {

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EntityInventoryItem" load_steps=3 format=3 uid="uid://5e8axw03shyn"]
+
+[ext_resource type="Texture2D" uid="uid://cdjk6e7a50nsh" path="res://assets/textures/new/itemFrame.png" id="1_ea5ey"]
+[ext_resource type="Script" path="res://scripts/Entity/Inventory/EntityInventoryItem.cs" id="1_f56p8"]
+
+[resource]
+script = ExtResource("1_f56p8")
+Id = "Test"
+Name = "Testing"
+Description = "Item for testing pourpose"
+Texture = ExtResource("1_ea5ey")

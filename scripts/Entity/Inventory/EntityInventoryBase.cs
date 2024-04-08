@@ -10,7 +10,7 @@ public record struct ItemSlot
 {
   public required int Amount { get; set; }
 
-  public required Item Content { get; set; }
+  public required EntityInventoryItem Content { get; set; }
   public required int Index;
 }
 
@@ -21,7 +21,7 @@ public record struct ItemSlot
 /// <param name="owner">The Entity that owns that inventory</param>
 /// <param name="maxSlots">The max amount of slots</param>
 /// <param name="maxSlotSize">The amount of items per slot</param>
-public partial class EntityInventory(Entity owner, int maxSlots = 10, int maxSlotSize = 64) : SortedDictionary<int, ItemSlot>
+public partial class EntityInventoryBase(Entity owner, int maxSlots = 10, int maxSlotSize = 64) : SortedDictionary<int, ItemSlot>
 {
   public Entity Owner = owner;
 
@@ -33,7 +33,7 @@ public partial class EntityInventory(Entity owner, int maxSlots = 10, int maxSlo
     }
   }
 
-  public int this[Item item]
+  public int this[EntityInventoryItem item]
   {
     get
     {
@@ -45,7 +45,7 @@ public partial class EntityInventory(Entity owner, int maxSlots = 10, int maxSlo
   /// Add a item in the first slot that contains it if the slot is not full or creates a new slot if it is
   /// </summary>
   /// <param name="item"></param>
-  public void Add(Item item)
+  public void Add(EntityInventoryItem item)
   {
     if (this[item] == -1 && Count < maxSlots)
     {

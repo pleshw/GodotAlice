@@ -74,7 +74,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
 
-	public abstract EntityInventory Inventory { get; set; }
+	public abstract EntityInventoryBase Inventory { get; set; }
 
 	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
 	{

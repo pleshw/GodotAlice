@@ -7,7 +7,9 @@ namespace Entity;
 
 public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPosition)
 {
-  private StringName _resourceName = "res://prefabs/player.tscn";
+
+  [Export]
+  private StringName _resourceName = "res://prefabs/entities/player.tscn";
   private readonly Vector2 initialPosition = initialPosition;
 
   public override StringName ResourceName
@@ -16,7 +18,7 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
     set { }
   }
 
-  public override EntityInventory Inventory { get; set; }
+  public override EntityInventoryBase Inventory { get; set; }
 
   public Player() : this(Vector2.Zero)
   {

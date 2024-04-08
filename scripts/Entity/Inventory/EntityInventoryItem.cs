@@ -3,7 +3,8 @@ using Godot;
 
 namespace Entity;
 
-public partial class Item : Resource
+[GlobalClass]
+public partial class EntityInventoryItem : Resource
 {
   [Export]
   public string Id;
