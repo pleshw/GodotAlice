@@ -3,7 +3,7 @@ using Godot;
 
 namespace GameManagers;
 
-public partial class EnemyManager : EntityManager<Enemy>
+public partial class EnemyManager() : EntityManager<Enemy>("")
 {
   protected Vector2 playerSpawnPoint = new()
   {

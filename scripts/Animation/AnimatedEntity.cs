@@ -7,7 +7,6 @@ namespace Animation;
 
 public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.Entity(initialPosition)
 {
-  public abstract override StringName ResourceName { get; set; }
   public AnimationData IdleState;
   public EntityAnimationInfo AnimationState;
 

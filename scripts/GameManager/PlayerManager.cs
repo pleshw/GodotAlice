@@ -3,8 +3,9 @@ using Godot;
 
 namespace GameManagers;
 
-public partial class PlayerManager : EntityManager<Player>
+public partial class PlayerManager() : EntityManager<Player>("res://prefabs/entities/player.tscn")
 {
+
   public Player playerInstance;
 
   protected Vector2 playerSpawnPoint = new()

@@ -2,11 +2,10 @@
 namespace Entity.Commands;
 
 
-public abstract class EntityMovementCommand(Entity entityToMove) : IEntityCommand
+public abstract class EntityBaseCommand(Entity entity) : IEntityCommand
 {
-  public Entity entityToMove = entityToMove;
+  public Entity entity = entity;
 
-  public EntityMovementController MovementController = entityToMove.MovementController;
 
   public abstract void Execute(bool repeating);
 }

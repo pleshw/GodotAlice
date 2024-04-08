@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 namespace Entity;
 
-public partial class EntityManager<EntityType> : Node where EntityType : Entity, new()
+public partial class EntityManager<EntityType>(string resourceName) : Node where EntityType : Entity, new()
 {
 	private PackedScene EntityPrefab;
+
+	protected StringName ResourceName = resourceName;
 
 	protected readonly EntityType _entityReference = new();
 	protected readonly Stack<Entity> _entityInstances = [];
@@ -16,7 +18,7 @@ public partial class EntityManager<EntityType> : Node where EntityType : Entity,
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		EntityPrefab = ResourceLoader.Load(_entityReference.ResourceName) as PackedScene;
+		EntityPrefab = ResourceLoader.Load(ResourceName) as PackedScene;
 	}
 
 	public bool TrySpawnAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)

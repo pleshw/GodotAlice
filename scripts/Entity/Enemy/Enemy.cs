@@ -6,15 +6,6 @@ namespace Entity;
 
 public partial class Enemy(Vector2 initialPosition) : Entity
 {
-
-  private StringName _resourceName = "res://prefabs/player.tscn";
-
-  public override StringName ResourceName
-  {
-    get => _resourceName;
-    set { }
-  }
-
   protected readonly Vector2 _spawnPoint;
 
   public Vector2 SpawnPoint
@@ -25,11 +16,11 @@ public partial class Enemy(Vector2 initialPosition) : Entity
     }
   }
 
-  public override EntityInventoryBase Inventory { get; set; }
+  public override EntityInventoryBase BaseInventory { get; set; }
 
   public Enemy() : this(Vector2.Zero)
   {
-    Inventory = new(this);
+    BaseInventory = new(this);
   }
 
   public override void _Ready()

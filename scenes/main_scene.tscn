@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bj2p515w2nc8b"]
+[gd_scene load_steps=3 format=3 uid="uid://bj2p515w2nc8b"]
 
 [ext_resource type="PackedScene" uid="uid://b7go7klurvvjl" path="res://prefabs/game_map.tscn" id="1_nitg8"]
+[ext_resource type="Script" path="res://scripts/GameManager/PlayerManager.cs" id="1_wt854"]
 
 [node name="MainScene" type="Node2D"]
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("1_wt854")
 
 [node name="GameMap" parent="." instance=ExtResource("1_nitg8")]

@@ -8,21 +8,22 @@ namespace Entity;
 public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPosition)
 {
 
-  [Export]
-  private StringName _resourceName = "res://prefabs/entities/player.tscn";
   private readonly Vector2 initialPosition = initialPosition;
+  public override EntityInventoryBase BaseInventory { get; set; }
 
-  public override StringName ResourceName
+  public PlayerInventory Inventory
   {
-    get => _resourceName;
-    set { }
+    get
+    {
+      return BaseInventory as PlayerInventory;
+    }
   }
 
-  public override EntityInventoryBase Inventory { get; set; }
+
 
   public Player() : this(Vector2.Zero)
   {
-    Inventory = new(this);
+    BaseInventory = new PlayerInventory(this);
   }
 
   public override void _Ready()
@@ -42,6 +43,8 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
       MovementState = MOVEMENT_STATE.IDLE,
     });
 
+
+    Camera.MakeCurrent();
     // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
   }
 

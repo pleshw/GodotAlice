@@ -10,6 +10,19 @@ namespace Entity;
 
 public abstract partial class Entity : Node2D, IEntityBaseNode
 {
+	[Export]
+	public Camera2D Camera { get; set; }
+
+	[Export]
+	public CharacterBody2D CollisionBody { get; set; }
+
+	public CollisionShape2D[] CollisionShapes { get; set; }
+
+	[Export]
+	public Control EntityUIControl { get; set; }
+
+	[Export]
+	public Control InventoryWindow { get; set; }
 
 	public float FacingDirectionAngle
 	{
@@ -62,19 +75,15 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityMovementController MovementController;
 
 	public Guid Id = Guid.NewGuid();
-	public Camera2D Camera { get; set; }
 	protected Dictionary<StringName, AnimatedSprite2D> _animationsByName = [];
 	public Dictionary<StringName, AnimationData> Animations { get; set; } = [];
-	public CharacterBody2D CollisionBody { get; set; }
-	public CollisionShape2D[] CollisionShapes { get; set; }
-	public abstract StringName ResourceName { get; set; }
 
 	public EntityIdleAnimator idleAnimator;
 	public EntityMovementAnimator movementAnimator;
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
 
-	public abstract EntityInventoryBase Inventory { get; set; }
+	public abstract EntityInventoryBase BaseInventory { get; set; }
 
 	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
 	{
@@ -171,8 +180,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	{
 		base._Ready();
 
-		Camera = GetNode<Camera2D>("Camera");
-
 		AddAnimationSprites(IdleAnimationsSpritesByName);
 		AddAnimationSprites(MovementAnimations);
 
@@ -180,9 +187,9 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		movementAnimator.OnReady();
 
 		idleAnimator.Play();
-
-		CollisionBody = GetNode<CharacterBody2D>("CollisionBody");
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
+
+		InventoryWindow.Visible = false;
 	}
 
 	public override void _PhysicsProcess(double delta)
