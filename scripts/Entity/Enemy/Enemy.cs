@@ -25,16 +25,18 @@ public partial class Enemy(Vector2 initialPosition) : Entity
     }
   }
 
+  public override EntityInventory Inventory { get; set; }
 
   public Enemy() : this(Vector2.Zero)
   {
+    Inventory = new(this);
   }
 
   public override void _Ready()
   {
     base._Ready();
 
-    movementKeyBind.BindArrows();
+    movementKeyBinds.BindArrows();
     MovementController.TeleportToNearestCell(new EntityMovementInput
     {
       Position = initialPosition,

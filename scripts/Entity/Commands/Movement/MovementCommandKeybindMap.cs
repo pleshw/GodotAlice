@@ -2,7 +2,7 @@ using Godot;
 
 namespace Entity.Commands.Movement;
 
-public class MovementCommandKeybind(Entity entity) : EntityCommandKeybind(entity)
+public class MovementCommandKeybindMap(Entity entity) : EntityCommandKeybind(entity)
 {
   public MovementCommandController movementController = new(entity);
 

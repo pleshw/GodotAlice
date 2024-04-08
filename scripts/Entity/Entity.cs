@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Animation;
 using Entity.Commands.Movement;
+using Entity.Commands.UI;
 using Godot;
 
 namespace Entity;
@@ -70,7 +71,10 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public EntityIdleAnimator idleAnimator;
 	public EntityMovementAnimator movementAnimator;
-	public MovementCommandKeybind movementKeyBind;
+	public MovementCommandKeybindMap movementKeyBinds;
+	public UICommandKeybindMap uiKeyBinds;
+
+	public abstract EntityInventory Inventory { get; set; }
 
 	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
 	{
@@ -89,19 +93,23 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public Entity()
 	{
-		MovementController = new EntityMovementController(this, Vector2.Zero, 32);
-		movementKeyBind = new MovementCommandKeybind(this);
-		movementAnimator = new EntityMovementAnimator(this);
-		idleAnimator = new EntityIdleAnimator(this);
+		Setup();
 	}
 
 	public Entity(Vector2 initialPosition)
 	{
-		MovementController = new EntityMovementController(this, initialPosition, 32);
-		movementKeyBind = new MovementCommandKeybind(this);
+		Setup(initialPosition, 32);
+	}
+
+	public void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
+	{
+		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
+		movementKeyBinds = new MovementCommandKeybindMap(this);
+		uiKeyBinds = new UICommandKeybindMap(this);
 		movementAnimator = new EntityMovementAnimator(this);
 		idleAnimator = new EntityIdleAnimator(this);
 	}
+
 
 	public Node AnimationsNode
 	{

@@ -2,15 +2,6 @@ using Godot;
 
 namespace Entity.Commands.Movement;
 
-public abstract class EntityMovementCommand(Entity entityToMove) : IEntityCommand
-{
-  public Entity entityToMove = entityToMove;
-
-  public EntityMovementController MovementController = entityToMove.MovementController;
-
-  public abstract void Execute(bool repeating);
-}
-
 public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
 {
   public override void Execute(bool repeating)

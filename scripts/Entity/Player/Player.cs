@@ -16,15 +16,19 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
     set { }
   }
 
+  public override EntityInventory Inventory { get; set; }
+
   public Player() : this(Vector2.Zero)
   {
+    Inventory = new(this);
   }
 
   public override void _Ready()
   {
     base._Ready();
 
-    movementKeyBind.BindDefaults();
+    movementKeyBinds.BindDefaults();
+    uiKeyBinds.BindDefaults();
 
     ReadyToSpawn = true;
 
@@ -41,7 +45,7 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
 
   private readonly Dictionary<KeyList, DateTime> keysPressed = [];
   private readonly Dictionary<KeyList, TimeSpan> keysHeldDuration = [];
-  private Dictionary<KeyList, bool> keysCommandExecuted = [];
+  private readonly Dictionary<KeyList, bool> keysCommandExecuted = [];
 
 
   public override void _Input(InputEvent @event)
@@ -94,12 +98,10 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
       Key keyPressed = keyAndTime.Key.KeyCode;
       TimeSpan timeHeld = DateTime.Now - keyAndTime.Value;
 
-      movementKeyBind.Execute(keyPressed, isKeyRepeating);
+      movementKeyBinds.Execute(keyPressed, isKeyRepeating);
+      uiKeyBinds.Execute(keyPressed, isKeyRepeating);
 
       keysCommandExecuted[keyAndTime.Key] = true;
-
-      // GD.Print("Key ", keyPressed, " is repeating: ", isKeyRepeating, ".");
-      // GD.Print("Key ", keyPressed, " held for ", timeHeld.TotalSeconds, " seconds.");
     }
   }
 }
