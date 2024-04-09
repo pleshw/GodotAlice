@@ -1,9 +1,8 @@
-[gd_scene load_steps=39 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=38 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://bug4v8s7tw21t" path="res://assets/spritesheets/red_hood.png" id="2_1kph0"]
 [ext_resource type="Texture2D" uid="uid://cx8b85tqnrvrk" path="res://icon.svg" id="3_xlpih"]
-[ext_resource type="PackedScene" uid="uid://uqvfhub05gw5" path="res://prefabs/ui/windows/player_main_menu.tscn" id="4_wj6br"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o3pcq"]
 atlas = ExtResource("2_1kph0")
@@ -289,30 +288,21 @@ animations = [{
 size = Vector2(143.895, 273.345)
 
 [node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI", "InventoryWindow")]
-position = Vector2(41, 59)
+position = Vector2(-1.35525e-20, -8.13152e-20)
 scale = Vector2(0.312727, 0.29267)
 script = ExtResource("1_vfx70")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
 EntityUI = NodePath("EntityUI")
-InventoryWindow = NodePath("EntityUI/PlayerMainMenu")
+InventoryWindow = NodePath("EntityUI/PlayerMenu")
 
 [node name="Camera" type="Camera2D" parent="."]
-
-[node name="EntityUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 6
-
-[node name="PlayerMainMenu" parent="EntityUI" instance=ExtResource("4_wj6br")]
-layout_mode = 1
+position = Vector2(0, -0.00012207)
+scale = Vector2(1, 1)
 
 [node name="Animations" type="Node2D" parent="."]
+z_index = 1
+position = Vector2(-6.10352e-05, -0.00012207)
 
 [node name="Idle" type="Node2D" parent="Animations"]
 
@@ -349,9 +339,41 @@ frame = 2
 frame_progress = 1.0
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
+position = Vector2(7.27596e-12, 1.45519e-11)
+scale = Vector2(1.06996, 1)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
 position = Vector2(-7.99418, 0)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_6pus8")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="EntityUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerMenu" type="Panel" parent="EntityUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.037
+anchor_bottom = -0.037
+offset_left = 236.628
+offset_top = -493.958
+offset_right = 312.628
+offset_bottom = -443.958
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(12.5019, 15.5104)
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="ColorRect" type="ColorRect" parent="EntityUI/PlayerMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true

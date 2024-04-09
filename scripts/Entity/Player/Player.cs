@@ -19,8 +19,6 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
     }
   }
 
-
-
   public Player() : this(Vector2.Zero)
   {
     BaseInventory = new PlayerInventory(this);
