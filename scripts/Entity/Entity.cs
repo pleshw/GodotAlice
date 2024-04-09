@@ -97,7 +97,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public bool Spawned { get; set; } = false;
 
-	public float DashSpeedModifier { get; set; } = 4;
+	public float DashSpeedModifier { get; set; } = 8;
 	public float DashDistance { get { return MovementController.StepSize * 5f; } }
 
 	public Entity()

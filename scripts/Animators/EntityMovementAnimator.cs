@@ -72,10 +72,47 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     }
   }
 
+  private bool AlreadyDashing = false;
   private void PlayDashAnimation()
   {
-    Animations["DashingDefault"].Sprites.SpeedScale = Entity.DashSpeedModifier / 2;
+    if (AlreadyDashing)
+    {
+      return;
+    }
+
+    AnimatedSprite2D animationSprites = Animations["DashingDefault"].Sprites;
+    int animationFrameCount = AnimationSprites["Dashing"].SpriteFrames.GetFrameCount(Animations["DashingDefault"].Name);
+    animationSprites.SpeedScale = Entity.DashSpeedModifier / 2;
+    Vector2 initialScale = animationSprites.Scale;
+    AlreadyDashing = true;
+
+    void onDashProgress() => OnDashProgress(animationSprites, animationFrameCount, initialScale);
+
+    void onAnimationFinished()
+    {
+      animationSprites.Disconnect(AnimatedSprite2D.SignalName.FrameChanged, Callable.From(onDashProgress));
+
+      animationSprites.Disconnect(AnimatedSprite2D.SignalName.AnimationFinished, Callable.From(onAnimationFinished));
+
+      animationSprites.Scale = initialScale;
+      AlreadyDashing = false;
+    };
+
+    animationSprites.Connect(AnimatedSprite2D.SignalName.FrameChanged, Callable.From(onDashProgress));
+    animationSprites.Connect(AnimatedSprite2D.SignalName.AnimationFinished, Callable.From(onAnimationFinished));
+
     PlayAnimation(Animations["DashingDefault"]);
+  }
+
+  public static void OnDashProgress(AnimatedSprite2D animationSprites, int animationFrameCount, Vector2 initialScale)
+  {
+    int currentFrame = animationSprites.Frame;
+    float reverseAnimationStage = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 0);
+    float reverseAnimationStateScaleFactor = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 1);
+
+    (animationSprites.Material as ShaderMaterial).SetShaderParameter("blinkStage", reverseAnimationStage);
+
+    animationSprites.Scale = initialScale with { Y = initialScale.Y * reverseAnimationStateScaleFactor };
   }
 
   private void PlayWalkAnimation()

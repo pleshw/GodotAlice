@@ -80,7 +80,7 @@ public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMo
 
   public override void Execute(bool repeating)
   {
-    float currentTime = Time.GetTicksMsec() / 300.0f; // Get current time in seconds
+    float currentTime = Time.GetTicksMsec() / 200.0f; // Get current time in seconds
     if (repeating || currentTime - lastDashTime < cooldownTime || entity.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
     {
       return; // Action is still on cooldown or entity is already dashing

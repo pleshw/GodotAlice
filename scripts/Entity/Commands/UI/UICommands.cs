@@ -64,13 +64,13 @@ public class ToggleInventoryCommand : EntityBaseCommand
       CameraTween.TweenProperty(
         owner.Camera,
         "position",
-        CameraStartPosition + new Vector2(500f, -100f),
+        CameraStartPosition + new Vector2(1250f, -100f),
         0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
 
       CameraTween.TweenProperty(
         owner.Camera,
          "zoom",
-         new Vector2(2.5f, 2.5f),
+         new Vector2(1.5f, 1.5f),
           0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
 
       InventoryTween.TweenProperty(
