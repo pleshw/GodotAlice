@@ -7,11 +7,19 @@ namespace Entity;
 
 public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
 {
-  public AnimationData Idle
+  public AnimationData IdleAnimationData
   {
     get
     {
       return Animations["IdleDefault"];
+    }
+  }
+
+  public AnimatedSprite2D Idle
+  {
+    get
+    {
+      return AnimationSprites["Idle"];
     }
   }
 
@@ -66,7 +74,7 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
       return;
     }
 
-    PlayAnimation(Idle);
+    PlayAnimation(IdleAnimationData);
   }
 
   public override void HideAllAnimations()

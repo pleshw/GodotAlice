@@ -96,7 +96,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
         PlayAnimation(Animations["WalkingLeft"]);
         break;
       default:
-        PlayAnimation(Entity.idleAnimator.Idle);
+        PlayAnimation(Entity.idleAnimator.IdleAnimationData);
         break;
     }
   }

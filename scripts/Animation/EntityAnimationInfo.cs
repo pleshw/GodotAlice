@@ -32,7 +32,7 @@ public class EntityAnimationInfo
 
     EntityAnimationInfo animationInfo = new()
     {
-      DefaultAnimationData = entity.idleAnimator.Idle
+      DefaultAnimationData = entity.idleAnimator.IdleAnimationData
     };
 
     entityAnimationInfoById.Add(entity.Id, animationInfo);

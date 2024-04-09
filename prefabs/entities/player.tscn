@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://bug4v8s7tw21t" path="res://assets/spritesheets/red_hood.png" id="2_1kph0"]
 [ext_resource type="Texture2D" uid="uid://cx8b85tqnrvrk" path="res://icon.svg" id="3_xlpih"]
-[ext_resource type="PackedScene" uid="uid://uqvfhub05gw5" path="res://prefabs/ui/windows/player_inventory_window.tscn" id="4_wj6br"]
+[ext_resource type="PackedScene" uid="uid://uqvfhub05gw5" path="res://prefabs/ui/windows/player_main_menu.tscn" id="4_wj6br"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o3pcq"]
 atlas = ExtResource("2_1kph0")
@@ -288,14 +288,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(143.895, 273.345)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUIControl", "InventoryWindow")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI", "InventoryWindow")]
 position = Vector2(41, 59)
 scale = Vector2(0.312727, 0.29267)
 script = ExtResource("1_vfx70")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
-EntityUIControl = NodePath("EntityUI")
-InventoryWindow = NodePath("EntityUI/PlayerInventoryWindow")
+EntityUI = NodePath("EntityUI")
+InventoryWindow = NodePath("EntityUI/PlayerMainMenu")
 
 [node name="Camera" type="Camera2D" parent="."]
 
@@ -309,20 +309,8 @@ grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 6
 
-[node name="PlayerInventoryWindow" parent="EntityUI" instance=ExtResource("4_wj6br")]
-layout_direction = 2
+[node name="PlayerMainMenu" parent="EntityUI" instance=ExtResource("4_wj6br")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 591.57
-offset_top = -461.27
-offset_right = 1263.57
-offset_bottom = 461.73
-size_flags_horizontal = 8
-size_flags_vertical = 1
 
 [node name="Animations" type="Node2D" parent="."]
 
@@ -343,7 +331,7 @@ visible = false
 position = Vector2(4.76837e-06, 0)
 scale = Vector2(7.2947, 9.07592)
 sprite_frames = SubResource("SpriteFrames_0vfec")
-animation = &"Bottom"
+animation = &"Right"
 
 [node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
 visible = false

@@ -43,7 +43,7 @@ public class ToggleInventoryCommand : EntityBaseCommand
         owner.Camera,
          "zoom",
          new Vector2(1, 1),
-          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.Out);
 
       InventoryTween.TweenProperty(
         owner.InventoryWindow,
@@ -61,7 +61,7 @@ public class ToggleInventoryCommand : EntityBaseCommand
         owner.Camera,
         "position",
         CameraStartPosition,
-        0.1f).SetTrans(Tween.TransitionType.Linear);
+        0.2f).SetTrans(Tween.TransitionType.Linear);
 
       InventoryTween.TweenCallback(Callable.From(() => owner.InventoryWindow.Visible = false));
     }
@@ -72,20 +72,20 @@ public class ToggleInventoryCommand : EntityBaseCommand
       CameraTween.TweenProperty(
         owner.Camera,
         "position",
-        CameraStartPosition + new Vector2(400f, 0),
-        0f).SetTrans(Tween.TransitionType.Linear);
+        CameraStartPosition + new Vector2(550f, -120f),
+        0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
 
       CameraTween.TweenProperty(
         owner.Camera,
          "zoom",
          new Vector2(2f, 2f),
-          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
 
       InventoryTween.TweenProperty(
         owner.InventoryWindow,
          "position",
           InventoryWindowStartPosition,
-          0.1f).SetTrans(Tween.TransitionType.Linear);
+          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
 
       InventoryTween.TweenProperty(
         owner.InventoryWindow,
