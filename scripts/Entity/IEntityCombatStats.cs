@@ -6,8 +6,8 @@ namespace Entity;
 
 public interface IEntityCombatStats
 {
-  public int MinDamage { get; set; }
-  public int MaxDamage { get; set; }
+  public int MinDamageMelee { get; set; }
+  public int MinDamageRanged { get; set; }
   public int CriticalChance { get; set; }
   public int DodgeChance { get; set; }
 }
