@@ -10,8 +10,6 @@ public partial class EntityCommands
 
     private Tween InventoryTween;
 
-    private Tween CameraTween;
-
     public Vector2 CameraStartPosition;
 
     public Callable setGlobalCamera;
@@ -43,41 +41,34 @@ public partial class EntityCommands
       }
 
       InventoryTween?.Kill();
-      CameraTween?.Kill();
 
-      CameraTween = owner.GetTree().CreateTween();
       InventoryTween = owner.GetTree().CreateTween();
       owner.MovementController.DisableMovement();
       owner.directionState.FacingDirectionVector = new Vector2 { X = 1, Y = 0 };
+
+      owner.MenuWindow.SetIndexed("modulate:a", 0.0f);
 
       if (owner.MenuWindow.Visible)
       {
         InventoryTween.TweenCallback(setGlobalCamera);
 
-        CameraTween.TweenProperty(
+        InventoryTween.TweenProperty(
            Entity.GlobalCamera,
            "zoom",
            new Vector2(1, 1),
             0.2f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
 
-        CameraTween.TweenProperty(
+        InventoryTween.TweenProperty(
            Entity.GlobalCamera,
           "position",
           Vector2.Zero,
-          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
-
-        InventoryTween.TweenProperty(
-          owner.MenuWindow,
-          "modulate:a",
-          0,
-          0.3f).SetTrans(Tween.TransitionType.Linear);
+          0.3f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
 
         InventoryTween.TweenCallback(Callable.From(() =>
         {
           owner.MenuWindow.Visible = false;
           owner.MovementController.EnableMovement();
         }));
-
       }
       else
       {
@@ -85,16 +76,16 @@ public partial class EntityCommands
         float cameraOffsetY = 50f;
         owner.MenuWindow.Visible = true;
 
-        CameraTween.TweenProperty(
+        InventoryTween.TweenProperty(
           Entity.GlobalCamera,
           "position",
           owner.GlobalPosition + new Vector2(cameraOffsetX, cameraOffsetY),
-          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.Out);
+          0.2f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.Out);
 
-        CameraTween.TweenProperty(
+        InventoryTween.TweenProperty(
           Entity.GlobalCamera,
            "zoom",
-           new Vector2(4f, 4f),
+           new Vector2(2f, 2f),
             0.3f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
 
 
@@ -111,7 +102,7 @@ public partial class EntityCommands
           owner.MenuWindow,
           "modulate:a",
           1,
-          0.2f).SetTrans(Tween.TransitionType.Linear);
+          0.5f).SetTrans(Tween.TransitionType.Linear);
 
         InventoryTween.TweenCallback(setPlayerCamera);
       }
