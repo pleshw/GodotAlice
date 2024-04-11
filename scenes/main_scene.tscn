@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bj2p515w2nc8b"]
+[gd_scene load_steps=4 format=3 uid="uid://bj2p515w2nc8b"]
 
 [ext_resource type="PackedScene" uid="uid://b7go7klurvvjl" path="res://prefabs/game_map.tscn" id="1_nitg8"]
 [ext_resource type="Script" path="res://scripts/GameManager/PlayerManager.cs" id="1_wt854"]
+[ext_resource type="Script" path="res://scripts/GameMap/GameMap.cs" id="3_7dsau"]
 
 [node name="MainScene" type="Node2D"]
 
-[node name="PlayerManager" type="Node" parent="."]
-script = ExtResource("1_wt854")
+[node name="GlobalCamera" type="Camera2D" parent="."]
+position = Vector2(0, -3.8147e-06)
 
-[node name="GameMap" parent="." instance=ExtResource("1_nitg8")]
+[node name="PlayerManager" type="Node" parent="." node_paths=PackedStringArray("GlobalCamera")]
+script = ExtResource("1_wt854")
+GlobalCamera = NodePath("../GlobalCamera")
+
+[node name="GameMap" parent="." node_paths=PackedStringArray("Camera") instance=ExtResource("1_nitg8")]
+script = ExtResource("3_7dsau")
+Camera = NodePath("../GlobalCamera")

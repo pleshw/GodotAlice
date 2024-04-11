@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Entity.Commands.UI;
+namespace Entity.Commands;
 
 public class UICommandKeybindMap(Entity entity) : EntityCommandKeybind(entity)
 {
@@ -8,11 +8,11 @@ public class UICommandKeybindMap(Entity entity) : EntityCommandKeybind(entity)
 
   public override void BindDefaults()
   {
-    BindKey(Key.Tab, UI.ToggleInventory);
+    BindKey(Key.Tab, UI.TogglePlayerMenu);
   }
 
-  public void BindToggleInventory()
+  public void BindTogglePlayerMenu()
   {
-    BindKey(Key.Tab, UI.ToggleInventory);
+    BindKey(Key.Tab, UI.TogglePlayerMenu);
   }
 }

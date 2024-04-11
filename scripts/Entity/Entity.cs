@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Animation;
-using Entity.Commands.Movement;
-using Entity.Commands.UI;
+using Entity.Commands;
 using Godot;
 
 namespace Entity;
 
 public abstract partial class Entity : Node2D, IEntityBaseNode
 {
+	public static Camera2D GlobalCamera { get; set; } = null;
+
 	[Export]
 	public Camera2D Camera { get; set; }
 
@@ -22,55 +23,17 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public Control EntityUI { get; set; }
 
 	[Export]
-	public Control InventoryWindow { get; set; }
+	public Control MenuWindow { get; set; }
 
-	public float FacingDirectionAngle
-	{
-		get
-		{
-			float angle = Mathf.Atan2(FacingDirectionVector.Y, FacingDirectionVector.X);
-			float degrees = Mathf.RadToDeg(angle);
+	[Export]
+	public Control AttributesWindow { get; set; }
 
-			if (degrees < 0)
-			{
-				degrees += 360;
-			}
+	[Export]
+	public Control EquippedItemsWindow { get; set; }
 
-			return degrees;
-		}
-	}
+	public EntityStats Stats { get; set; } = new();
 
-	public DIRECTIONS LastCommandDirection { get; set; } = DIRECTIONS.RIGHT;
-
-	public DIRECTIONS LastFacedDirection { get; set; } = DIRECTIONS.RIGHT;
-
-	public DIRECTIONS FacingSide
-	{
-		get
-		{
-			if (FacingDirectionVector.X == float.PositiveInfinity)
-			{
-				return LastFacedDirection;
-			}
-
-			if (FacingDirectionVector.X > 0)
-			{
-				return LastFacedDirection = DIRECTIONS.RIGHT;
-			}
-			else if (FacingDirectionVector.X < 0)
-			{
-				return LastFacedDirection = DIRECTIONS.LEFT;
-			}
-			else
-			{
-				return LastFacedDirection;
-			}
-		}
-	}
-
-	public DIRECTIONS LastFacingDirection { get; } = DIRECTIONS.BOTTOM;
-
-	public Vector2 FacingDirectionVector { get; set; } = new Vector2 { X = 1, Y = 0 };
+	public EntityDirectionState directionState = new();
 
 	public EntityMovementController MovementController;
 
@@ -189,7 +152,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		idleAnimator.Play();
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 
-		InventoryWindow.Visible = false;
+		MenuWindow.Visible = false;
 	}
 
 	public override void _PhysicsProcess(double delta)

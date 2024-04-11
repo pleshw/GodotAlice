@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Entity.Commands.Movement;
+namespace Entity.Commands;
 
 public class MovementCommandKeybindMap(Entity entity) : EntityCommandKeybind(entity)
 {

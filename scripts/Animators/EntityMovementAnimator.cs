@@ -14,7 +14,6 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
   public override void OnReady()
   {
     AddMovementAnimation("Walking");
-    AddMovementAnimation("Running");
     AddMovementAnimation("Dashing", 3, false);
 
     ConfirmAnimations();
@@ -48,7 +47,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
       CanBeInterrupted = canBeInterrupted,
       BeforeAnimationStart = () =>
       {
-        AnimationSprites[spritesKey].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
+        AnimationSprites[spritesKey].FlipH = Entity.directionState.FacingSide == DIRECTIONS.LEFT;
       }
     };
   }
@@ -85,6 +84,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
     animationSprites.SpeedScale = Entity.DashSpeedModifier / 2;
     Vector2 initialScale = animationSprites.Scale;
     AlreadyDashing = true;
+    Entity.Stats.IsInvulnerable = true;
 
     void onDashProgress() => OnDashProgress(animationSprites, animationFrameCount, initialScale);
 
@@ -96,6 +96,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
 
       animationSprites.Scale = initialScale;
       AlreadyDashing = false;
+      Entity.Stats.IsInvulnerable = false;
     };
 
     animationSprites.Connect(AnimatedSprite2D.SignalName.FrameChanged, Callable.From(onDashProgress));
@@ -118,7 +119,7 @@ public partial class EntityMovementAnimator(Entity entity) : AnimatorNode(entity
   private void PlayWalkAnimation()
   {
     AnimationSprites["Walking"].SpeedScale = Mathf.Pow(Entity.MovementController.MoveSpeed, 2) / (Entity.MovementController.MoveSpeed * 10);
-    switch (Entity.LastCommandDirection)
+    switch (Entity.directionState.LastCommandDirection)
     {
       case DIRECTIONS.TOP:
         PlayAnimation(Animations["WalkingTop"]);

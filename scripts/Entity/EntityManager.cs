@@ -29,22 +29,22 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 			return false;
 		}
 
-		entityInstance = AddInstance();
+		entityInstance = AddEntityInstance();
 
 		entityInstance.MovementController.initialPosition = position;
 
-		CallDeferred(nameof(Spawn), entityInstance);
+		CallDeferred(nameof(SpawnEntity), entityInstance);
 
 		return true;
 	}
 
-	private void Spawn(Entity entityPrefab)
+	private void SpawnEntity(Entity entityPrefab)
 	{
 		AddChild(entityPrefab);
 		entityPrefab.Spawned = true;
 	}
 
-	private EntityType AddInstance()
+	private EntityType AddEntityInstance()
 	{
 		EntityType entityPrefab = EntityPrefab.Instantiate() as EntityType;
 

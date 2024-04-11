@@ -6,6 +6,9 @@ namespace GameManagers;
 public partial class PlayerManager() : EntityManager<Player>("res://prefabs/entities/player.tscn")
 {
 
+  [Export]
+  public Camera2D GlobalCamera;
+
   public Player playerInstance;
 
   protected Vector2 playerSpawnPoint = new()
@@ -18,6 +21,8 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
   public override void _Ready()
   {
     base._Ready();
+
+    Entity.Entity.GlobalCamera = GlobalCamera;
 
     TrySpawnAtPosition(playerSpawnPoint, out playerInstance, 1);
   }

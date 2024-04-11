@@ -14,7 +14,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   protected Vector2 LastTrackedPosition { get; set; } = Vector2.Zero;
 
   /// <summary>
-  /// What is the movement state of the player. Helper to identify the best way to draw the player.
+  /// What are the current movement states of the player. Helper to identify the best way to draw the player.
   /// </summary>
   protected EntityStateList<MOVEMENT_STATE> _states = new(entity, Comparer<MOVEMENT_STATE>.Create((a, b) => EntityMovementConstraints.MovementStatesPriorities[a].CompareTo(EntityMovementConstraints.MovementStatesPriorities[b])))
   {
@@ -40,9 +40,9 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   /// Grid cell width used for speed reference on player movement.
   /// </summary>
   protected int _cellWidth = gridMapCellWidth;
-  private bool _isMovementDisabled = false;
+  private bool _movementDisabled = false;
 
-  public bool IsMovementDisabled { get { return _isMovementDisabled; } }
+  public bool MovementDisabled { get { return _movementDisabled; } }
 
   public bool HasTargetPosition
   {
@@ -226,23 +226,21 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
-    if ((_targetPosition == null && _dashTargetPosition == null) || IsMovementDisabled)
+    if ((_targetPosition == null && _dashTargetPosition == null) || MovementDisabled)
     {
       Idled();
       return this;
     }
 
     // Calculate the direction vector towards the target position
-
-
     switch (States.Max)
     {
       case MOVEMENT_STATE.WALKING:
-        entity.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
+        entity.directionState.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
         DefaultMovement((float)delta);
         break;
       case MOVEMENT_STATE.DASHING:
-        entity.FacingDirectionVector = (DashTargetPosition - entity.Position).Normalized();
+        entity.directionState.FacingDirectionVector = (DashTargetPosition - entity.Position).Normalized();
         DashMovement((float)delta);
         break;
     }
@@ -253,12 +251,12 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public void DisableMovement()
   {
-    _isMovementDisabled = true;
+    _movementDisabled = true;
   }
 
   public void EnableMovement()
   {
-    _isMovementDisabled = false;
+    _movementDisabled = false;
   }
 
   private void DashMovement(float delta)
@@ -276,7 +274,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
     else
     {
-      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
+      Vector2 displacement = entity.directionState.FacingDirectionVector * distanceToMove;
       LastTrackedPosition = entity.Position;
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
@@ -299,7 +297,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
     else
     {
-      Vector2 displacement = entity.FacingDirectionVector * distanceToMove;
+      Vector2 displacement = entity.directionState.FacingDirectionVector * distanceToMove;
       LastTrackedPosition = entity.Position;
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;

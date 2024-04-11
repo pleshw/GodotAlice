@@ -61,7 +61,7 @@ public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
       CanBeInterrupted = canBeInterrupted,
       BeforeAnimationStart = () =>
       {
-        AnimationSprites[spritesKey].FlipH = Entity.FacingSide == DIRECTIONS.LEFT;
+        AnimationSprites[spritesKey].FlipH = Entity.directionState.FacingSide == DIRECTIONS.LEFT;
       }
     };
   }

@@ -1,8 +1,7 @@
-[gd_scene load_steps=45 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=43 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
-[ext_resource type="Texture2D" uid="uid://cx8b85tqnrvrk" path="res://icon.svg" id="3_xlpih"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="4_7rn4v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7dn3"]
@@ -246,29 +245,18 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_07txw"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_xlpih")
-}],
-"loop": false,
-"name": &"Run",
-"speed": 5.0
-}]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_21x4a"]
 resource_local_to_scene = true
 shader = ExtResource("4_7rn4v")
 shader_parameter/blinkStage = 0.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s7e1h"]
-atlas = ExtResource("2_thuhd")
-region = Rect2(0, 0, 192, 192)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ksbn2"]
 atlas = ExtResource("2_thuhd")
 region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s7e1h"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(0, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5cgoy"]
 atlas = ExtResource("2_thuhd")
@@ -277,12 +265,6 @@ region = Rect2(576, 192, 192, 192)
 [sub_resource type="SpriteFrames" id="SpriteFrames_pi8xy"]
 animations = [{
 "frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s7e1h")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s7e1h")
-}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ksbn2")
 }, {
@@ -301,21 +283,23 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(143.895, 273.345)
+size = Vector2(59.8153, 86)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2aiuw"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fcf8"]
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI", "InventoryWindow")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI", "MenuWindow", "AttributesWindow", "EquippedItemsWindow")]
 position = Vector2(-1.35525e-20, -8.13152e-20)
-scale = Vector2(0.312727, 0.29267)
 script = ExtResource("1_vfx70")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
 EntityUI = NodePath("EntityUI")
-InventoryWindow = NodePath("EntityUI/PlayerMenu")
+MenuWindow = NodePath("EntityUI/MenuWindow")
+AttributesWindow = NodePath("EntityUI/MenuWindow/AttributesWindow")
+EquippedItemsWindow = NodePath("EntityUI/MenuWindow/EquippedItemsWindow")
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(0, -0.00012207)
+zoom = Vector2(2, 2)
 
 [node name="Animations" type="Node2D" parent="."]
 z_index = 1
@@ -324,9 +308,6 @@ position = Vector2(-6.10352e-05, -0.00012207)
 [node name="Idle" type="Node2D" parent="Animations"]
 
 [node name="Idle" type="AnimatedSprite2D" parent="Animations/Idle"]
-visible = false
-position = Vector2(-6.39529, -6.83351)
-scale = Vector2(3.2, 4.4)
 sprite_frames = SubResource("SpriteFrames_gowgf")
 animation = &"Default"
 frame_progress = 0.0713886
@@ -335,24 +316,16 @@ frame_progress = 0.0713886
 
 [node name="Walking" type="AnimatedSprite2D" parent="Animations/Movement"]
 visible = false
-position = Vector2(-6.395, -6.834)
-scale = Vector2(3.2, 4.4)
 sprite_frames = SubResource("SpriteFrames_0vfec")
 animation = &"Bottom"
 
-[node name="Running" type="AnimatedSprite2D" parent="Animations/Movement"]
-visible = false
-position = Vector2(41, 59)
-scale = Vector2(0.312727, 0.29267)
-sprite_frames = SubResource("SpriteFrames_07txw")
-animation = &"Run"
-
 [node name="Dashing" type="AnimatedSprite2D" parent="Animations/Movement"]
+visible = false
 material = SubResource("ShaderMaterial_21x4a")
-position = Vector2(2.86102e-06, -5.72205e-06)
-scale = Vector2(3.2, 4.4)
+position = Vector2(6.10352e-05, 0.0001297)
 sprite_frames = SubResource("SpriteFrames_pi8xy")
 animation = &"Default"
+frame = 3
 frame_progress = 1.0
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
@@ -360,30 +333,105 @@ position = Vector2(7.27596e-12, 1.45519e-11)
 scale = Vector2(1.06996, 1)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(-7.99418, 0)
+position = Vector2(-1.86923, -8)
 shape = SubResource("RectangleShape2D_6pus8")
 
 [node name="EntityUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="PlayerMenu" type="Panel" parent="EntityUI"]
-layout_direction = 3
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 573.0
-offset_top = -1305.0
-offset_right = 921.0
-offset_bottom = -1150.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(12.5019, 15.5104)
+[node name="MenuWindow" type="Panel" parent="EntityUI"]
+layout_mode = 0
+offset_left = -180.0
+offset_top = -160.0
+offset_right = 717.0
+offset_bottom = 292.0
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
-theme_override_styles/panel = SubResource("StyleBoxEmpty_2aiuw")
-metadata/_edit_use_anchors_ = true
-metadata/_edit_lock_ = true
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2fcf8")
+
+[node name="AttributesWindow" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 617.0
+offset_top = 24.0
+offset_right = -18.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="EquippedItemsWindow" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 24.0
+offset_right = -509.0
+offset_bottom = -194.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="AttributesWindow2" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 321.0
+offset_top = 277.0
+offset_right = -509.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="AttributesWindow3" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 402.0
+offset_top = 277.0
+offset_right = -300.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="AttributesWindow4" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 402.0
+offset_top = 24.0
+offset_right = -300.0
+offset_bottom = -194.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+
+[node name="AttributesWindow5" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 277.0
+offset_right = -591.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false

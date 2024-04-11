@@ -1,83 +1,120 @@
 using Godot;
 
-namespace Entity.Commands.UI;
+namespace Entity.Commands;
 
-public class ToggleInventoryCommand : EntityBaseCommand
+public partial class EntityCommands
 {
-  private readonly Entity owner;
-
-  private Tween InventoryTween;
-
-  private Tween CameraTween;
-
-  public Vector2 CameraStartPosition;
-
-  public ToggleInventoryCommand(Entity entity) : base(entity)
+  public class TogglePlayerMenuCommand : EntityBaseCommand
   {
-    owner = entity;
+    private readonly Entity owner;
 
-    entity.Ready += () =>
-    {
-      CameraStartPosition = owner.Camera.Position;
-    };
-  }
+    private Tween InventoryTween;
 
-  public override void Execute(bool repeating)
-  {
-    if (repeating)
+    private Tween CameraTween;
+
+    public Vector2 CameraStartPosition;
+
+    public Callable setGlobalCamera;
+    public Callable setPlayerCamera;
+
+    public TogglePlayerMenuCommand(Entity entity) : base(entity)
     {
-      return;
+      owner = entity;
+
+      setGlobalCamera = Callable.From(() => Entity.GlobalCamera.MakeCurrent());
+      setPlayerCamera = Callable.From(() =>
+      {
+        owner.Camera.GlobalPosition = Entity.GlobalCamera.GlobalPosition;
+        owner.Camera.Zoom = Entity.GlobalCamera.Zoom;
+        owner.Camera.MakeCurrent();
+      });
+
+      entity.Ready += () =>
+      {
+        CameraStartPosition = owner.Camera.Position;
+      };
     }
 
-    InventoryTween?.Kill();
-    CameraTween?.Kill();
-
-    CameraTween = owner.GetTree().CreateTween();
-    InventoryTween = owner.GetTree().CreateTween();
-
-    if (owner.InventoryWindow.Visible)
+    public override void Execute(bool repeating)
     {
-      CameraTween.TweenProperty(
-        owner.Camera,
-         "zoom",
-         new Vector2(1, 1),
+      if (repeating)
+      {
+        return;
+      }
+
+      InventoryTween?.Kill();
+      CameraTween?.Kill();
+
+      CameraTween = owner.GetTree().CreateTween();
+      InventoryTween = owner.GetTree().CreateTween();
+      owner.MovementController.DisableMovement();
+      owner.directionState.FacingDirectionVector = new Vector2 { X = 1, Y = 0 };
+
+      if (owner.MenuWindow.Visible)
+      {
+        InventoryTween.TweenCallback(setGlobalCamera);
+
+        CameraTween.TweenProperty(
+           Entity.GlobalCamera,
+           "zoom",
+           new Vector2(1, 1),
+            0.2f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
+
+        CameraTween.TweenProperty(
+           Entity.GlobalCamera,
+          "position",
+          Vector2.Zero,
+          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
+
+        InventoryTween.TweenProperty(
+          owner.MenuWindow,
+          "modulate:a",
+          0,
+          0.3f).SetTrans(Tween.TransitionType.Linear);
+
+        InventoryTween.TweenCallback(Callable.From(() =>
+        {
+          owner.MenuWindow.Visible = false;
+          owner.MovementController.EnableMovement();
+        }));
+
+      }
+      else
+      {
+        float cameraOffsetX = 350f;
+        float cameraOffsetY = 130f;
+        owner.MenuWindow.Visible = true;
+
+        CameraTween.TweenProperty(
+          Entity.GlobalCamera,
+          "position",
+          owner.GlobalPosition + new Vector2(cameraOffsetX, cameraOffsetY),
           0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.Out);
 
-      InventoryTween.TweenProperty(
-        owner.InventoryWindow,
-        "modulate:a",
-        0,
-        0.2f).SetTrans(Tween.TransitionType.Linear);
+        CameraTween.TweenProperty(
+          Entity.GlobalCamera,
+           "zoom",
+           new Vector2(4f, 4f),
+            0.3f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
 
-      CameraTween.TweenProperty(
-        owner.Camera,
-        "position",
-        CameraStartPosition,
-        0.2f).SetTrans(Tween.TransitionType.Linear);
 
-      InventoryTween.TweenCallback(Callable.From(() => owner.InventoryWindow.Visible = false));
-    }
-    else
-    {
-      owner.InventoryWindow.Visible = true;
+        var viewportSize = Entity.GlobalCamera.GetViewportRect().Size;
+        owner.MenuWindow.Scale = new Vector2(1, 1);
 
-      CameraTween.TweenProperty(
-        owner.Camera,
-        "position",
-        CameraStartPosition + new Vector2(1250f, -100f),
-        0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
+        owner.MenuWindow.SetPosition(new()
+        {
+          X = -140,
+          Y = -(owner.MenuWindow.Size.Y / 2) + cameraOffsetY - 15
+        });
 
-      CameraTween.TweenProperty(
-        owner.Camera,
-         "zoom",
-         new Vector2(1.5f, 1.5f),
-          0.1f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.In);
+        InventoryTween.TweenProperty(
+          owner.MenuWindow,
+          "modulate:a",
+          1,
+          0.2f).SetTrans(Tween.TransitionType.Linear);
 
-      InventoryTween.TweenProperty(
-        owner.InventoryWindow,
-        "modulate:a",
-        1,
-        0.2f).SetTrans(Tween.TransitionType.Linear);
+        InventoryTween.TweenCallback(setPlayerCamera);
+      }
     }
   }
 }
