@@ -364,8 +364,9 @@ shape = SubResource("RectangleShape2D_6pus8")
 [node name="EntityUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 size_flags_vertical = 3
+metadata/_edit_lock_ = true
 
 [node name="MenuWindow" type="Panel" parent="EntityUI"]
 layout_mode = 0
@@ -376,6 +377,7 @@ offset_bottom = 292.0
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2fcf8")
+metadata/_edit_lock_ = true
 
 [node name="TabContainer" type="TabContainer" parent="EntityUI/MenuWindow"]
 layout_mode = 1
@@ -390,9 +392,11 @@ grow_vertical = 2
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_0k7ic")
 clip_tabs = false
 tab_focus_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Player" type="Panel" parent="EntityUI/MenuWindow/TabContainer"]
 layout_mode = 2
+metadata/_edit_lock_ = true
 
 [node name="EquippedItems" type="Panel" parent="EntityUI/MenuWindow/TabContainer/Player"]
 layout_mode = 1
@@ -407,6 +411,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="EntityUI/MenuWindow/TabContainer/Player/EquippedItems"]
 layout_mode = 1
@@ -436,6 +441,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="EntityUI/MenuWindow/TabContainer/Player/Attributes"]
 layout_mode = 1
@@ -465,6 +471,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="EntityUI/MenuWindow/TabContainer/Player/Status"]
 layout_mode = 1
@@ -494,6 +501,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="EntityUI/MenuWindow/TabContainer/Player/Inventory"]
 layout_mode = 1
@@ -523,6 +531,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="EntityUI/MenuWindow/TabContainer/Player/Quests"]
 layout_mode = 1
