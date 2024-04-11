@@ -81,8 +81,8 @@ public partial class EntityCommands
       }
       else
       {
-        float cameraOffsetX = 350f;
-        float cameraOffsetY = 130f;
+        float cameraOffsetX = 370f;
+        float cameraOffsetY = 50f;
         owner.MenuWindow.Visible = true;
 
         CameraTween.TweenProperty(
@@ -103,7 +103,7 @@ public partial class EntityCommands
 
         owner.MenuWindow.SetPosition(new()
         {
-          X = -140,
+          X = -120,
           Y = -(owner.MenuWindow.Size.Y / 2) + cameraOffsetY - 15
         });
 

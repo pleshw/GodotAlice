@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=44 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
@@ -287,6 +287,14 @@ size = Vector2(59.8153, 86)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fcf8"]
 
+[sub_resource type="SystemFont" id="SystemFont_s3ky4"]
+font_names = PackedStringArray("Sans-Serif")
+font_italic = true
+font_weight = 250
+msdf_pixel_range = 28
+msdf_size = 28
+oversampling = 1.5
+
 [node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI", "MenuWindow", "AttributesWindow", "EquippedItemsWindow")]
 position = Vector2(-1.35525e-20, -8.13152e-20)
 script = ExtResource("1_vfx70")
@@ -294,8 +302,8 @@ Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
 EntityUI = NodePath("EntityUI")
 MenuWindow = NodePath("EntityUI/MenuWindow")
-AttributesWindow = NodePath("EntityUI/MenuWindow/AttributesWindow")
-EquippedItemsWindow = NodePath("EntityUI/MenuWindow/EquippedItemsWindow")
+AttributesWindow = NodePath("EntityUI/MenuWindow/Inventory")
+EquippedItemsWindow = NodePath("EntityUI/MenuWindow/EquippedItems")
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(0, -0.00012207)
@@ -345,93 +353,164 @@ size_flags_vertical = 3
 [node name="MenuWindow" type="Panel" parent="EntityUI"]
 layout_mode = 0
 offset_left = -180.0
-offset_top = -160.0
+offset_top = -133.0
 offset_right = 717.0
 offset_bottom = 292.0
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2fcf8")
 
-[node name="AttributesWindow" type="Panel" parent="EntityUI/MenuWindow"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 617.0
-offset_top = 24.0
-offset_right = -18.0
-offset_bottom = -19.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-mouse_force_pass_scroll_events = false
-
-[node name="EquippedItemsWindow" type="Panel" parent="EntityUI/MenuWindow"]
+[node name="TabContainer" type="TabContainer" parent="EntityUI/MenuWindow"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 34.0
-offset_top = 24.0
-offset_right = -509.0
-offset_bottom = -194.0
+offset_right = -18.0
+offset_bottom = -373.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EquippedItems" type="Panel" parent="EntityUI/MenuWindow"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 203.0
+offset_top = 73.0
+offset_right = -499.0
+offset_bottom = -183.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 
-[node name="AttributesWindow2" type="Panel" parent="EntityUI/MenuWindow"]
+[node name="Label" type="Label" parent="EntityUI/MenuWindow/EquippedItems"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -118.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_s3ky4")
+theme_override_font_sizes/font_size = 12
+text = "Equipment"
+
+[node name="Attributes" type="Panel" parent="EntityUI/MenuWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 321.0
-offset_top = 277.0
-offset_right = -509.0
-offset_bottom = -19.0
+offset_left = 411.0
+offset_top = 73.0
+offset_right = -291.0
+offset_bottom = -183.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 
-[node name="AttributesWindow3" type="Panel" parent="EntityUI/MenuWindow"]
+[node name="Label" type="Label" parent="EntityUI/MenuWindow/Attributes"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -118.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_s3ky4")
+theme_override_font_sizes/font_size = 12
+text = "Attributes"
+
+[node name="Status" type="Panel" parent="EntityUI/MenuWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 402.0
-offset_top = 277.0
-offset_right = -300.0
-offset_bottom = -19.0
+offset_left = 411.0
+offset_top = 255.0
+offset_right = -291.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 
-[node name="AttributesWindow4" type="Panel" parent="EntityUI/MenuWindow"]
+[node name="Label" type="Label" parent="EntityUI/MenuWindow/Status"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -118.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_s3ky4")
+theme_override_font_sizes/font_size = 12
+text = "Status"
+
+[node name="Inventory" type="Panel" parent="EntityUI/MenuWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 402.0
-offset_top = 24.0
-offset_right = -300.0
-offset_bottom = -194.0
+offset_left = 617.0
+offset_top = 73.0
+offset_right = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
 
-[node name="AttributesWindow5" type="Panel" parent="EntityUI/MenuWindow"]
+[node name="Label" type="Label" parent="EntityUI/MenuWindow/Inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -118.0
+offset_bottom = -307.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_s3ky4")
+theme_override_font_sizes/font_size = 12
+text = "Inventory"
+
+[node name="Quests" type="Panel" parent="EntityUI/MenuWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 34.0
-offset_top = 277.0
-offset_right = -591.0
-offset_bottom = -19.0
+offset_top = 255.0
+offset_right = -499.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 mouse_force_pass_scroll_events = false
+
+[node name="Label" type="Label" parent="EntityUI/MenuWindow/Quests"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -118.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_s3ky4")
+theme_override_font_sizes/font_size = 12
+text = "Quests"
