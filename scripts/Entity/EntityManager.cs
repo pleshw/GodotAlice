@@ -18,10 +18,11 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		base._Ready();
 		EntityPrefab = ResourceLoader.Load(ResourceName) as PackedScene;
 	}
 
-	public bool TrySpawnAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
+	public bool TryInstantiateAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
 	{
 		if (maxAmountOfInstances > 0 && _entityInstances.Count >= maxAmountOfInstances)
 		{
@@ -29,22 +30,22 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 			return false;
 		}
 
-		entityInstance = AddEntityInstance();
+		entityInstance = GetEntityInstance();
 
 		entityInstance.MovementController.initialPosition = position;
 
-		CallDeferred(nameof(SpawnEntity), entityInstance);
+		CallDeferred(nameof(AddEntityNodeToScene), entityInstance);
 
 		return true;
 	}
 
-	private void SpawnEntity(Entity entityPrefab)
+	private void AddEntityNodeToScene(Entity entityPrefab)
 	{
 		AddChild(entityPrefab);
 		entityPrefab.Spawned = true;
 	}
 
-	private EntityType AddEntityInstance()
+	private EntityType GetEntityInstance()
 	{
 		EntityType entityPrefab = EntityPrefab.Instantiate() as EntityType;
 

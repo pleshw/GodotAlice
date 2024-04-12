@@ -189,6 +189,8 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		};
 
 		UIMenu.Visible = false;
+
+		AddToGroup("Entities");
 	}
 
 	public override void _PhysicsProcess(double delta)

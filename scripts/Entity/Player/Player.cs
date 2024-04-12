@@ -42,6 +42,8 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
     });
 
 
+    AddToGroup("Players");
+
     // Camera.MakeCurrent();
     // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
   }

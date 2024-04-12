@@ -1,20 +1,21 @@
 using System;
+using GameManagers;
 using Godot;
 
 namespace Entity;
 
 [GlobalClass]
-public partial class EntityInventoryItem : Resource
+public partial class EntityInventoryItem : Resource, IGameResource
 {
   [Export]
-  public string Id;
+  public StringName ItemId { get; set; }
 
   [Export]
-  public string Name;
+  public StringName ItemName { get; set; }
 
   [Export]
-  public string Description;
+  public string ItemDescription { get; set; }
 
   [Export]
-  public Texture2D Texture;
+  public SpriteFrames Sprite { get; set; }
 }

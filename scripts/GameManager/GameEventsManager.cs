@@ -4,7 +4,7 @@ using Godot;
 
 namespace GameManagers;
 
-public static partial class GameEventsManager
+public partial class GameEventsManager : Node
 {
 
 }

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfe4s4i05q026"]
+
+[ext_resource type="Script" path="res://scripts/Items/Equipment/BareHands.cs" id="1_syehm"]
+[ext_resource type="Resource" uid="uid://c584iv8qg7upj" path="res://resources/equipment/bare_hands.tres" id="2_umuvd"]
+
+[node name="BareHands" type="Node2D"]
+script = ExtResource("1_syehm")
+SlotType = 12
+ItemResource = ExtResource("2_umuvd")

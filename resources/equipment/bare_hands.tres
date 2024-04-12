@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="EntityEquipmentResource" load_steps=5 format=3 uid="uid://c584iv8qg7upj"]
+
+[ext_resource type="Texture2D" uid="uid://dy033uvfx7yr1" path="res://assets/packs/Pixel_Hand_Gesture_Cursor_Asset(v1.0)/palm/palm12.png" id="1_lxucy"]
+[ext_resource type="Script" path="res://scripts/Entity/Equipement/EntityEquipmentResource.cs" id="2_6nbxh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fmepd"]
+atlas = ExtResource("1_lxucy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7od5i"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fmepd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("2_6nbxh")
+ItemId = &"BareHands"
+ItemName = &"Bare Hands"
+ItemDescription = "Show them your true weapons."
+Sprite = SubResource("SpriteFrames_7od5i")

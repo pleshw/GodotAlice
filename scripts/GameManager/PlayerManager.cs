@@ -24,6 +24,6 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
 
     Entity.Entity.GlobalCamera = GlobalCamera;
 
-    TrySpawnAtPosition(playerSpawnPoint, out playerInstance, 1);
+    TryInstantiateAtPosition(playerSpawnPoint, out playerInstance, 1);
   }
 }

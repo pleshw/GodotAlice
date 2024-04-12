@@ -1,23 +1,17 @@
 
+using System.Collections.Generic;
+using GameManagers;
 using Godot;
 
 namespace Entity;
 
 
-public abstract partial class EntityEquipmentBase : Resource, IEquipment
+public abstract partial class EntityEquipmentBase : Node2D, IEquipment
 {
+  public EntityEquipmentBase NodeInstanceLoaded { get; set; }
+
   [Export]
-  public SpriteFrames SpriteResource { get; set; }
-
-  /// <summary>
-  /// The name of the .tres file at the path $"res://resources/equipment/{resourceToLoad.ItemId}.tres";
-  /// </summary>
-  public abstract string ItemId { get; set; }
-
-  /// <summary>
-  /// The name that will be displayed
-  /// </summary>
-  public abstract string ItemName { get; set; }
+  public EntityEquipmentResource ItemResource { get; set; }
 
   public abstract EntityEquipmentSlotType SlotType { get; set; }
 
@@ -27,7 +21,9 @@ public abstract partial class EntityEquipmentBase : Resource, IEquipment
 
   public abstract void ModifyStats(Entity entity);
 
-  public abstract void ExecuteEffect(Entity entity, Entity target);
+  public abstract void ExecuteEffect(Entity entity, List<Entity> targets);
+
+  public abstract void PassiveEffect(Entity entity, List<Entity> targets);
 
   public bool CheckCanEquipAtPosition(EntityEquipmentSlotType position)
   {
@@ -42,6 +38,12 @@ public abstract partial class EntityEquipmentBase : Resource, IEquipment
   public bool CanEquip(Entity entity)
   {
     return LevelRequired <= entity.Level;
+  }
+
+  public override void _Ready()
+  {
+    base._Ready();
+    NodeInstanceLoaded = EntityEquipmentResourceManager.Instance.CreateInstance(ItemResource.ItemId);
   }
 
   public bool TryEquip(Entity entity, EntityEquipmentSlotType position)
