@@ -46,9 +46,9 @@ public partial class EntityCommands
       owner.MovementController.DisableMovement();
       owner.directionState.FacingDirectionVector = new Vector2 { X = 1, Y = 0 };
 
-      owner.MenuWindow.SetIndexed("modulate:a", 0.0f);
+      owner.UIMenu.SetIndexed("modulate:a", 0.0f);
 
-      if (owner.MenuWindow.Visible)
+      if (owner.UIMenu.Visible)
       {
         InventoryTween.TweenCallback(setGlobalCamera);
 
@@ -66,7 +66,7 @@ public partial class EntityCommands
 
         InventoryTween.TweenCallback(Callable.From(() =>
         {
-          owner.MenuWindow.Visible = false;
+          owner.UIMenu.Visible = false;
           owner.MovementController.EnableMovement();
         }));
       }
@@ -74,7 +74,7 @@ public partial class EntityCommands
       {
         float cameraOffsetX = 370f;
         float cameraOffsetY = 50f;
-        owner.MenuWindow.Visible = true;
+        owner.UIMenu.Visible = true;
 
         InventoryTween.TweenProperty(
           Entity.GlobalCamera,
@@ -90,16 +90,16 @@ public partial class EntityCommands
 
 
         var viewportSize = Entity.GlobalCamera.GetViewportRect().Size;
-        owner.MenuWindow.Scale = new Vector2(1, 1);
+        owner.UIMenu.Scale = new Vector2(1, 1);
 
-        owner.MenuWindow.SetPosition(new()
+        owner.UIMenu.SetPosition(new()
         {
           X = -120,
-          Y = -(owner.MenuWindow.Size.Y / 2) + cameraOffsetY - 15
+          Y = -(owner.UIMenu.Size.Y / 2) + cameraOffsetY - 15
         });
 
         InventoryTween.TweenProperty(
-          owner.MenuWindow,
+          owner.UIMenu,
           "modulate:a",
           1,
           0.5f).SetTrans(Tween.TransitionType.Linear);

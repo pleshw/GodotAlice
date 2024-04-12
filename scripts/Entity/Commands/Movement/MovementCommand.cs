@@ -22,7 +22,7 @@ public partial class EntityCommands
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.TOP;
-      entity.EmitSignal(Entity.SignalName.MovementInputTriggered);
+      entity.MovementInputEvent();
     }
   }
 
@@ -42,7 +42,7 @@ public partial class EntityCommands
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.RIGHT;
-      entity.EmitSignal(Entity.SignalName.MovementInputTriggered);
+      entity.MovementInputEvent();
     }
   }
 
@@ -63,7 +63,7 @@ public partial class EntityCommands
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.BOTTOM;
-      entity.EmitSignal(Entity.SignalName.MovementInputTriggered);
+      entity.MovementInputEvent();
     }
   }
 
@@ -88,7 +88,7 @@ public partial class EntityCommands
         MovementState = MOVEMENT_STATE.DASHING,
       });
 
-      entity.EmitSignal(Entity.SignalName.MovementInputTriggered);
+      entity.MovementInputEvent();
 
       lastDashTime = currentTime; // Record the time of this dash
     }
@@ -109,7 +109,7 @@ public partial class EntityCommands
         MovementState = MOVEMENT_STATE.WALKING,
       });
       entity.directionState.LastCommandDirection = DIRECTIONS.LEFT;
-      entity.EmitSignal(Entity.SignalName.MovementInputTriggered);
+      entity.MovementInputEvent();
     }
   }
 

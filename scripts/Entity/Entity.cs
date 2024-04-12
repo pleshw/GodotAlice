@@ -22,15 +22,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	[Export]
 	public Control EntityUI { get; set; }
 
-	[Export]
-	public Control MenuWindow { get; set; }
-
-	[Export]
-	public Control AttributesWindow { get; set; }
-
-	[Export]
-	public Control EquippedItemsWindow { get; set; }
-
 	public EntityStats Stats { get; set; } = new();
 
 	public EntityDirectionState directionState = new();
@@ -45,7 +36,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityMovementAnimator movementAnimator;
 	public EntityAttackAnimator attackAnimator;
 
-	public EntityEquipment equipment;
+	public EntityEquipmentSlots equipment;
 
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
@@ -66,27 +57,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public float DashSpeedModifier { get; set; } = 8;
 	public float DashDistance { get { return MovementController.StepSize * 5f; } }
-
-	public Entity()
-	{
-		Setup();
-	}
-
-	public Entity(Vector2 initialPosition)
-	{
-		Setup(initialPosition, 32);
-	}
-
-	public void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
-	{
-		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
-		movementKeyBinds = new MovementCommandKeybindMap(this);
-		uiKeyBinds = new UICommandKeybindMap(this);
-		equipment = new EntityEquipment(this);
-		movementAnimator = new EntityMovementAnimator(this);
-		idleAnimator = new EntityIdleAnimator(this);
-		attackAnimator = new EntityAttackAnimator(this);
-	}
 
 
 	public Node AnimationsNode
@@ -147,6 +117,29 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public int Level { get; set; } = 1;
 
+	public Entity()
+	{
+		Setup();
+	}
+
+	public Entity(Vector2 initialPosition)
+	{
+		Setup(initialPosition, 32);
+	}
+
+	public void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
+	{
+		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
+		movementKeyBinds = new MovementCommandKeybindMap(this);
+		uiKeyBinds = new UICommandKeybindMap(this);
+		equipment = new EntityEquipmentSlots(this);
+		movementAnimator = new EntityMovementAnimator(this);
+		idleAnimator = new EntityIdleAnimator(this);
+		attackAnimator = new EntityAttackAnimator(this);
+	}
+
+
+
 	public static Dictionary<StringName, AnimatedSprite2D> GetMovementSpritesByName(Node2D node)
 	{
 		return node.GetChildren()
@@ -183,15 +176,19 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		AddAnimationSprites(IdleSpritesByName);
 		AddAnimationSprites(MovementSpritesByName);
 
-		GD.Print(AttackSpritesByName);
-
 		idleAnimator.OnReady();
 		movementAnimator.OnReady();
+		attackAnimator.OnReady();
 
 		idleAnimator.Play();
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 
-		MenuWindow.Visible = false;
+		OnTryEquipSuccessEvent += (EntityEquipmentBase equippedItem, EntityEquipmentSlotType position) =>
+		{
+
+		};
+
+		UIMenu.Visible = false;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -200,20 +197,4 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		MovementController.MovementProcess(delta, out bool _);
 	}
-
-
-	[Signal]
-	public delegate void StateChangedEventHandler();
-
-	[Signal]
-	public delegate void EntityStoppedEventHandler();
-
-	[Signal]
-	public delegate void EntityMovedEventHandler(Vector2 from, Vector2 to);
-
-	[Signal]
-	public delegate void MovementStateUpdatedEventHandler();
-
-	[Signal]
-	public delegate void MovementInputTriggeredEventHandler();
 }

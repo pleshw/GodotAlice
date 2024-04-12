@@ -3,9 +3,13 @@ using Godot;
 
 namespace Entity;
 
-public class EmptyEquipment : EntityBaseEquipment
+
+[GlobalClass]
+public partial class EmptyEquipment() : EntityEquipmentBase
 {
-  public override EntityEquipmentPosition Position { get; set; } = EntityEquipmentPosition.ANY;
+  public override string ItemId { get; set; } = "EmptyEquipment";
+  public override string ItemName { get; set; } = "Empty Equipment";
+  public override EntityEquipmentSlotType SlotType { get; set; } = EntityEquipmentSlotType.ANY;
 
   public override int LevelRequired { get; set; } = 0;
 
@@ -24,3 +28,4 @@ public class EmptyEquipment : EntityBaseEquipment
 
   }
 }
+

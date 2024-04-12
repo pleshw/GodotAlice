@@ -1,22 +1,30 @@
-
+using System.Collections.Generic;
 using Godot;
 
 namespace Entity;
 
-public class EntityEquipment(Entity entity)
+public static class EntityEquipment
 {
-  public Entity Entity = entity;
+  public static readonly HashSet<EntityEquipmentBase> Prefabs = [];
 
-  public IEquipment LeftHand { get; set; } = new EmptyEquipment();
-  public IEquipment RightHand { get; set; } = new EmptyEquipment();
+  public static StringName GetResourcePath(EntityEquipmentBase resourceToLoad)
+  {
+    return $"res://resources/equipment/{resourceToLoad.ItemId}.tres";
+  }
 
-  public IEquipment Helmet { get; set; } = new EmptyEquipment();
-  public IEquipment Armor { get; set; } = new EmptyEquipment();
-  public IEquipment Neck { get; set; } = new EmptyEquipment();
-  public IEquipment Back { get; set; } = new EmptyEquipment();
-  public IEquipment Legs { get; set; } = new EmptyEquipment();
-  public IEquipment Boots { get; set; } = new EmptyEquipment();
+  public static EntityEquipmentBase Instantiate(EntityEquipmentBase resourceToInstantiate)
+  {
+    if (Prefabs.TryGetValue(resourceToInstantiate, out EntityEquipmentBase res))
+    {
+      return ResourceLoader.Load<EntityEquipmentBase>(res.GetInstanceId().ToString());
+    }
 
-  public IEquipment AccessoryLeft { get; set; } = new EmptyEquipment();
-  public IEquipment AccessoryRight { get; set; } = new EmptyEquipment();
+    var instance = ResourceLoader.Load<EntityEquipmentBase>(GetResourcePath(resourceToInstantiate)).Duplicate() as EntityEquipmentBase;
+
+    Prefabs.Add(instance);
+
+    ResourceSaver.Save(instance, instance.GetInstanceId().ToString());
+
+    return instance;
+  }
 }

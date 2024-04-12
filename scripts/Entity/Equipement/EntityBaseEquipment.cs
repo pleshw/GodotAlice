@@ -4,29 +4,34 @@ using Godot;
 namespace Entity;
 
 
-public abstract class EntityBaseEquipment : IEquipment
+public abstract partial class EntityEquipmentBase : Resource, IEquipment
 {
-  public abstract EntityEquipmentPosition Position { get; set; }
+  [Export]
+  public SpriteFrames SpriteResource { get; set; }
+
+  /// <summary>
+  /// The name of the .tres file at the path $"res://resources/equipment/{resourceToLoad.ItemId}.tres";
+  /// </summary>
+  public abstract string ItemId { get; set; }
+
+  /// <summary>
+  /// The name that will be displayed
+  /// </summary>
+  public abstract string ItemName { get; set; }
+
+  public abstract EntityEquipmentSlotType SlotType { get; set; }
+
   public abstract int LevelRequired { get; set; }
 
-  public virtual void ModifyAttributes(Entity entity)
+  public abstract void ModifyAttributes(Entity entity);
+
+  public abstract void ModifyStats(Entity entity);
+
+  public abstract void ExecuteEffect(Entity entity, Entity target);
+
+  public bool CheckCanEquipAtPosition(EntityEquipmentSlotType position)
   {
-
-  }
-
-  public virtual void ModifyStats(Entity entity)
-  {
-
-  }
-
-  public virtual void ExecuteEffect(Entity entity, Entity target)
-  {
-
-  }
-
-  public bool CheckCanEquipAtPosition(EntityEquipmentPosition position)
-  {
-    return Position == EntityEquipmentPosition.ANY || Position == position;
+    return SlotType == EntityEquipmentSlotType.ANY || SlotType == position;
   }
 
   public bool CheckCanEquipAtLevel(int entityLevel)
@@ -39,55 +44,66 @@ public abstract class EntityBaseEquipment : IEquipment
     return LevelRequired <= entity.Level;
   }
 
-  public bool TryEquip(Entity entity, EntityEquipmentPosition position)
+  public bool TryEquip(Entity entity, EntityEquipmentSlotType position)
   {
     if (!CheckCanEquipAtPosition(position) || !CheckCanEquipAtLevel(entity.Level))
     {
       return false;
     }
 
-    if (position == EntityEquipmentPosition.ANY)
+    if (position == EntityEquipmentSlotType.ANY)
     {
       return false;
     }
 
     switch (position)
     {
-      case EntityEquipmentPosition.ANY:
+      case EntityEquipmentSlotType.ANY:
         entity.equipment.AccessoryLeft = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
 
-      case EntityEquipmentPosition.LEFT_HAND:
+      case EntityEquipmentSlotType.LEFT_HAND:
         entity.equipment.LeftHand = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.RIGHT_HAND:
+      case EntityEquipmentSlotType.RIGHT_HAND:
         entity.equipment.RightHand = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
 
-      case EntityEquipmentPosition.HELMET:
+      case EntityEquipmentSlotType.HELMET:
         entity.equipment.Helmet = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.ARMOR:
+      case EntityEquipmentSlotType.ARMOR:
         entity.equipment.Armor = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.NECK:
+      case EntityEquipmentSlotType.NECK:
         entity.equipment.Neck = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.BACK:
+      case EntityEquipmentSlotType.BACK:
         entity.equipment.Back = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.LEGS:
+      case EntityEquipmentSlotType.LEGS:
         entity.equipment.Legs = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.BOOTS:
+      case EntityEquipmentSlotType.BOOTS:
         entity.equipment.Boots = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
 
-      case EntityEquipmentPosition.ACCESSORY_LEFT:
+      case EntityEquipmentSlotType.ACCESSORY_LEFT:
         entity.equipment.AccessoryLeft = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
-      case EntityEquipmentPosition.ACCESSORY_RIGHT:
+      case EntityEquipmentSlotType.ACCESSORY_RIGHT:
         entity.equipment.AccessoryRight = this;
+        entity.TryEquipSuccessEvent(this, position);
         return true;
 
       default: return false;

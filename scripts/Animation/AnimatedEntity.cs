@@ -1,6 +1,7 @@
 using Godot;
 using Entity;
 using System;
+using GameManagers;
 
 
 namespace Animation;
@@ -17,12 +18,12 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity.E
     AnimationState = EntityAnimationInfo.GetInfoFrom(this);
 
 
-    EntityStopped += () =>
+    OnEntityStoppedEvent += () =>
     {
       idleAnimator.Play();
     };
 
-    EntityMoved += (Vector2 from, Vector2 to) =>
+    OnEntityMovedEvent += (Vector2 from, Vector2 to) =>
     {
       movementAnimator.Play();
     };

@@ -1,6 +1,9 @@
+using System;
+
 namespace Entity;
 
-public enum EntityEquipmentPosition
+[Flags]
+public enum EntityEquipmentSlotType
 {
   ANY,
 

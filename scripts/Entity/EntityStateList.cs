@@ -12,12 +12,12 @@ public class EntityStateList<T>(Entity entityReference, Comparer<T> comparer) : 
   public new void Add(T item)
   {
     base.Add(item);
-    entityReference.EmitSignal(Entity.SignalName.StateChanged);
+    entityReference.StateHasChangedEvent();
   }
 
   public new void Remove(T item)
   {
     base.Remove(item);
-    entityReference.EmitSignal(Entity.SignalName.StateChanged);
+    entityReference.StateHasChangedEvent();
   }
 }

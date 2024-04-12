@@ -23,6 +23,7 @@ window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
+mouse_cursor/custom_image="res://assets/packs/Tiny Swords/UI/Pointers/01.png"
 
 [dotnet]
 

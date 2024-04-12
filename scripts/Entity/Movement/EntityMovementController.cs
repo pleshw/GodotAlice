@@ -200,7 +200,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
     _states.Add(MOVEMENT_STATE.IDLE);
     _states.Remove(MOVEMENT_STATE.WALKING);
-    entity.EmitSignal(Entity.SignalName.EntityStopped);
+    entity.EntityStoppedEvent();
   }
 
   public void Moved()
@@ -212,7 +212,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
     _states.Add(MOVEMENT_STATE.WALKING);
     _states.Remove(MOVEMENT_STATE.IDLE);
-    entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
+    entity.EntityMovedEvent(entity.Position, TargetPosition);
   }
 
   public void Dashed()
@@ -220,7 +220,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     _states.Add(MOVEMENT_STATE.DASHING);
     _states.Remove(MOVEMENT_STATE.IDLE);
     _states.Remove(MOVEMENT_STATE.WALKING);
-    entity.EmitSignal(Entity.SignalName.EntityMoved, entity.Position, TargetPosition);
+    entity.EntityMovedEvent(entity.Position, TargetPosition);
   }
 
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
