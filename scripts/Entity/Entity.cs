@@ -43,6 +43,10 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public EntityIdleAnimator idleAnimator;
 	public EntityMovementAnimator movementAnimator;
+	public EntityAttackAnimator attackAnimator;
+
+	public EntityEquipment equipment;
+
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
 
@@ -78,8 +82,10 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
 		movementKeyBinds = new MovementCommandKeybindMap(this);
 		uiKeyBinds = new UICommandKeybindMap(this);
+		equipment = new EntityEquipment(this);
 		movementAnimator = new EntityMovementAnimator(this);
 		idleAnimator = new EntityIdleAnimator(this);
+		attackAnimator = new EntityAttackAnimator(this);
 	}
 
 
@@ -107,27 +113,58 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		}
 	}
 
-	public Dictionary<StringName, AnimatedSprite2D> MovementAnimations
+	public Node2D AttackAnimationsNode
 	{
 		get
 		{
-			return GetDictAnimationSpritesByName(MovementAnimationsNode);
+			return AnimationsNode.GetNode<Node2D>("Attack");
 		}
 	}
 
-	public Dictionary<StringName, AnimatedSprite2D> IdleAnimationsSpritesByName
+	public Dictionary<StringName, AnimatedSprite2D> MovementSpritesByName
 	{
 		get
 		{
-			return GetDictAnimationSpritesByName(IdleAnimationsNode);
+			return GetMovementSpritesByName(MovementAnimationsNode);
 		}
 	}
 
-	public static Dictionary<StringName, AnimatedSprite2D> GetDictAnimationSpritesByName(Node2D node)
+	public Dictionary<StringName, AnimatedSprite2D> IdleSpritesByName
+	{
+		get
+		{
+			return GetMovementSpritesByName(IdleAnimationsNode);
+		}
+	}
+
+	public Dictionary<StringName, List<AnimatedSprite2D>> AttackSpritesByName
+	{
+		get
+		{
+			return GetAttackSpritesByName(AttackAnimationsNode);
+		}
+	}
+
+	public int Level { get; set; } = 1;
+
+	public static Dictionary<StringName, AnimatedSprite2D> GetMovementSpritesByName(Node2D node)
 	{
 		return node.GetChildren()
 				.Select(c => c as AnimatedSprite2D)
 				.ToDictionary(sprite => sprite.Name, sprite => sprite);
+	}
+
+	public static Dictionary<StringName, List<AnimatedSprite2D>> GetAttackSpritesByName(Node2D node)
+	{
+		return node.GetChildren()
+				.OfType<Node2D>()
+				.Select(weapon => new
+				{
+					WeaponName = weapon.Name,
+					Sprites = weapon.GetChildren().OfType<AnimatedSprite2D>().ToList()
+				})
+				.Where(weapon => weapon.Sprites.Count != 0)
+				.ToDictionary(weapon => weapon.WeaponName, weapon => weapon.Sprites);
 	}
 
 	private void AddAnimationSprites(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
@@ -143,8 +180,10 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	{
 		base._Ready();
 
-		AddAnimationSprites(IdleAnimationsSpritesByName);
-		AddAnimationSprites(MovementAnimations);
+		AddAnimationSprites(IdleSpritesByName);
+		AddAnimationSprites(MovementSpritesByName);
+
+		GD.Print(AttackSpritesByName);
 
 		idleAnimator.OnReady();
 		movementAnimator.OnReady();

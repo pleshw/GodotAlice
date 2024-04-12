@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=58 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
@@ -282,6 +282,103 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0qw1"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vj2xl"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t20ll"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xcbsw"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3e6n"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_le5b7"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5gdp"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2yyg"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wvw28"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cfi4"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjoxr"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cyksu"]
+atlas = ExtResource("2_thuhd")
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dsxjp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0qw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vj2xl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t20ll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xcbsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a3e6n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_le5b7")
+}],
+"loop": false,
+"name": &"1",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5gdp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v2yyg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wvw28")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cfi4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjoxr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cyksu")
+}],
+"loop": true,
+"name": &"2",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(59.8153, 86)
 
@@ -352,6 +449,16 @@ sprite_frames = SubResource("SpriteFrames_pi8xy")
 animation = &"Default"
 frame = 3
 frame_progress = 1.0
+
+[node name="Attack" type="Node2D" parent="Animations"]
+
+[node name="Sword" type="Node2D" parent="Animations/Attack"]
+visible = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Animations/Attack/Sword"]
+visible = false
+sprite_frames = SubResource("SpriteFrames_dsxjp")
+animation = &"2"
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
 position = Vector2(7.27596e-12, 1.45519e-11)
