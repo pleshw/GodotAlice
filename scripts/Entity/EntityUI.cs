@@ -8,7 +8,7 @@ public partial class Entity
   {
     get
     {
-      return EntityUI.GetNode<Control>("Menu");
+      return PlayerMenu.GetNode<Control>("Menu");
     }
   }
 

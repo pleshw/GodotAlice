@@ -15,10 +15,11 @@ public partial class EntityCommands
     public Callable setGlobalCamera;
     public Callable setPlayerCamera;
 
+    public Vector2 playerAnimPosition;
+
     public TogglePlayerMenuCommand(Entity entity) : base(entity)
     {
       owner = entity;
-
       setGlobalCamera = Callable.From(() => Entity.GlobalCamera.MakeCurrent());
       setPlayerCamera = Callable.From(() =>
       {
@@ -52,18 +53,6 @@ public partial class EntityCommands
       {
         InventoryTween.TweenCallback(setGlobalCamera);
 
-        InventoryTween.TweenProperty(
-           Entity.GlobalCamera,
-           "zoom",
-           new Vector2(1, 1),
-            0.2f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
-
-        InventoryTween.TweenProperty(
-           Entity.GlobalCamera,
-          "position",
-          Vector2.Zero,
-          0.3f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
-
         InventoryTween.TweenCallback(Callable.From(() =>
         {
           owner.UIMenu.Visible = false;
@@ -72,37 +61,17 @@ public partial class EntityCommands
       }
       else
       {
-        float cameraOffsetX = 370f;
-        float cameraOffsetY = 50f;
         owner.UIMenu.Visible = true;
 
-        InventoryTween.TweenProperty(
-          Entity.GlobalCamera,
-          "position",
-          owner.GlobalPosition + new Vector2(cameraOffsetX, cameraOffsetY),
-          0.2f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.Out);
-
-        InventoryTween.TweenProperty(
-          Entity.GlobalCamera,
-           "zoom",
-           new Vector2(2f, 2f),
-            0.3f).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.OutIn);
-
-
-        var viewportSize = Entity.GlobalCamera.GetViewportRect().Size;
-        owner.UIMenu.Scale = new Vector2(1, 1);
-
-        owner.UIMenu.SetPosition(new()
-        {
-          X = -120,
-          Y = -(owner.UIMenu.Size.Y / 2) + cameraOffsetY - 15
-        });
+        var viewportSize = owner.Camera.GetViewport().GetVisibleRect().Size;
+        owner.UIMenu.SetSize(viewportSize);
+        owner.UIMenu.Scale = Vector2.One;
 
         InventoryTween.TweenProperty(
           owner.UIMenu,
           "modulate:a",
           1,
-          0.5f).SetTrans(Tween.TransitionType.Linear);
+          0.4f).SetTrans(Tween.TransitionType.Linear);
 
         InventoryTween.TweenCallback(setPlayerCamera);
       }

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://dg7lw6brvdugq"]
+
+[ext_resource type="PackedScene" uid="uid://dqljtoqtorhon" path="res://prefabs/ui/menu/components/player_menu_panel_equipment.tscn" id="1_30icf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lbifr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bq720"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="EntityUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_force_pass_scroll_events = false
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lbifr")
+
+[node name="TabContainer" type="TabContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_bq720")
+tab_focus_mode = 0
+
+[node name="Player" type="Panel" parent="Menu/TabContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/TabContainer/Player"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0369792
+anchor_top = 0.0505243
+anchor_right = 0.290625
+anchor_bottom = 0.546234
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayerMenuPanel" parent="Menu/TabContainer/Player/HBoxContainer" instance=ExtResource("1_30icf")]
+layout_mode = 2
+size_flags_horizontal = 3
+Title = &"Equipment"

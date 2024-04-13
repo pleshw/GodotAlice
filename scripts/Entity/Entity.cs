@@ -20,7 +20,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public CollisionShape2D[] CollisionShapes { get; set; }
 
 	[Export]
-	public Control EntityUI { get; set; }
+	public Control PlayerMenu { get; set; }
 
 	public EntityStats Stats { get; set; } = new();
 

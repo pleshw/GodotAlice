@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="4_7rn4v"]
-[ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/EntityUI.tscn" id="4_ga50r"]
+[ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/menu/player_menu.tscn" id="4_ga50r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7dn3"]
 atlas = ExtResource("2_thuhd")
@@ -384,23 +384,21 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(59.8153, 86)
+size = Vector2(59.8153, 79)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "EntityUI")]
-top_level = true
+[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "PlayerMenu")]
 visibility_layer = 2
 script = ExtResource("1_vfx70")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
-EntityUI = NodePath("EntityUi")
+PlayerMenu = NodePath("PlayerMenu")
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2(0, -0.00012207)
+anchor_mode = 0
 zoom = Vector2(2, 2)
 
 [node name="Animations" type="Node2D" parent="."]
 z_index = 1
-position = Vector2(-6.10352e-05, -0.00012207)
 
 [node name="Idle" type="Node2D" parent="Animations"]
 
@@ -436,14 +434,14 @@ sprite_frames = SubResource("SpriteFrames_dsxjp")
 animation = &"2"
 
 [node name="CollisionBody" type="CharacterBody2D" parent="."]
-position = Vector2(7.27596e-12, 1.45519e-11)
+position = Vector2(1.00009, 9.15527e-05)
 scale = Vector2(1.06996, 1)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(-1.86923, -8)
+position = Vector2(-0.9347, -9.15527e-05)
 shape = SubResource("RectangleShape2D_6pus8")
 
-[node name="EntityUi" parent="." instance=ExtResource("4_ga50r")]
+[node name="PlayerMenu" parent="." instance=ExtResource("4_ga50r")]
 visibility_layer = 4
 
 [node name="EquippedItems" type="Node" parent="."]
