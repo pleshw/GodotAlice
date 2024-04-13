@@ -8,6 +8,8 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 {
 	private PackedScene EntityPrefab;
 
+	public Node2D MainScene { get; set; } = null;
+
 	protected StringName ResourceName = resourceName;
 
 	protected readonly EntityType _entityReference = new();
@@ -20,6 +22,7 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 	{
 		base._Ready();
 		EntityPrefab = ResourceLoader.Load(ResourceName) as PackedScene;
+		MainScene = GetTree().Root.GetNode<Node2D>("MainScene");
 	}
 
 	public bool TryInstantiateAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
@@ -41,7 +44,7 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 
 	private void AddEntityNodeToScene(Entity entityPrefab)
 	{
-		AddChild(entityPrefab);
+		MainScene.AddChild(entityPrefab);
 		entityPrefab.Spawned = true;
 	}
 

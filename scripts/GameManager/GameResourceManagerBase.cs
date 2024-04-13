@@ -4,36 +4,46 @@ using Godot;
 
 namespace GameManagers;
 
-public class GameResourceManager<T>(StringName resourcePath) where T : Node2D
+public partial class GameResourceManager<T>(StringName resourcePath) : Node2D where T : Node2D
 {
   public StringName resourcePath = resourcePath;
-  public readonly Dictionary<string, PackedScene> Prefabs = [];
+
+  [Export]
+  public PackedScene[] PrefabList = [];
+
+  public readonly HashSet<PackedScene> Prefabs = [];
+
+  public override void _Ready()
+  {
+    base._Ready();
+    foreach (PackedScene prefab in PrefabList)
+    {
+      PackedScene sceneImported = ResourceLoader.Load(prefab.ResourcePath) as PackedScene;
+      Prefabs.Add(sceneImported);
+    }
+  }
 
   public StringName GetResourcePath(StringName sceneFileName)
   {
-    return $"{resourcePath}{sceneFileName}.tres";
+    return $"{resourcePath}{sceneFileName}.tscn";
   }
 
-  public T CreateInstance(StringName sceneFileName)
+  public T CreateInstance(StringName sceneFileName, StringName nodeName)
   {
-    if (Prefabs.TryGetValue(sceneFileName, out PackedScene scene))
-    {
-      return scene.Instantiate() as T;
-    }
-
     /// Importing scene and saving the resource for later use
     PackedScene sceneImported = ResourceLoader.Load(GetResourcePath(sceneFileName)) as PackedScene;
-    Prefabs.Add(sceneFileName, sceneImported);
+    Prefabs.Add(sceneImported);
     ResourceSaver.Save(sceneImported, sceneImported.GetInstanceId().ToString());
-
-    return sceneImported.Instantiate() as T;
+    T instance = sceneImported.Instantiate() as T;
+    instance.Name = nodeName;
+    return instance;
   }
 
   ~GameResourceManager()
   {
     foreach (var item in Prefabs)
     {
-      item.Value.Free();
+      item.Free();
     }
   }
 }

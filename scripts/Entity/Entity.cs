@@ -36,7 +36,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityMovementAnimator movementAnimator;
 	public EntityAttackAnimator attackAnimator;
 
-	public EntityEquipmentSlots equipment;
+	public EntityEquipmentSlots equipmentSlots;
 
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
@@ -132,7 +132,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
 		movementKeyBinds = new MovementCommandKeybindMap(this);
 		uiKeyBinds = new UICommandKeybindMap(this);
-		equipment = new EntityEquipmentSlots(this);
+		equipmentSlots = new EntityEquipmentSlots(this);
 		movementAnimator = new EntityMovementAnimator(this);
 		idleAnimator = new EntityIdleAnimator(this);
 		attackAnimator = new EntityAttackAnimator(this);
@@ -190,7 +190,17 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		UIMenu.Visible = false;
 
+		equipmentSlots.CallActionOnEquippedItems((EntityEquipmentBase item) =>
+		{
+			CallDeferred(nameof(SetEquippedItem), item);
+		});
+
 		AddToGroup("Entities");
+	}
+
+	public void SetEquippedItem(EntityEquipmentBase equipment)
+	{
+		GetNode<Node>("EquippedItems").AddChild(equipment);
 	}
 
 	public override void _PhysicsProcess(double delta)

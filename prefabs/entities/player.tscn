@@ -443,3 +443,5 @@ position = Vector2(-1.86923, -8)
 shape = SubResource("RectangleShape2D_6pus8")
 
 [node name="EntityUi" parent="." instance=ExtResource("4_ga50r")]
+
+[node name="EquippedItems" type="Node" parent="."]

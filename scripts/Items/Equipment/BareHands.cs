@@ -6,11 +6,16 @@ namespace Items.Equipment;
 
 public partial class BareHands : EntityEquipmentBase
 {
-  [Export]
-  public override EntityEquipmentSlotType SlotType { get; set; }
+  public override EntityEquipmentSlotType SlotType { get; set; } = EntityEquipmentSlotType.RIGHT_HAND | EntityEquipmentSlotType.LEFT_HAND;
 
-  [Export]
-  public override int LevelRequired { get; set; }
+  public override int LevelRequired { get; set; } = 0;
+
+  public override void _Ready()
+  {
+    base._Ready();
+    AddToGroup("Items");
+    AddToGroup("Equipment");
+  }
 
   public override void ModifyAttributes(Entity.Entity entity)
   {
