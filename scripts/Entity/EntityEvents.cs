@@ -35,8 +35,8 @@ public partial class Entity
     OnMovementInputTriggeredEvent?.Invoke();
   }
 
-  public event Action<EntityEquipmentSlots, EntityEquipmentSlotType> OnTryEquipFailEvent;
-  public void TryEquipFailEvent(EntityEquipmentSlots equipment, EntityEquipmentSlotType positionTriedToEquip)
+  public event Action<EntityEquipmentBase, EntityEquipmentSlotType> OnTryEquipFailEvent;
+  public void TryEquipFailEvent(EntityEquipmentBase equipment, EntityEquipmentSlotType positionTriedToEquip)
   {
     OnTryEquipFailEvent?.Invoke(equipment, positionTriedToEquip);
   }

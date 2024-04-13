@@ -7,7 +7,7 @@
 [node name="MainScene" type="Node2D"]
 
 [node name="GlobalCamera" type="Camera2D" parent="."]
-position = Vector2(0, -3.8147e-06)
+top_level = true
 
 [node name="GameMap" parent="." node_paths=PackedStringArray("Camera") instance=ExtResource("1_nitg8")]
 script = ExtResource("3_7dsau")
@@ -15,8 +15,8 @@ Camera = NodePath("../GlobalCamera")
 
 [node name="Managers" type="Node" parent="."]
 
+[node name="EquipmentManager" type="Node" parent="Managers"]
+
 [node name="PlayerManager" type="Node" parent="Managers" node_paths=PackedStringArray("GlobalCamera")]
 script = ExtResource("1_wt854")
 GlobalCamera = NodePath("../../GlobalCamera")
-
-[node name="EquipmentManager" type="Node" parent="Managers"]

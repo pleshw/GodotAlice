@@ -1,28 +1,45 @@
 
 using System;
+using System.Collections.Generic;
 using Godot;
 using Items.Equipment;
 
 namespace Entity;
 
-public class EntityEquipmentSlots(Entity entity)
+public class EntityEquipmentSlots
 {
-  public Entity Entity = entity;
+  public Entity Entity;
 
-  public EntityEquipmentBase LeftHand { get; set; } = EquipmentManager.Instance.CreateInstance("bare_hands", "bareHandsLeftHand");
-  public EntityEquipmentBase RightHand { get; set; } = EquipmentManager.Instance.CreateInstance("bare_hands", "bareHandsRightHand");
+  public EntityEquipmentSlot LeftHand { get { return SlotsByName["LeftHand"]; } }
+  // EquipmentManager.Instance.CreateInstance("bare_hands", "bareHandsLeftHand");
+  public EntityEquipmentSlot RightHand { get { return SlotsByName["RightHand"]; } }
+  public EntityEquipmentSlot Helmet { get { return SlotsByName["Helmet"]; } }
+  public EntityEquipmentSlot Armor { get { return SlotsByName["Armor"]; } }
+  public EntityEquipmentSlot Neck { get { return SlotsByName["Neck"]; } }
+  public EntityEquipmentSlot Back { get { return SlotsByName["Back"]; } }
+  public EntityEquipmentSlot Legs { get { return SlotsByName["Legs"]; } }
+  public EntityEquipmentSlot Boots { get { return SlotsByName["Boots"]; } }
+  public EntityEquipmentSlot AccessoryLeft { get { return SlotsByName["AccessoryLeft"]; } }
+  public EntityEquipmentSlot AccessoryRight { get { return SlotsByName["AccessoryRight"]; } }
 
-  public EntityEquipmentBase Helmet { get; set; }
-  public EntityEquipmentBase Armor { get; set; }
-  public EntityEquipmentBase Neck { get; set; }
-  public EntityEquipmentBase Back { get; set; }
-  public EntityEquipmentBase Legs { get; set; }
-  public EntityEquipmentBase Boots { get; set; }
+  public readonly Dictionary<StringName, EntityEquipmentSlot> SlotsByName = [];
 
-  public EntityEquipmentBase AccessoryLeft { get; set; }
-  public EntityEquipmentBase AccessoryRight { get; set; }
+  public EntityEquipmentSlots(Entity entity)
+  {
+    Entity = entity;
+    SlotsByName.Add("LeftHand", new(entity, EntityEquipmentSlotType.LEFT_HAND));
+    SlotsByName.Add("RightHand", new(entity, EntityEquipmentSlotType.RIGHT_HAND));
+    SlotsByName.Add("Helmet", new(entity, EntityEquipmentSlotType.HELMET));
+    SlotsByName.Add("Armor", new(entity, EntityEquipmentSlotType.ARMOR));
+    SlotsByName.Add("Neck", new(entity, EntityEquipmentSlotType.NECK));
+    SlotsByName.Add("Back", new(entity, EntityEquipmentSlotType.BACK));
+    SlotsByName.Add("Legs", new(entity, EntityEquipmentSlotType.LEGS));
+    SlotsByName.Add("Boots", new(entity, EntityEquipmentSlotType.BOOTS));
+    SlotsByName.Add("AccessoryLeft", new(entity, EntityEquipmentSlotType.ACCESSORY_LEFT));
+    SlotsByName.Add("AccessoryRight", new(entity, EntityEquipmentSlotType.ACCESSORY_RIGHT));
+  }
 
-  public void CallActionOnEquippedItems(Action<EntityEquipmentBase> action)
+  public void ForEveryItemSlot(Action<EntityEquipmentSlot> action)
   {
     if (LeftHand != null)
     {

@@ -35,9 +35,16 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 
 		entityInstance = GetEntityInstance();
 
-		entityInstance.MovementController.initialPosition = position;
 
 		CallDeferred(nameof(AddEntityNodeToScene), entityInstance);
+
+		entityInstance.MovementController.TeleportToNearestCell(new EntityMovementInput
+		{
+			Position = position,
+			IsRunning = false,
+			ForceMovementState = true,
+			MovementState = MOVEMENT_STATE.IDLE
+		});
 
 		return true;
 	}

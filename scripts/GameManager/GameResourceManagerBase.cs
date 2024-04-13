@@ -4,7 +4,7 @@ using Godot;
 
 namespace GameManagers;
 
-public partial class GameResourceManager<T>(StringName resourcePath) : Node2D where T : Node2D
+public partial class GameResourceManager<T>(StringName resourcePath) : Node where T : Node
 {
   public StringName resourcePath = resourcePath;
 

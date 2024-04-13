@@ -59,7 +59,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public float DashDistance { get { return MovementController.StepSize * 5f; } }
 
 
-	public Node AnimationsNode
+	public Node2D AnimationsNode
 	{
 		get
 		{
@@ -190,17 +190,18 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		UIMenu.Visible = false;
 
-		equipmentSlots.CallActionOnEquippedItems((EntityEquipmentBase item) =>
+		equipmentSlots.ForEveryItemSlot((EntityEquipmentSlot itemSlot) =>
 		{
-			CallDeferred(nameof(SetEquippedItem), item);
+			CallDeferred(nameof(SetEquippedItem), itemSlot);
 		});
 
 		AddToGroup("Entities");
 	}
 
-	public void SetEquippedItem(EntityEquipmentBase equipment)
+	public void SetEquippedItem(EntityEquipmentSlot equipmentSlot)
 	{
-		GetNode<Node>("EquippedItems").AddChild(equipment);
+		equipmentSlot.Name = equipmentSlot.SlotType.ToString();
+		GetNode<Node>("EquippedItems").AddChild(equipmentSlot);
 	}
 
 	public override void _PhysicsProcess(double delta)

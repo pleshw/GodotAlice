@@ -28,19 +28,7 @@ public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPos
   {
     base._Ready();
 
-    movementKeyBinds.BindDefaults();
-    uiKeyBinds.BindDefaults();
-
     ReadyToSpawn = true;
-
-    MovementController.TeleportToNearestCell(new EntityMovementInput
-    {
-      Position = initialPosition,
-      IsRunning = false,
-      ForceMovementState = true,
-      MovementState = MOVEMENT_STATE.IDLE,
-    });
-
 
     AddToGroup("Players");
 

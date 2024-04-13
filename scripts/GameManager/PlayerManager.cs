@@ -11,6 +11,8 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
 
   public Player playerInstance;
 
+  public Player playerInstance2;
+
   protected Vector2 playerSpawnPoint = new()
   {
     X = 0,
@@ -25,5 +27,7 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
     Entity.Entity.GlobalCamera = GlobalCamera;
 
     TryInstantiateAtPosition(playerSpawnPoint, out playerInstance, 1);
+    playerInstance.movementKeyBinds.BindDefaults();
+    playerInstance.uiKeyBinds.BindDefaults();
   }
 }
