@@ -10,5 +10,4 @@ public interface IEntityBaseNode
   public Dictionary<StringName, AnimationData> Animations { get; set; }
   public CharacterBody2D CollisionBody { get; set; }
   public CollisionShape2D[] CollisionShapes { get; set; }
-  public Control PlayerMenu { get; set; }
 }

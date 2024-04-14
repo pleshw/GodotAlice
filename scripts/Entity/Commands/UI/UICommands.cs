@@ -20,13 +20,6 @@ public partial class EntityCommands
     public TogglePlayerMenuCommand(Entity entity) : base(entity)
     {
       owner = entity;
-      setGlobalCamera = Callable.From(() => Entity.GlobalCamera.MakeCurrent());
-      setPlayerCamera = Callable.From(() =>
-      {
-        owner.Camera.GlobalPosition = Entity.GlobalCamera.GlobalPosition;
-        owner.Camera.Zoom = Entity.GlobalCamera.Zoom;
-        owner.Camera.MakeCurrent();
-      });
 
       entity.Ready += () =>
       {
@@ -51,8 +44,6 @@ public partial class EntityCommands
 
       if (owner.UIMenu.Visible)
       {
-        InventoryTween.TweenCallback(setGlobalCamera);
-
         InventoryTween.TweenCallback(Callable.From(() =>
         {
           owner.UIMenu.Visible = false;
@@ -63,8 +54,9 @@ public partial class EntityCommands
       {
         owner.UIMenu.Visible = true;
 
-        var viewportSize = owner.Camera.GetViewport().GetVisibleRect().Size;
+        var viewportSize = Entity.GlobalCamera.GetViewport().GetVisibleRect().Size;
         owner.UIMenu.SetSize(viewportSize);
+        owner.UIMenu.Position = Vector2.Zero;
         owner.UIMenu.Scale = Vector2.One;
 
         InventoryTween.TweenProperty(
@@ -72,8 +64,6 @@ public partial class EntityCommands
           "modulate:a",
           1,
           0.4f).SetTrans(Tween.TransitionType.Linear);
-
-        InventoryTween.TweenCallback(setPlayerCamera);
       }
     }
   }

@@ -11,6 +11,7 @@ public class EntityAnimationInfo
   public required AnimationData DefaultAnimationData;
   public AnimatorNode MainAnimator { get; set; } = null;
   public AnimationData MainAnimationData { get; set; } = null;
+  public AnimationData Buffer { get; set; } = null;
   public AnimationData ConcurrentAnimations { get; set; } = null;
   public readonly EntityAnimationController Controller;
 

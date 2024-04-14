@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bj2p515w2nc8b"]
+[gd_scene load_steps=5 format=3 uid="uid://bj2p515w2nc8b"]
 
 [ext_resource type="PackedScene" uid="uid://b7go7klurvvjl" path="res://prefabs/game_map.tscn" id="1_nitg8"]
 [ext_resource type="Script" path="res://scripts/GameManager/PlayerManager.cs" id="1_wt854"]
 [ext_resource type="Script" path="res://scripts/GameMap/GameMap.cs" id="3_7dsau"]
+[ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/menu/player_menu.tscn" id="4_jj40n"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -20,3 +21,17 @@ Camera = NodePath("../GlobalCamera")
 [node name="PlayerManager" type="Node" parent="Managers" node_paths=PackedStringArray("GlobalCamera")]
 script = ExtResource("1_wt854")
 GlobalCamera = NodePath("../../GlobalCamera")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerMenu" parent="UI" instance=ExtResource("4_jj40n")]
+visible = false
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1

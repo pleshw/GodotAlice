@@ -19,9 +19,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public CollisionShape2D[] CollisionShapes { get; set; }
 
-	[Export]
-	public Control PlayerMenu { get; set; }
-
 	public EntityStats Stats { get; set; } = new();
 
 	public EntityDirectionState directionState = new();
@@ -48,6 +45,15 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		get
 		{
 			return _animationsByName;
+		}
+	}
+
+
+	public Node2D MainScene
+	{
+		get
+		{
+			return GetTree().Root.GetNode<Node2D>("MainScene");
 		}
 	}
 

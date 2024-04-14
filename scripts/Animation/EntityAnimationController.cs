@@ -86,6 +86,7 @@ public class EntityAnimationController
 
         if ((animationData.Name == AnimationInfo.MainAnimationData.Name && isMainAnimationPlaying) || (isMainAnimationPlaying && !canAnimationBeInterrupted))
         {
+          AnimationInfo.Buffer = animationData;
           return;
         }
       }
@@ -127,7 +128,15 @@ public class EntityAnimationController
 
     if (AnimationInfo.MainAnimationData.Sequel == null)
     {
-      AnimationInfo.MainAnimationData = AnimationInfo.DefaultAnimationData;
+      if (AnimationInfo.Buffer != null)
+      {
+        AnimationInfo.MainAnimationData = AnimationInfo.Buffer;
+        AnimationInfo.Buffer = null;
+      }
+      else
+      {
+        AnimationInfo.MainAnimationData = AnimationInfo.DefaultAnimationData;
+      }
     }
     else
     {

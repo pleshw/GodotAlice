@@ -4,11 +4,27 @@ namespace Entity;
 
 public partial class Entity
 {
+  public Control UI
+  {
+    get
+    {
+      return MainScene.GetNode<Control>("UI");
+    }
+  }
+
   public Control UIMenu
   {
     get
     {
-      return PlayerMenu.GetNode<Control>("Menu");
+      return UI.GetNode<Control>("PlayerMenu");
+    }
+  }
+
+  public Control UIMenuMarginContainer
+  {
+    get
+    {
+      return UI.GetNode<Control>("MarginContainer");
     }
   }
 
@@ -16,7 +32,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenu.GetNode<Control>("TabContainer");
+      return UIMenuMarginContainer.GetNode<Control>("TabContainer");
     }
   }
 
@@ -32,7 +48,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenuPlayerTab.GetNode<Control>("Attributes");
+      return UIMenuPlayerTab.GetNode<Control>("AttributesPanel");
     }
   }
 
@@ -40,7 +56,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenuPlayerTab.GetNode<Control>("EquippedItems");
+      return UIMenuPlayerTab.GetNode<Control>("EquipmentPanel");
     }
   }
 
@@ -48,7 +64,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenuPlayerTab.GetNode<Control>("Status");
+      return UIMenuPlayerTab.GetNode<Control>("StatusPanel");
     }
   }
 
@@ -56,7 +72,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenuPlayerTab.GetNode<Control>("Inventory");
+      return UIMenuPlayerTab.GetNode<Control>("InventoryPanel");
     }
   }
 
@@ -64,7 +80,7 @@ public partial class Entity
   {
     get
     {
-      return UIMenuPlayerTab.GetNode<Control>("Quests");
+      return UIMenuPlayerTab.GetNode<Control>("QuestsPanel");
     }
   }
 }

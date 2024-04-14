@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dqljtoqtorhon"]
 
-[ext_resource type="Script" path="res://prefabs/ui/menu/components/PlayerMenuPanelEquipment.cs" id="1_x0h3o"]
+[ext_resource type="Script" path="res://prefabs/ui/menu/components/equipment_panel/PlayerMenuPanelEquipment.cs" id="1_f17m1"]
 
 [sub_resource type="SystemFont" id="SystemFont_t01sn"]
 font_names = PackedStringArray("Sans-Serif")
@@ -13,18 +13,17 @@ oversampling = 1.5
 
 [sub_resource type="SystemFont" id="SystemFont_p7bje"]
 font_names = PackedStringArray("Sans-Serif")
-font_italic = true
-font_weight = 300
-msdf_pixel_range = 22
-msdf_size = 56
-oversampling = 4.5
+hinting = 2
+multichannel_signed_distance_field = true
+oversampling = 2.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_shwgr"]
 font = SubResource("SystemFont_p7bje")
+font_size = 22
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 0
 
-[node name="PlayerMenuPanel" type="Control"]
+[node name="EquipmentPanel" type="Control"]
 layout_mode = 3
 anchor_right = 0.192
 anchor_bottom = 0.377
@@ -32,29 +31,46 @@ offset_right = -0.640015
 offset_bottom = -0.160004
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_x0h3o")
+script = ExtResource("1_f17m1")
+Title = &"Equipment"
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_force_pass_scroll_events = false
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-mouse_force_pass_scroll_events = false
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="Title" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.0407609
-anchor_right = 0.839674
-anchor_bottom = 0.115
-offset_bottom = 0.195
-grow_horizontal = 2
+[node name="Container" type="VBoxContainer" parent="Panel/Margin"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Title" type="Label" parent="Panel/Margin/Container"]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_fonts/font = SubResource("SystemFont_t01sn")
 theme_override_font_sizes/font_size = 12
 label_settings = SubResource("LabelSettings_shwgr")
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Content" type="Panel" parent="Panel/Margin/Container"]
+layout_mode = 2
+size_flags_vertical = 3

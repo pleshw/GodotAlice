@@ -1,9 +1,8 @@
-[gd_scene load_steps=56 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=55 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="4_7rn4v"]
-[ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/menu/player_menu.tscn" id="4_ga50r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7dn3"]
 atlas = ExtResource("2_thuhd")
@@ -386,15 +385,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(59.8153, 79)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody", "PlayerMenu")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("Camera", "CollisionBody")]
 visibility_layer = 2
 script = ExtResource("1_vfx70")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
-PlayerMenu = NodePath("PlayerMenu")
 
 [node name="Camera" type="Camera2D" parent="."]
-anchor_mode = 0
 zoom = Vector2(2, 2)
 
 [node name="Animations" type="Node2D" parent="."]
@@ -440,8 +437,5 @@ scale = Vector2(1.06996, 1)
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
 position = Vector2(-0.9347, -9.15527e-05)
 shape = SubResource("RectangleShape2D_6pus8")
-
-[node name="PlayerMenu" parent="." instance=ExtResource("4_ga50r")]
-visibility_layer = 4
 
 [node name="EquippedItems" type="Node" parent="."]
