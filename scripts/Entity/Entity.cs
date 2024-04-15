@@ -11,6 +11,8 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 {
 	public static Camera2D GlobalCamera { get; set; } = null;
 
+	public Guid Id = Guid.NewGuid();
+
 	public GameStates GameStates { get; set; } = new();
 
 	[Export]
@@ -27,29 +29,12 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public EntityMovementController MovementController;
 
-	public Guid Id = Guid.NewGuid();
-	protected Dictionary<StringName, AnimatedSprite2D> _animationsByName = [];
-	public Dictionary<StringName, AnimationData> Animations { get; set; } = [];
-
-	public EntityIdleAnimator idleAnimator;
-	public EntityMovementAnimator movementAnimator;
-	public EntityAttackAnimator attackAnimator;
-
 	public EntityEquipmentSlots equipmentSlots;
 
 	public MovementCommandKeybindMap movementKeyBinds;
 	public UICommandKeybindMap uiKeyBinds;
 
 	public abstract EntityInventoryBase BaseInventory { get; set; }
-
-	public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
-	{
-		get
-		{
-			return _animationsByName;
-		}
-	}
-
 
 	public Node2D MainScene
 	{
@@ -67,62 +52,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public float DashDistance { get { return MovementController.StepSize * 5f; } }
 
 
-	public Node2D AnimationsNode
-	{
-		get
-		{
-			return GetNode<Node2D>("Animations");
-		}
-	}
-
-	public Node2D IdleAnimationsNode
-	{
-		get
-		{
-			return AnimationsNode.GetNode<Node2D>("Idle");
-		}
-	}
-
-	public Node2D MovementAnimationsNode
-	{
-		get
-		{
-			return AnimationsNode.GetNode<Node2D>("Movement");
-		}
-	}
-
-	public Node2D AttackAnimationsNode
-	{
-		get
-		{
-			return AnimationsNode.GetNode<Node2D>("Attack");
-		}
-	}
-
-	public Dictionary<StringName, AnimatedSprite2D> MovementSpritesByName
-	{
-		get
-		{
-			return GetMovementSpritesByName(MovementAnimationsNode);
-		}
-	}
-
-	public Dictionary<StringName, AnimatedSprite2D> IdleSpritesByName
-	{
-		get
-		{
-			return GetMovementSpritesByName(IdleAnimationsNode);
-		}
-	}
-
-	public Dictionary<StringName, List<AnimatedSprite2D>> AttackSpritesByName
-	{
-		get
-		{
-			return GetAttackSpritesByName(AttackAnimationsNode);
-		}
-	}
-
 	public int Level { get; set; } = 1;
 
 	public Entity()
@@ -135,45 +64,12 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		Setup(initialPosition, 32);
 	}
 
-	public void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
+	public virtual void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
 	{
 		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
 		movementKeyBinds = new MovementCommandKeybindMap(this);
 		uiKeyBinds = new UICommandKeybindMap(this);
 		equipmentSlots = new EntityEquipmentSlots(this);
-		movementAnimator = new EntityMovementAnimator(this);
-		idleAnimator = new EntityIdleAnimator(this);
-		attackAnimator = new EntityAttackAnimator(this);
-	}
-
-
-
-	public static Dictionary<StringName, AnimatedSprite2D> GetMovementSpritesByName(Node2D node)
-	{
-		return node.GetChildren()
-				.Select(c => c as AnimatedSprite2D)
-				.ToDictionary(sprite => sprite.Name, sprite => sprite);
-	}
-
-	public static Dictionary<StringName, List<AnimatedSprite2D>> GetAttackSpritesByName(Node2D node)
-	{
-		return node.GetChildren()
-				.OfType<Node2D>()
-				.Select(weapon => new
-				{
-					WeaponName = weapon.Name,
-					Sprites = weapon.GetChildren().OfType<AnimatedSprite2D>().ToList()
-				})
-				.Where(weapon => weapon.Sprites.Count != 0)
-				.ToDictionary(weapon => weapon.WeaponName, weapon => weapon.Sprites);
-	}
-
-	private void AddAnimationSprites(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
-	{
-		foreach (var kvp in dictAnimations)
-		{
-			_animationsByName[kvp.Key] = kvp.Value;
-		}
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -181,14 +77,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	{
 		base._Ready();
 
-		AddAnimationSprites(IdleSpritesByName);
-		AddAnimationSprites(MovementSpritesByName);
-
-		idleAnimator.OnReady();
-		movementAnimator.OnReady();
-		attackAnimator.OnReady();
-
-		idleAnimator.Play();
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 
 		OnTryEquipSuccessEvent += (EntityEquipmentBase equippedItem, EntityEquipmentSlotType position) =>

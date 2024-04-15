@@ -5,7 +5,7 @@ using Godot;
 
 namespace Entity;
 
-public partial class EntityAttackAnimator(Entity entity) : EntityActionAnimator(entity)
+public partial class EntityAttackAnimator(AnimatedEntity entity) : EntityActionAnimator(entity)
 {
   public override void OnReady()
   {

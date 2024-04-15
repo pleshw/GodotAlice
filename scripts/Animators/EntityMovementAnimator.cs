@@ -5,7 +5,7 @@ using Godot;
 
 namespace Entity;
 
-public partial class EntityMovementAnimator(Entity entity) : EntityActionAnimator(entity)
+public partial class EntityMovementAnimator(AnimatedEntity entity) : EntityActionAnimator(entity)
 {
 
   /// The name of the AnimatedSprite2D + the name of the Animation
@@ -71,7 +71,6 @@ public partial class EntityMovementAnimator(Entity entity) : EntityActionAnimato
     }
   }
 
-  private bool AlreadyDashing = false;
   private void PlayDashAnimation()
   {
     AnimatedSprite2D animationSprites = Animations["DashingDefault"].Sprites;
@@ -92,7 +91,6 @@ public partial class EntityMovementAnimator(Entity entity) : EntityActionAnimato
     void onAnimationFinished()
     {
       animationSprites.Scale = initialScale;
-      AlreadyDashing = false;
       Entity.GameStates &= ~GameStates.INVULNERABLE;
     };
 

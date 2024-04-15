@@ -1,5 +1,6 @@
 
 using System;
+using Entity;
 using Godot;
 
 namespace Animation;
@@ -28,7 +29,7 @@ public record class AnimationData
 
 public struct PlayAnimationRequest
 {
-  public required Entity.Entity Entity;
+  public required AnimatedEntity Entity;
   public required AnimatorNode Animator;
   public required AnimationData AnimationData;
 }

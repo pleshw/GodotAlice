@@ -5,7 +5,7 @@ using Godot;
 namespace Entity;
 
 
-public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16)
+public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16) : IEntityAction
 {
   public Entity entity = entity;
 
@@ -189,11 +189,14 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     return this;
   }
 
-  public bool BlockStates { get; set; } = false;
+  public bool IsStateChangeLocked { get; set; } = false;
+
+  public bool CancelOnNextIteration { get; set; } = false;
+  public bool IsPerformingAction { get; set; } = false;
 
   public void Idled()
   {
-    if (BlockStates)
+    if (IsStateChangeLocked)
     {
       return;
     }
@@ -205,7 +208,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public void Moved()
   {
-    if (BlockStates)
+    if (IsStateChangeLocked)
     {
       return;
     }
@@ -226,11 +229,21 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
+    if (CancelOnNextIteration)
+    {
+      _targetPosition = null;
+      _dashTargetPosition = null;
+      CancelOnNextIteration = false;
+    }
+
     if ((_targetPosition == null && _dashTargetPosition == null) || MovementDisabled)
     {
+      IsPerformingAction = false;
       Idled();
       return this;
     }
+
+    IsPerformingAction = true;
 
     // Calculate the direction vector towards the target position
     switch (States.Max)
@@ -261,6 +274,17 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   private void DashMovement(float delta)
   {
+    if (CancelOnNextIteration)
+    {
+      _targetPosition = null;
+      _dashTargetPosition = null;
+      CancelOnNextIteration = false;
+      IsPerformingAction = false;
+      return;
+    }
+
+    IsPerformingAction = true;
+
     float distanceToMove = DashSpeed * delta;
     float distanceToTarget = entity.Position.DistanceTo(DashTargetPosition);
     if (distanceToTarget <= distanceToMove)
@@ -269,7 +293,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       entity.Position = DashTargetPosition;
       _dashTargetPosition = null;
       Dashed();
-      BlockStates = false;
+      IsStateChangeLocked = false;
       _states.Remove(MOVEMENT_STATE.DASHING);
     }
     else
@@ -279,7 +303,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
       Dashed();
-      BlockStates = true;
+      IsStateChangeLocked = true;
     }
   }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Entity;
 using Godot;
 
 namespace Animation;
@@ -24,7 +25,7 @@ public class EntityAnimationInfo
   }
 
 
-  public static EntityAnimationInfo GetInfoFrom(Entity.Entity entity)
+  public static EntityAnimationInfo GetInfoFrom(AnimatedEntity entity)
   {
     if (entityAnimationInfoById.TryGetValue(entity.Id, out EntityAnimationInfo animInfo))
     {

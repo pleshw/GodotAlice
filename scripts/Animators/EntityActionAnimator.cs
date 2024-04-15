@@ -6,10 +6,9 @@ using Godot;
 
 namespace Entity;
 
-
 public delegate void FrameChangedEvent(AnimatedSprite2D animationSprites, int currentFrame, int animationFrameCount);
 
-public abstract partial class EntityActionAnimator(Entity entity) : AnimatorNode(entity)
+public abstract partial class EntityActionAnimator(AnimatedEntity entity) : AnimatorNode(entity)
 {
   protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
 

@@ -5,7 +5,7 @@ using Godot;
 
 namespace Entity;
 
-public partial class EntityIdleAnimator(Entity entity) : AnimatorNode(entity)
+public partial class EntityIdleAnimator(AnimatedEntity entity) : AnimatorNode(entity)
 {
   public AnimationData IdleAnimationData
   {
