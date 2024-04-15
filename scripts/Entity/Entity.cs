@@ -11,6 +11,8 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 {
 	public static Camera2D GlobalCamera { get; set; } = null;
 
+	public GameStates GameStates { get; set; } = new();
+
 	[Export]
 	public Camera2D Camera { get; set; }
 

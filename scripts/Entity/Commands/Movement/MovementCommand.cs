@@ -67,14 +67,35 @@ public partial class EntityCommands
     }
   }
 
-  public class DashCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
+  public class DashCommand(Entity entityToMove, float cooldownTime = .7f) : EntityMovementCommand(entityToMove)
   {
     private float lastDashTime = -1.0f;
-    private readonly float cooldownTime = 1f; // Set your cooldown time here
+    private readonly float cooldownTime = cooldownTime; // cooldown time in seconds
+
+    public float Cooldown
+    {
+      get
+      {
+        if (lastDashTime == -1)
+        {
+          return 0;
+        }
+
+        float currentTime = Time.GetTicksMsec() / 1000.0f;
+        float timeSinceLastDash = currentTime - lastDashTime;
+        if (timeSinceLastDash >= cooldownTime)
+        {
+          lastDashTime = -1;
+          return 0;
+        }
+
+        return cooldownTime - timeSinceLastDash;
+      }
+    }
 
     public override void Execute(bool repeating)
     {
-      float currentTime = Time.GetTicksMsec() / 200.0f; // Get current time in seconds
+      float currentTime = Time.GetTicksMsec() / 1000.0f; // Get current time in seconds
       if (repeating || currentTime - lastDashTime < cooldownTime || entity.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
       {
         return; // Action is still on cooldown or entity is already dashing

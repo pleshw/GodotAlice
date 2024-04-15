@@ -5,10 +5,8 @@ using Godot;
 
 namespace Entity;
 
-public partial class EntityAttackAnimator(Entity entity) : AnimatorNode(entity)
+public partial class EntityAttackAnimator(Entity entity) : EntityActionAnimator(entity)
 {
-  protected override Dictionary<string, AnimationData> Animations { get; set; } = [];
-
   public override void OnReady()
   {
     ConfirmAnimations();
