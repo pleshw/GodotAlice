@@ -4,10 +4,18 @@ namespace Entity;
 
 public partial class EntityStats : IEntityLifeStats
 {
-  public int MaxHealth { get; set; } = 1;
-  public int CurrentHealth { get; set; } = 1;
-  public int MaxMana { get; set; } = 0;
-  public int CurrentMana { get; set; } = 0;
-  public int BaseHealthRecoveryRate { get; set; } = 0;
-  public int BaseManaRecoveryRate { get; set; } = 0;
+  public bool IsDead
+  {
+    get
+    {
+      return CurrentHealth <= 0;
+    }
+  }
+
+  public int MaxHealth { get; }
+  public int CurrentHealth { get; set; }
+  public int MaxMana { get; }
+  public int CurrentMana { get; set; }
+  public int BaseHealthRecoveryRate { get; }
+  public int BaseManaRecoveryRate { get; }
 }

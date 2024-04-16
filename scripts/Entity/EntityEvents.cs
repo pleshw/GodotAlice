@@ -46,4 +46,59 @@ public partial class Entity
   {
     OnTryEquipSuccessEvent?.Invoke(equipment, positionTriedToEquip);
   }
+
+
+  public event Action<EntityActionInfo> OnWasHitEvent;
+  public void WasHitEvent(EntityActionInfo hitInfo)
+  {
+    OnWasHitEvent?.Invoke(hitInfo);
+  }
+
+  public event Action<EntityActionInfo> OnDodgeEvent;
+  public void DodgeEvent(EntityActionInfo hitInfo)
+  {
+    OnDodgeEvent?.Invoke(hitInfo);
+  }
+
+  public event Action<EntityActionInfo> OnTookNoDamageEvent;
+  public void TookNoDamageEvent(EntityActionInfo hitInfo)
+  {
+    OnTookNoDamageEvent?.Invoke(hitInfo);
+  }
+
+  public event Action<Entity, EntityActionInfo> OnDealtNoDamageEvent;
+  public void DealtNoDamageEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnDealtNoDamageEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<Entity, EntityActionInfo> OnAttackMissedEvent;
+  public void AttackMissedEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnAttackMissedEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<Entity, EntityActionInfo> OnCriticalAttackEvent;
+  public void CriticalAttackEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnCriticalAttackEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<EntityActionInfo> OnTookCriticalEvent;
+  public void TookCriticalEvent(EntityActionInfo hitInfo)
+  {
+    OnTookCriticalEvent?.Invoke(hitInfo);
+  }
+
+  public event Action<Entity, EntityActionInfo> OnCriticalZeroDamageEvent;
+  public void CriticalZeroDamageEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnCriticalZeroDamageEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<EntityActionInfo> OnTookZeroCriticalDamageEvent;
+  public void TookZeroCriticalDamageEvent(EntityActionInfo hitInfo)
+  {
+    OnTookZeroCriticalDamageEvent?.Invoke(hitInfo);
+  }
 }

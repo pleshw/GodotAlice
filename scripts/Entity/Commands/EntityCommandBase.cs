@@ -2,7 +2,7 @@
 namespace Entity.Commands;
 
 
-public abstract class EntityBaseCommand(Entity entity) : IEntityCommand
+public abstract class EntityCommandBase(Entity entity) : IEntityCommand
 {
   public Entity entity = entity;
 

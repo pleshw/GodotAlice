@@ -6,8 +6,8 @@ namespace Entity;
 
 public interface IEntityLifeStats
 {
-  public int MaxHealth { get; set; }
+  public int MaxHealth { get; }
   public int CurrentHealth { get; set; }
-  public int MaxMana { get; set; }
+  public int MaxMana { get; }
   public int CurrentMana { get; set; }
 }

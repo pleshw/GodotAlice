@@ -5,7 +5,7 @@ using Godot;
 namespace Entity;
 
 
-public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 16) : IEntityAction
+public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 32) : IEntityAction
 {
   public Entity entity = entity;
 
@@ -81,11 +81,22 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
   /// <summary>
   /// Half grid cell width. Used as reference to get the center of a cell, for example. 
   /// </summary>
-  protected int HalfCellWidth
+  public int HalfCellWidth
   {
     get
     {
       return _cellWidth / 2;
+    }
+  }
+
+  /// <summary>
+  /// How much the player moves per interaction.
+  /// </summary>
+  public int CellWidth
+  {
+    get
+    {
+      return _cellWidth;
     }
   }
 

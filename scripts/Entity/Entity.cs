@@ -23,10 +23,14 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public CollisionShape2D[] CollisionShapes { get; set; }
 
-	public EntityStats Stats { get; set; } = new();
+
+	public EntityDefaultAttributes Attributes = new();
+
+	public EntityStats Stats { get; set; }
 
 	public EntityDirectionState directionState = new();
 
+	public EntityCombatController CombatController;
 	public EntityMovementController MovementController;
 
 	public EntityEquipmentSlots equipmentSlots;
@@ -67,9 +71,11 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public virtual void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
 	{
 		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
+		CombatController = new EntityCombatController(this);
 		movementKeyBinds = new MovementCommandKeybindMap(this);
 		uiKeyBinds = new UICommandKeybindMap(this);
 		equipmentSlots = new EntityEquipmentSlots(this);
+		Stats = new(this);
 	}
 
 	// Called when the node enters the scene tree for the first time.

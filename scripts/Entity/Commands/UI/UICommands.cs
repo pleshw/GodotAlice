@@ -4,7 +4,7 @@ namespace Entity.Commands;
 
 public partial class EntityCommands
 {
-  public class TogglePlayerMenuCommand : EntityBaseCommand
+  public class TogglePlayerMenuCommand : EntityCommandBase
   {
     private readonly Entity owner;
 
