@@ -10,7 +10,6 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
 {
   public Entity entity = entity;
 
-
   private readonly Random random = new();
 
   public int SightRange { get; set; } = sightRange;
@@ -38,19 +37,16 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
     if (actionInfo.RangeInCells < distanceFromTarget)
     {
       target.CombatController.UpdateAwareness(actionInfo, distanceFromTarget);
-      entity.CombatController.NotEnoughRangeEvent(target, actionInfo);
-      entity.AttackMissedEvent(target, actionInfo);
+      InvokeNotEnoughRangeEvents(target, actionInfo);
       return false;
     }
 
+    target.MarkedAsTargetEvent(entity, actionInfo);
     target.CombatController.MarkedAsTargetEvent(entity, actionInfo);
 
     if (target.CombatController.TryDodge(entity))
     {
-      target.CombatController.DodgeEvent(entity, actionInfo);
-      entity.CombatController.AttackDodgedEvent(target, actionInfo);
-      target.DodgeEvent(actionInfo);
-      entity.AttackMissedEvent(target, actionInfo);
+      InvokeDodgeEvents(target, actionInfo);
       return false;
     }
 
@@ -59,17 +55,11 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
     {
       if (wasCritical)
       {
-        target.CombatController.ZeroDamageTakenEvent(entity, actionInfo);
-        entity.CombatController.ZeroDamageDealtEvent(target, actionInfo);
-        target.TookZeroCriticalDamageEvent(actionInfo);
-        entity.CriticalZeroDamageEvent(target, actionInfo);
+        InvokeZeroCriticalEvents(target, actionInfo);
       }
       else
       {
-        target.CombatController.ZeroDamageTakenEvent(entity, actionInfo);
-        entity.CombatController.ZeroDamageDealtEvent(target, actionInfo);
-        target.TookNoDamageEvent(actionInfo);
-        entity.DealtNoDamageEvent(target, actionInfo);
+        InvokeZeroDamageEvents(target, actionInfo);
       }
 
       return true;
@@ -82,6 +72,37 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
     }
 
     return true;
+  }
+
+  private void InvokeNotEnoughRangeEvents(Entity target, EntityActionInfo actionInfo)
+  {
+    entity.CombatController.NotEnoughRangeEvent(target, actionInfo);
+    entity.NotEnoughRangeEvent(target, actionInfo);
+    entity.AttackMissedEvent(target, actionInfo);
+  }
+
+  private void InvokeZeroDamageEvents(Entity target, EntityActionInfo actionInfo)
+  {
+    target.CombatController.ZeroDamageTakenEvent(entity, actionInfo);
+    entity.CombatController.ZeroDamageDealtEvent(target, actionInfo);
+    target.TookNoDamageEvent(actionInfo);
+    entity.DealtNoDamageEvent(target, actionInfo);
+  }
+
+  private void InvokeDodgeEvents(Entity target, EntityActionInfo actionInfo)
+  {
+    target.CombatController.DodgeEvent(entity, actionInfo);
+    entity.CombatController.AttackDodgedEvent(target, actionInfo);
+    target.DodgeEvent(actionInfo);
+    entity.AttackMissedEvent(target, actionInfo);
+  }
+
+  private void InvokeZeroCriticalEvents(Entity target, EntityActionInfo actionInfo)
+  {
+    target.CombatController.ZeroDamageTakenEvent(entity, actionInfo);
+    entity.CombatController.ZeroDamageDealtEvent(target, actionInfo);
+    target.TookZeroCriticalDamageEvent(actionInfo);
+    entity.CriticalZeroDamageEvent(target, actionInfo);
   }
 
   private bool TryDodge(Entity attacker)

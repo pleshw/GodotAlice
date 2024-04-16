@@ -101,4 +101,17 @@ public partial class Entity
   {
     OnTookZeroCriticalDamageEvent?.Invoke(hitInfo);
   }
+
+  public event Action<Entity, EntityActionInfo> OnMarkedAsTargetEvent;
+  public void MarkedAsTargetEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnMarkedAsTargetEvent?.Invoke(target, hitInfo);
+  }
+
+
+  public event Action<Entity, EntityActionInfo> OnNotEnoughRangeEvent;
+  public void NotEnoughRangeEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnNotEnoughRangeEvent?.Invoke(target, hitInfo);
+  }
 }
