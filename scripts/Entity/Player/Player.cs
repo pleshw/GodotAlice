@@ -1,11 +1,10 @@
 using Godot;
-using Animation;
 using System.Collections.Generic;
 using System;
 
 namespace Entity;
 
-public partial class Player(Vector2 initialPosition) : AnimatedEntity(initialPosition)
+public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPosition)
 {
 
   private readonly Vector2 initialPosition = initialPosition;

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Animation;
 using Entity.Commands;
 using Godot;
 
@@ -13,7 +11,29 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public Guid Id = Guid.NewGuid();
 
-	public GameStates GameStates { get; set; } = new();
+	public bool LockGameState = false;
+
+	private EntityGameState _gameState = EntityGameState.IDLE;
+
+	public EntityGameState GameState
+	{
+		get
+		{
+			return _gameState;
+		}
+
+		set
+		{
+			if (LockGameState)
+			{
+				return;
+			}
+
+			EntityGameState prev = _gameState;
+			_gameState = value;
+			GameStateChangeEvent(prev, value);
+		}
+	}
 
 	[Export]
 	public Camera2D Camera { get; set; }
@@ -22,7 +42,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public CharacterBody2D CollisionBody { get; set; }
 
 	public CollisionShape2D[] CollisionShapes { get; set; }
-
 
 	public EntityDefaultAttributes Attributes = new();
 
@@ -53,7 +72,7 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public bool Spawned { get; set; } = false;
 
 	public float DashSpeedModifier { get; set; } = 8;
-	public float DashDistance { get { return MovementController.StepSize * 5f; } }
+	public float DashDistance { get { return MovementController.StepSize * 8f; } }
 
 
 	public int Level { get; set; } = 1;
@@ -85,9 +104,19 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 		CollisionShapes = CollisionBody.GetChildren().Select(c => c as CollisionShape2D).ToArray();
 
-		OnTryEquipSuccessEvent += (EntityEquipmentBase equippedItem, EntityEquipmentSlotType position) =>
+		OnMovedEvent += (Vector2 from, Vector2 to) =>
 		{
+			GameState = EntityGameState.MOVING;
+		};
 
+		OnStoppedEvent += () =>
+		{
+			GameState = EntityGameState.IDLE;
+		};
+
+		OnEntityDashedEvent += (Vector2 from, Vector2 to) =>
+		{
+			GameState = EntityGameState.DASHING;
 		};
 
 		UIMenu.Visible = false;

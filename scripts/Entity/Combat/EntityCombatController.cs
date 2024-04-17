@@ -33,6 +33,7 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
 
   public bool TryAttack(Entity target, EntityActionInfo actionInfo)
   {
+    entity.StartedCombatEvent(target, actionInfo);
     int distanceFromTarget = entity.DistanceInCells(target.Position, entity.MovementController.CellWidth);
     if (actionInfo.RangeInCells < distanceFromTarget)
     {

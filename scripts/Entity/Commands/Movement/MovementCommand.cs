@@ -17,8 +17,8 @@ public partial class EntityCommands
           Y = entity.Position.Y - MovementController.StepSize
         },
         IsRunning = false,
-        ForceMovementState = true,
-        MovementState = MOVEMENT_STATE.WALKING,
+        ForceStateChange = false,
+        GameState = EntityGameState.MOVING,
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.TOP;
@@ -37,8 +37,8 @@ public partial class EntityCommands
           X = entity.Position.X + MovementController.StepSize
         },
         IsRunning = false,
-        ForceMovementState = true,
-        MovementState = MOVEMENT_STATE.WALKING,
+        ForceStateChange = false,
+        GameState = EntityGameState.MOVING,
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.RIGHT;
@@ -58,8 +58,8 @@ public partial class EntityCommands
           Y = entity.Position.Y + MovementController.StepSize
         },
         IsRunning = false,
-        ForceMovementState = true,
-        MovementState = MOVEMENT_STATE.WALKING,
+        ForceStateChange = false,
+        GameState = EntityGameState.MOVING,
       });
 
       entity.directionState.LastCommandDirection = DIRECTIONS.BOTTOM;
@@ -96,7 +96,7 @@ public partial class EntityCommands
     public override void Execute(bool repeating)
     {
       float currentTime = Time.GetTicksMsec() / 1000.0f; // Get current time in seconds
-      if (repeating || currentTime - lastDashTime < cooldownTime || entity.MovementController.States.Contains(MOVEMENT_STATE.DASHING))
+      if (repeating || currentTime - lastDashTime < cooldownTime || entity.GameState.HasFlag(EntityGameState.DASHING))
       {
         return; // Action is still on cooldown or entity is already dashing
       }
@@ -104,9 +104,9 @@ public partial class EntityCommands
       MovementController.DashTo(new EntityMovementInput
       {
         Position = entity.Position + (entity.directionState.FacingDirectionVector.Normalized() * entity.DashDistance),
-        IsRunning = entity.MovementController.States.Contains(MOVEMENT_STATE.RUNNING),
-        ForceMovementState = true,
-        MovementState = MOVEMENT_STATE.DASHING,
+        IsRunning = false,
+        ForceStateChange = true,
+        GameState = EntityGameState.DASHING,
       });
 
       entity.MovementInputEvent();
@@ -126,8 +126,8 @@ public partial class EntityCommands
           X = entity.Position.X - MovementController.StepSize
         },
         IsRunning = false,
-        ForceMovementState = true,
-        MovementState = MOVEMENT_STATE.WALKING,
+        ForceStateChange = false,
+        GameState = EntityGameState.MOVING,
       });
       entity.directionState.LastCommandDirection = DIRECTIONS.LEFT;
       entity.MovementInputEvent();

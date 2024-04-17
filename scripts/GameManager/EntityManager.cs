@@ -42,8 +42,8 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 		{
 			Position = position,
 			IsRunning = false,
-			ForceMovementState = true,
-			MovementState = MOVEMENT_STATE.IDLE
+			ForceStateChange = true,
+			GameState = EntityGameState.IDLE
 		});
 
 		return true;

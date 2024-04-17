@@ -11,16 +11,22 @@ public partial class Entity
     OnStateChangedEvent?.Invoke();
   }
 
-  public event Action OnEntityStoppedEvent;
+  public event Action OnStoppedEvent;
   public void EntityStoppedEvent()
   {
-    OnEntityStoppedEvent?.Invoke();
+    OnStoppedEvent?.Invoke();
   }
 
-  public event Action<Vector2, Vector2> OnEntityMovedEvent;
+  public event Action<Vector2, Vector2> OnMovedEvent;
   public void EntityMovedEvent(Vector2 from, Vector2 to)
   {
-    OnEntityMovedEvent?.Invoke(from, to);
+    OnMovedEvent?.Invoke(from, to);
+  }
+
+  public event Action<Vector2, Vector2> OnEntityDashedEvent;
+  public void EntityDashedEvent(Vector2 from, Vector2 to)
+  {
+    OnEntityDashedEvent?.Invoke(from, to);
   }
 
   public event Action OnMovementStateUpdatedEvent;
@@ -72,6 +78,12 @@ public partial class Entity
     OnDealtNoDamageEvent?.Invoke(target, hitInfo);
   }
 
+  public event Action<EntityGameState, EntityGameState> OnGameStateChangeEvent;
+  public void GameStateChangeEvent(EntityGameState prev, EntityGameState actual)
+  {
+    OnGameStateChangeEvent?.Invoke(prev, actual);
+  }
+
   public event Action<Entity, EntityActionInfo> OnAttackMissedEvent;
   public void AttackMissedEvent(Entity target, EntityActionInfo hitInfo)
   {
@@ -106,6 +118,12 @@ public partial class Entity
   public void MarkedAsTargetEvent(Entity target, EntityActionInfo hitInfo)
   {
     OnMarkedAsTargetEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<Entity, EntityActionInfo> OnStartedCombatEvent;
+  public void StartedCombatEvent(Entity target, EntityActionInfo hitInfo)
+  {
+    OnStartedCombatEvent?.Invoke(target, hitInfo);
   }
 
 

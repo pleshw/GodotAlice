@@ -8,8 +8,8 @@ public record struct EntityMovementInput
 {
   public required Vector2 Position;
   public required bool IsRunning;
-  public required bool ForceMovementState;
-  public required MOVEMENT_STATE MovementState;
+  public required bool ForceStateChange;
+  public required EntityGameState GameState;
 }
 
 public static class EntityMovementConstraints

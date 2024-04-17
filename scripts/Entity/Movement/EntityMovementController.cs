@@ -5,21 +5,13 @@ using Godot;
 namespace Entity;
 
 
-public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 32) : IEntityAction
+public class EntityMovementController(Entity entity, Vector2 initialPosition, int gridMapCellWidth = 32)
 {
   public Entity entity = entity;
 
   public Vector2 initialPosition = initialPosition;
 
   protected Vector2 LastTrackedPosition { get; set; } = Vector2.Zero;
-
-  /// <summary>
-  /// What are the current movement states of the player. Helper to identify the best way to draw the player.
-  /// </summary>
-  protected EntityStateList<MOVEMENT_STATE> _states = new(entity, Comparer<MOVEMENT_STATE>.Create((a, b) => EntityMovementConstraints.MovementStatesPriorities[a].CompareTo(EntityMovementConstraints.MovementStatesPriorities[b])))
-  {
-    { MOVEMENT_STATE.IDLE }
-  };
 
   /// <summary>
   /// Where player is going.
@@ -135,21 +127,19 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     }
   }
 
-  public EntityStateList<MOVEMENT_STATE> States
+  public EntityMovementController SetState(EntityGameState newState, bool lockAfter = false)
   {
-    get
+    if (LockState)
     {
-      return _states;
-    }
-  }
-
-
-  public EntityMovementController SetState(EntityMovementInput playerMovementInput)
-  {
-    if (playerMovementInput.ForceMovementState)
-    {
-      _states.Add(playerMovementInput.MovementState);
       return this;
+    }
+
+    entity.GameState = newState;
+
+    if (lockAfter)
+    {
+      LockState = true;
+      entity.LockGameState = true;
     }
 
     return this;
@@ -157,28 +147,29 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public EntityMovementController TeleportTo(EntityMovementInput playerMovementInput)
   {
-    SetState(playerMovementInput);
+    SetState(playerMovementInput.GameState);
     entity.Position = playerMovementInput.Position;
     return this;
   }
 
   public EntityMovementController WalkTo(EntityMovementInput playerMovementInput)
   {
-    SetState(playerMovementInput);
+    SetState(playerMovementInput.GameState);
     _targetPosition = playerMovementInput.Position;
     return this;
   }
 
   public EntityMovementController DashTo(EntityMovementInput playerMovementInput)
   {
-    SetState(playerMovementInput);
+    SetState(playerMovementInput.GameState, true);
     _dashTargetPosition = playerMovementInput.Position;
+    _targetPosition = _dashTargetPosition;
     return this;
   }
 
   public EntityMovementController WalkToNearestCell(EntityMovementInput playerMovementInput)
   {
-    SetState(playerMovementInput);
+    SetState(playerMovementInput.GameState);
     _targetPosition = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
@@ -190,7 +181,7 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
 
   public EntityMovementController TeleportToNearestCell(EntityMovementInput playerMovementInput)
   {
-    SetState(playerMovementInput);
+    SetState(playerMovementInput.GameState);
     entity.Position = new Vector2
     {
       X = Mathf.Round(playerMovementInput.Position.X / _cellWidth) * _cellWidth + HalfCellWidth,
@@ -200,77 +191,87 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     return this;
   }
 
-  public bool IsStateChangeLocked { get; set; } = false;
+  public bool LockState { get; set; } = false;
 
-  public bool CancelOnNextIteration { get; set; } = false;
-  public bool IsPerformingAction { get; set; } = false;
+  public bool EndMovementOnNextIteration { get; set; } = false;
 
   public void Idled()
   {
-    if (IsStateChangeLocked)
-    {
-      return;
-    }
-
-    _states.Add(MOVEMENT_STATE.IDLE);
-    _states.Remove(MOVEMENT_STATE.WALKING);
+    SetState(EntityGameState.IDLE);
     entity.EntityStoppedEvent();
   }
 
   public void Moved()
   {
-    if (IsStateChangeLocked)
-    {
-      return;
-    }
-
-    _states.Add(MOVEMENT_STATE.WALKING);
-    _states.Remove(MOVEMENT_STATE.IDLE);
+    SetState(EntityGameState.MOVING);
     entity.EntityMovedEvent(entity.Position, TargetPosition);
   }
 
   public void Dashed()
   {
-    _states.Add(MOVEMENT_STATE.DASHING);
-    _states.Remove(MOVEMENT_STATE.IDLE);
-    _states.Remove(MOVEMENT_STATE.WALKING);
-    entity.EntityMovedEvent(entity.Position, TargetPosition);
+    SetState(EntityGameState.DASHING);
+    entity.EntityDashedEvent(entity.Position, TargetPosition);
+  }
+
+  public void ForceIdle()
+  {
+    entity.LockGameState = false;
+    LockState = false;
+    Idled();
   }
 
   public EntityMovementController MovementProcess(double delta, out bool hasMoved)
   {
     hasMoved = false;
-    if (CancelOnNextIteration)
+    if (EndMovementOnNextIteration)
     {
       _targetPosition = null;
       _dashTargetPosition = null;
-      CancelOnNextIteration = false;
+      EndMovementOnNextIteration = false;
     }
 
     if ((_targetPosition == null && _dashTargetPosition == null) || MovementDisabled)
     {
-      IsPerformingAction = false;
       Idled();
       return this;
     }
 
-    IsPerformingAction = true;
-
-    // Calculate the direction vector towards the target position
-    switch (States.Max)
+    switch (entity.GameState)
     {
-      case MOVEMENT_STATE.WALKING:
-        entity.directionState.FacingDirectionVector = (TargetPosition - entity.Position).Normalized();
-        DefaultMovement((float)delta);
+      case EntityGameState.DASHING:
+        DashProcess((float)delta);
         break;
-      case MOVEMENT_STATE.DASHING:
-        entity.directionState.FacingDirectionVector = (DashTargetPosition - entity.Position).Normalized();
-        DashMovement((float)delta);
+      case EntityGameState.MOVING:
+        WalkProcess((float)delta);
         break;
     }
 
     hasMoved = true;
     return this;
+  }
+
+  public void DashProcess(float delta)
+  {
+    Vector2 displacementDirection = (DashTargetPosition - entity.Position).Normalized();
+    if (displacementDirection == Vector2.Zero)
+    {
+      ForceIdle();
+      return;
+    }
+    entity.directionState.FacingDirectionVector = displacementDirection;
+    ExecuteDash(delta);
+  }
+
+  public void WalkProcess(float delta)
+  {
+    Vector2 displacementDirection = (TargetPosition - entity.Position).Normalized();
+    if (displacementDirection == Vector2.Zero)
+    {
+      ForceIdle();
+      return;
+    }
+    entity.directionState.FacingDirectionVector = displacementDirection;
+    ExecuteWalk(delta);
   }
 
   public void DisableMovement()
@@ -283,18 +284,15 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
     _movementDisabled = false;
   }
 
-  private void DashMovement(float delta)
+  private void ExecuteDash(float delta)
   {
-    if (CancelOnNextIteration)
+    if (EndMovementOnNextIteration)
     {
       _targetPosition = null;
       _dashTargetPosition = null;
-      CancelOnNextIteration = false;
-      IsPerformingAction = false;
+      EndMovementOnNextIteration = false;
       return;
     }
-
-    IsPerformingAction = true;
 
     float distanceToMove = DashSpeed * delta;
     float distanceToTarget = entity.Position.DistanceTo(DashTargetPosition);
@@ -304,8 +302,9 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       entity.Position = DashTargetPosition;
       _dashTargetPosition = null;
       Dashed();
-      IsStateChangeLocked = false;
-      _states.Remove(MOVEMENT_STATE.DASHING);
+      GD.Print("unlocked: ", LockState);
+      LockState = false;
+      entity.LockGameState = false;
     }
     else
     {
@@ -314,11 +313,13 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
       Dashed();
-      IsStateChangeLocked = true;
+      GD.Print("locked: ", LockState);
+      entity.LockGameState = true;
+      LockState = true;
     }
   }
 
-  public void DefaultMovement(float delta)
+  public void ExecuteWalk(float delta)
   {
     float distanceToMove = MaxSpeed * delta;
     float distanceToTarget = entity.Position.DistanceTo(TargetPosition);

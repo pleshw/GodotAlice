@@ -32,8 +32,8 @@ public partial class Enemy(Vector2 initialPosition) : Entity
     {
       Position = initialPosition,
       IsRunning = false,
-      ForceMovementState = true,
-      MovementState = MOVEMENT_STATE.IDLE,
+      ForceStateChange = true,
+      GameState = EntityGameState.IDLE,
     });
   }
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Animation;
 using Godot;
 
 namespace Entity;

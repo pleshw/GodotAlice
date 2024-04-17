@@ -1,13 +1,11 @@
-
-using System;
-using Godot;
-
 namespace Entity;
 
-[Flags]
-public enum GameStates
+public enum EntityGameState
 {
-  IDLE = 1 << 0,
-  PERFORMING_ACTION = 1 << 1,
-  INVULNERABLE = 1 << 2,
+  IDLE,
+  MOVING,
+  DASHING,
+  INTERACTING,
+  TALKING,
+  FIGHTING
 }
