@@ -22,10 +22,10 @@ public partial class EntityMovementAnimator(AnimatedEntity entity) : EntityActio
 
   public void AddMovementAnimation(string animationName, int animationPriority = 1, bool animationCanBeInterrupted = true)
   {
-    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedSprite2D dashingAnimations))
+    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedBody dashingAnimations))
     {
       AnimationSprites.Add(animationName, dashingAnimations);
-      SpriteFrames animations = dashingAnimations.SpriteFrames;
+      SpriteFrames animations = dashingAnimations.ReferenceSprite.SpriteFrames;
       string[] animationNames = animations.GetAnimationNames();
       foreach (string name in animationNames)
       {
@@ -38,7 +38,7 @@ public partial class EntityMovementAnimator(AnimatedEntity entity) : EntityActio
   {
     return new AnimationData
     {
-      Sprites = AnimationSprites[spritesKey],
+      BodySprites = AnimationSprites[spritesKey],
       Name = animationName,
       Animator = this,
       Priority = priority,
@@ -73,12 +73,12 @@ public partial class EntityMovementAnimator(AnimatedEntity entity) : EntityActio
 
   private void PlayDashAnimation()
   {
-    AnimatedSprite2D animationSprites = Animations["DashingDefault"].Sprites;
+    AnimatedBody animationSprites = Animations["DashingDefault"].BodySprites;
     animationSprites.SpeedScale = Entity.DashSpeedModifier / 2;
     Vector2 initialScale = animationSprites.Scale;
     Entity.GameStates |= GameStates.INVULNERABLE;
 
-    void onDashProgress(AnimatedSprite2D animationSprites, int currentFrame, int animationFrameCount)
+    void onDashProgress(AnimatedBody animationSprites, int currentFrame, int animationFrameCount)
     {
       float reverseAnimationStage = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 0);
       float reverseAnimationStateScaleFactor = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 1);

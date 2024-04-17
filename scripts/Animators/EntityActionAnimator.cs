@@ -6,7 +6,7 @@ using Godot;
 
 namespace Entity;
 
-public delegate void FrameChangedEvent(AnimatedSprite2D animationSprites, int currentFrame, int animationFrameCount);
+public delegate void FrameChangedEvent(AnimatedBody animationSprites, int currentFrame, int animationFrameCount);
 
 public abstract partial class EntityActionAnimator(AnimatedEntity entity) : AnimatorNode(entity)
 {
@@ -31,8 +31,8 @@ public abstract partial class EntityActionAnimator(AnimatedEntity entity) : Anim
       return;
     }
 
-    AnimatedSprite2D animationSprites = Animations[actionAnimationKey].Sprites;
-    int animationFrameCount = AnimationSprites[animationSpriteName].SpriteFrames.GetFrameCount(Animations[actionAnimationKey].Name);
+    AnimatedBody animationSprites = Animations[actionAnimationKey].BodySprites;
+    int animationFrameCount = AnimationSprites[animationSpriteName].GetFrameCount(Animations[actionAnimationKey].Name);
     Entity.GameStates |= GameStates.PERFORMING_ACTION;
 
     void _onAnimationProgress() => EachActionFrame(animationSprites, animationFrameCount, onAnimationProgress);
@@ -52,7 +52,7 @@ public abstract partial class EntityActionAnimator(AnimatedEntity entity) : Anim
     PlayAnimation(Animations[actionAnimationKey]);
   }
 
-  public static void EachActionFrame(AnimatedSprite2D animationSprites, int animationFrameCount, FrameChangedEvent onAnimationProgress)
+  public static void EachActionFrame(AnimatedBody animationSprites, int animationFrameCount, FrameChangedEvent onAnimationProgress)
   {
     int currentFrame = animationSprites.Frame;
     onAnimationProgress(animationSprites, currentFrame, animationFrameCount);

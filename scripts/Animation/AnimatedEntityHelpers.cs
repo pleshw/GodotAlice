@@ -41,7 +41,7 @@ public partial class AnimatedEntity
     }
   }
 
-  public Dictionary<StringName, AnimatedSprite2D> MovementSpritesByName
+  public Dictionary<StringName, AnimatedBody> MovementRelatedSpritesByName
   {
     get
     {
@@ -49,7 +49,7 @@ public partial class AnimatedEntity
     }
   }
 
-  public Dictionary<StringName, AnimatedSprite2D> IdleSpritesByName
+  public Dictionary<StringName, AnimatedBody> IdleSpritesByName
   {
     get
     {
@@ -66,7 +66,7 @@ public partial class AnimatedEntity
   }
 
 
-  public Dictionary<StringName, AnimatedSprite2D> AnimationsByName
+  public Dictionary<StringName, AnimatedBody> AnimationsByName
   {
     get
     {
@@ -74,10 +74,10 @@ public partial class AnimatedEntity
     }
   }
 
-  public static Dictionary<StringName, AnimatedSprite2D> GetMovementSpritesByName(Node2D node)
+  public static Dictionary<StringName, AnimatedBody> GetMovementSpritesByName(Node2D node)
   {
     return node.GetChildren()
-        .Select(c => c as AnimatedSprite2D)
+        .Select(c => c as AnimatedBody)
         .ToDictionary(sprite => sprite.Name, sprite => sprite);
   }
 
@@ -94,7 +94,7 @@ public partial class AnimatedEntity
         .ToDictionary(weapon => weapon.WeaponName, weapon => weapon.Sprites);
   }
 
-  private void AddAnimationSprites(Dictionary<StringName, AnimatedSprite2D> dictAnimations)
+  private void AddAnimationSprites(Dictionary<StringName, AnimatedBody> dictAnimations)
   {
     foreach (var kvp in dictAnimations)
     {

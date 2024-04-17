@@ -10,7 +10,7 @@ namespace Entity;
 
 public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity(initialPosition)
 {
-  protected Dictionary<StringName, AnimatedSprite2D> _animationsByName = [];
+  protected Dictionary<StringName, AnimatedBody> _animationsByName = [];
   public Dictionary<StringName, AnimationData> Animations { get; set; } = [];
 
   public EntityIdleAnimator idleAnimator;
@@ -33,7 +33,7 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity(i
     base._Ready();
 
     AddAnimationSprites(IdleSpritesByName);
-    AddAnimationSprites(MovementSpritesByName);
+    AddAnimationSprites(MovementRelatedSpritesByName);
 
     idleAnimator.OnReady();
     movementAnimator.OnReady();
@@ -45,12 +45,10 @@ public abstract partial class AnimatedEntity(Vector2 initialPosition) : Entity(i
 
     OnEntityStoppedEvent += () =>
     {
-      idleAnimator.Play();
     };
 
     OnEntityMovedEvent += (Vector2 from, Vector2 to) =>
     {
-      movementAnimator.Play();
     };
   }
 

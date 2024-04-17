@@ -9,7 +9,7 @@ public abstract partial class AnimatorNode : Node
   public static readonly Dictionary<AnimatedEntity, List<AnimatorNode>> ObserversByEntity = [];
   protected AnimatedEntity _entity;
 
-  protected Dictionary<string, AnimatedSprite2D> AnimationSprites = [];
+  protected Dictionary<string, AnimatedBody> AnimationSprites = [];
   protected abstract Dictionary<string, AnimationData> Animations { get; set; }
 
   public AnimatedEntity Entity

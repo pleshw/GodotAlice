@@ -16,13 +16,13 @@ public class EntityAnimationController
     CallOnMainAnimationFinish = Callable.From(OnMainAnimationFinished);
   }
 
-  public static void StopAnimation(AnimatedSprite2D animation)
+  public static void StopAnimation(AnimatedBody animation)
   {
     animation.Stop();
     animation.Visible = false;
   }
 
-  public static void PlayAnimation(AnimatedSprite2D animation)
+  public static void PlayAnimation(AnimatedBody animation)
   {
     animation.Visible = true;
     animation.Play(animation.Name);
@@ -31,15 +31,15 @@ public class EntityAnimationController
   public void PlayMainAnimation()
   {
     AnimationInfo.MainAnimationData.BeforeAnimationStart();
-    AnimationInfo.MainAnimationData.Sprites.Visible = true;
-    AnimationInfo.MainAnimationData.Sprites.Play(AnimationInfo.MainAnimationData.Name);
+    AnimationInfo.MainAnimationData.BodySprites.Visible = true;
+    AnimationInfo.MainAnimationData.BodySprites.Play(AnimationInfo.MainAnimationData.Name);
   }
 
   public void StopMainAnimation()
   {
     if (AnimationInfo.MainAnimationData != null)
     {
-      StopAnimation(AnimationInfo.MainAnimationData.Sprites);
+      StopAnimation(AnimationInfo.MainAnimationData.BodySprites);
     }
   }
 
@@ -81,7 +81,7 @@ public class EntityAnimationController
     {
       if (AnimationInfo.MainAnimationData != null)
       {
-        bool isMainAnimationPlaying = AnimationInfo.MainAnimationData.Sprites.IsPlaying();
+        bool isMainAnimationPlaying = AnimationInfo.MainAnimationData.BodySprites.IsPlaying();
         bool canAnimationBeInterrupted = AnimationInfo.MainAnimationData.CanBeInterrupted;
 
         if ((animationData.Name == AnimationInfo.MainAnimationData.Name && isMainAnimationPlaying) || (isMainAnimationPlaying && !canAnimationBeInterrupted))
@@ -101,9 +101,9 @@ public class EntityAnimationController
 
   public void ConnectOnFinishedToMain()
   {
-    if (!AnimationInfo.MainAnimationData.Sprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    if (!AnimationInfo.MainAnimationData.BodySprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
     {
-      AnimationInfo.MainAnimationData.Sprites.Connect(
+      AnimationInfo.MainAnimationData.BodySprites.Connect(
        AnimatedSprite2D.SignalName.AnimationFinished,
        CallOnMainAnimationFinish
      );
@@ -112,9 +112,9 @@ public class EntityAnimationController
 
   public void DisconnectOnFinishedFromMain()
   {
-    if (AnimationInfo.MainAnimationData.Sprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
+    if (AnimationInfo.MainAnimationData.BodySprites.IsConnected(AnimatedSprite2D.SignalName.AnimationFinished, CallOnMainAnimationFinish))
     {
-      AnimationInfo.MainAnimationData.Sprites.Disconnect(
+      AnimationInfo.MainAnimationData.BodySprites.Disconnect(
        AnimatedSprite2D.SignalName.AnimationFinished,
        CallOnMainAnimationFinish
      );

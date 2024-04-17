@@ -15,7 +15,7 @@ public partial class EntityIdleAnimator(AnimatedEntity entity) : AnimatorNode(en
     }
   }
 
-  public AnimatedSprite2D Idle
+  public AnimatedBody Idle
   {
     get
     {
@@ -36,10 +36,10 @@ public partial class EntityIdleAnimator(AnimatedEntity entity) : AnimatorNode(en
 
   public void AddIdleAnimation(string animationName, int animationPriority = 1, bool animationCanBeInterrupted = true)
   {
-    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedSprite2D dashingAnimations))
+    if (_entity.AnimationsByName.TryGetValue(animationName, out AnimatedBody dashingAnimations))
     {
       AnimationSprites.Add(animationName, dashingAnimations);
-      SpriteFrames animations = dashingAnimations.SpriteFrames;
+      SpriteFrames animations = dashingAnimations.ReferenceSprite.SpriteFrames;
       string[] animationNames = animations.GetAnimationNames();
       foreach (string name in animationNames)
       {
@@ -52,7 +52,7 @@ public partial class EntityIdleAnimator(AnimatedEntity entity) : AnimatorNode(en
   {
     return new AnimationData
     {
-      Sprites = AnimationSprites[spritesKey],
+      BodySprites = AnimationSprites[spritesKey],
       Name = animationName,
       Animator = this,
       Priority = priority,
