@@ -1,9 +1,10 @@
-[gd_scene load_steps=56 format=3 uid="uid://mow1eqd27r6s"]
+[gd_scene load_steps=57 format=3 uid="uid://mow1eqd27r6s"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_vfx70"]
 [ext_resource type="Texture2D" uid="uid://qsuxaat3jhi" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="2_thuhd"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="4_7rn4v"]
-[ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/PlayerBody.tscn" id="4_mkjmf"]
+[ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/main_characters/PawnBody.tscn" id="4_mkjmf"]
+[ext_resource type="PackedScene" uid="uid://c1h1o65tnyjiy" path="res://prefabs/entities/main_characters/ArcherBody.tscn" id="5_ul727"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7dn3"]
 atlas = ExtResource("2_thuhd")
@@ -389,7 +390,7 @@ size = Vector2(59.8153, 79)
 [node name="Player" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
 visibility_layer = 2
 script = ExtResource("1_vfx70")
-AnimatedBody = NodePath("PlayerBody")
+AnimatedBody = NodePath("ArcherBody")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
 
@@ -445,4 +446,7 @@ shape = SubResource("RectangleShape2D_6pus8")
 
 [node name="EquippedItems" type="Node" parent="."]
 
-[node name="PlayerBody" parent="." instance=ExtResource("4_mkjmf")]
+[node name="PawnBody" parent="." instance=ExtResource("4_mkjmf")]
+visible = false
+
+[node name="ArcherBody" parent="." instance=ExtResource("5_ul727")]

@@ -34,7 +34,7 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
 
     OnMovedEvent += (Vector2 from, Vector2 to) =>
     {
-      AnimatedBody.Parts.ForEach(p => p.FlipH = directionState.FacingSide == DIRECTIONS.LEFT);
+      FlipAnimationToFacingSide();
     };
 
     OnGameStateChangeEvent += (EntityGameState previousState, EntityGameState currentState) =>
@@ -68,6 +68,11 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     };
   }
 
+  public void FlipAnimationToFacingSide()
+  {
+    AnimatedBody.Parts.ForEach(p => p.FlipH = directionState.FacingSide == DIRECTIONS.LEFT);
+  }
+
   public async Task PlayAnimationAsync(StringName animationName, OnFrameChangeEvent onFrameChange, OnAnimationFinishedEvent onFinished)
   {
     var animationFinishedTask = new TaskCompletionSource<bool>();
@@ -80,15 +85,68 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
       LockAnimations = false;
     }
 
+    FlipAnimationToFacingSide();
     AnimatedBody.Play(animationName, onFrameChange, _onFinished);
 
     await animationFinishedTask.Task;
   }
 
+  public void PlayAnimation(StringName animationName, OnFrameChangeEvent onFrameChange, OnAnimationFinishedEvent onFinished)
+  {
+    LockAnimations = true;
+
+    void _onFinished(AnimatedSprite2D animatedSprite, Transform2D initialTransform)
+    {
+      onFinished(animatedSprite, initialTransform);
+      LockAnimations = false;
+    }
+
+    AnimatedBody.Play(animationName, onFrameChange, _onFinished);
+  }
+
+  public void PlayAttackAnimation()
+  {
+    if (LockAnimations)
+    {
+      return;
+    }
+
+    MovementController.DisableMovement();
+
+    LockGameState = true;
+    LockAnimations = true;
+
+    FlipAnimationToFacingSide();
+
+    PlayAnimation("Attacking",
+     (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
+     {
+
+     },
+
+     (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
+     {
+       LockGameState = false;
+       LockAnimations = false;
+       GameState = EntityGameState.IDLE;
+       MovementController.EnableMovement();
+     });
+  }
 
   public async Task PlayAttackAnimationAsync()
   {
+    if (LockAnimations)
+    {
+      return;
+    }
+
     MovementController.DisableMovement();
+
+    LockGameState = true;
+    LockAnimations = true;
+
+    FlipAnimationToFacingSide();
+
     await PlayAnimationAsync("Attacking",
       (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
       {
@@ -97,8 +155,11 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
 
       (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
       {
-
+        GameState = EntityGameState.IDLE;
       });
+
+    LockGameState = false;
+    LockAnimations = false;
     MovementController.EnableMovement();
   }
 

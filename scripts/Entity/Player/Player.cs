@@ -82,7 +82,8 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
             DamageProportion = new DamageTypeProportion(1f, 0f),
             DamageElementalProperty = DamageElementalProperty.NEUTRAL
           });
-
+          var mousePosition = GetGlobalMousePosition();
+          directionState.FacingDirectionVector = GlobalPosition.DirectionTo(mousePosition);
           if (outcome == AttackOutcome.MISS)
           {
             PlayAttackAnimationAsync();

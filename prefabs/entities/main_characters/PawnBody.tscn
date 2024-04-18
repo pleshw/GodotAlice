@@ -200,14 +200,14 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="PlayerBody" type="Node2D"]
+[node name="PawnBody" type="Node2D"]
 visibility_layer = 2
 script = ExtResource("1_v2d6s")
 
 [node name="Body" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_u0pre")
 sprite_frames = SubResource("SpriteFrames_nodc0")
-animation = &"Moving"
+animation = &"Attacking"
 
 [node name="Hat" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -117)
