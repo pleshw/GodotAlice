@@ -73,7 +73,20 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
         var clickEventType = inputEventClick.ButtonIndex;
         if (clickEventType == MouseButton.Left)
         {
-          // Camera.MakeCurrent();
+          var outcome = CombatController.ExecuteAttack(null, new EntityActionInfo
+          {
+            Attacker = this,
+            WeaponExtraDamage = 50,
+            RangeInCells = 900,
+            IsMelee = true,
+            DamageProportion = new DamageTypeProportion(1f, 0f),
+            DamageElementalProperty = DamageElementalProperty.NEUTRAL
+          });
+
+          if (outcome == AttackOutcome.MISS)
+          {
+            PlayAttackAnimationAsync();
+          }
         }
       }
     }

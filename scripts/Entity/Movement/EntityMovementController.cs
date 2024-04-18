@@ -302,7 +302,6 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       entity.Position = DashTargetPosition;
       _dashTargetPosition = null;
       Dashed();
-      GD.Print("unlocked: ", LockState);
       LockState = false;
       entity.LockGameState = false;
     }
@@ -313,7 +312,6 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       Vector2 entityNewPosition = LastTrackedPosition + displacement;
       entity.Position = entityNewPosition;
       Dashed();
-      GD.Print("locked: ", LockState);
       entity.LockGameState = true;
       LockState = true;
     }

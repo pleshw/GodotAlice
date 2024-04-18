@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://denygldordlrc"]
+[gd_scene load_steps=30 format=3 uid="uid://denygldordlrc"]
 
 [ext_resource type="Script" path="res://scripts/Animation/EntityAnimatedBody.cs" id="1_v2d6s"]
 [ext_resource type="Texture2D" uid="uid://r4314brrijv8" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Purple/Pawn_Purple.png" id="2_6r1o1"]
@@ -7,6 +7,30 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0pre"]
 shader = ExtResource("2_id2eb")
 shader_parameter/blinkStage = null
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1dtp"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qd2t2"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_geahc"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6v4e"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uqo5t"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw1fv"]
+atlas = ExtResource("2_6r1o1")
+region = Rect2(960, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bi1dp"]
 atlas = ExtResource("2_6r1o1")
@@ -85,6 +109,29 @@ resource_local_to_scene = true
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_p1dtp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qd2t2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_geahc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u6v4e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uqo5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw1fv")
+}],
+"loop": false,
+"name": &"Attacking",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_bi1dp")
 }, {
 "duration": 1.0,
@@ -104,7 +151,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Dashing",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -127,7 +174,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -150,7 +197,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Moving",
-"speed": 5.0
+"speed": 12.0
 }]
 
 [node name="PlayerBody" type="Node2D"]
@@ -160,7 +207,7 @@ script = ExtResource("1_v2d6s")
 [node name="Body" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_u0pre")
 sprite_frames = SubResource("SpriteFrames_nodc0")
-animation = &"Idle"
+animation = &"Moving"
 
 [node name="Hat" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -117)

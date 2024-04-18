@@ -1,10 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Extras;
 using Godot;
 
 namespace Entity;
 
+public enum AttackOutcome
+{
+  NOT_ENOUGH_RANGE,
+  MISS,
+  HIT,
+  NOT_EFFECTIVE,
+  CRITICAL
+}
 
 public partial class EntityCombatController(Entity entity, int sightRange = 0, int awarenessRange = 0) : IEntityAction
 {
@@ -31,15 +40,20 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
   public int EnemiesAround { get; } = 1;
   public List<DamageElementalProperty> ElementalWeaknesses { get; set; } = [];
 
-  public bool TryAttack(Entity target, EntityActionInfo actionInfo)
+  public AttackOutcome ExecuteAttack(Entity target, EntityActionInfo actionInfo)
   {
+    if (target == null)
+    {
+      return AttackOutcome.MISS;
+    }
+
     entity.StartedCombatEvent(target, actionInfo);
     int distanceFromTarget = entity.DistanceInCells(target.Position, entity.MovementController.CellWidth);
     if (actionInfo.RangeInCells < distanceFromTarget)
     {
       target.CombatController.UpdateAwareness(actionInfo, distanceFromTarget);
       InvokeNotEnoughRangeEvents(target, actionInfo);
-      return false;
+      return AttackOutcome.NOT_ENOUGH_RANGE;
     }
 
     target.MarkedAsTargetEvent(entity, actionInfo);
@@ -48,7 +62,7 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
     if (target.CombatController.TryDodge(entity))
     {
       InvokeDodgeEvents(target, actionInfo);
-      return false;
+      return AttackOutcome.MISS;
     }
 
     target.CombatController.TakeHit(actionInfo, out int damageTaken, out bool wasCritical);
@@ -63,16 +77,17 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
         InvokeZeroDamageEvents(target, actionInfo);
       }
 
-      return true;
+      return AttackOutcome.NOT_EFFECTIVE;
     }
 
     if (wasCritical)
     {
       entity.CriticalAttackEvent(target, actionInfo);
       target.TookCriticalEvent(actionInfo);
+      return AttackOutcome.CRITICAL;
     }
 
-    return true;
+    return AttackOutcome.HIT;
   }
 
   private void InvokeNotEnoughRangeEvents(Entity target, EntityActionInfo actionInfo)

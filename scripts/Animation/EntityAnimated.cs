@@ -3,6 +3,7 @@ using Entity;
 using System;
 using GameManagers;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace Entity;
@@ -65,6 +66,40 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
           return;
       }
     };
+  }
+
+  public async Task PlayAnimationAsync(StringName animationName, OnFrameChangeEvent onFrameChange, OnAnimationFinishedEvent onFinished)
+  {
+    var animationFinishedTask = new TaskCompletionSource<bool>();
+    LockAnimations = true;
+
+    void _onFinished(AnimatedSprite2D animatedSprite, Transform2D initialTransform)
+    {
+      onFinished(animatedSprite, initialTransform);
+      animationFinishedTask.SetResult(true);
+      LockAnimations = false;
+    }
+
+    AnimatedBody.Play(animationName, onFrameChange, _onFinished);
+
+    await animationFinishedTask.Task;
+  }
+
+
+  public async Task PlayAttackAnimationAsync()
+  {
+    MovementController.DisableMovement();
+    await PlayAnimationAsync("Attacking",
+      (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
+      {
+
+      },
+
+      (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
+      {
+
+      });
+    MovementController.EnableMovement();
   }
 
   public void PlayDashAnimation()
