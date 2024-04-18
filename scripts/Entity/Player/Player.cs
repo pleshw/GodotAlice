@@ -86,7 +86,7 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
           directionState.FacingDirectionVector = GlobalPosition.DirectionTo(mousePosition);
           if (outcome == AttackOutcome.MISS)
           {
-            PlayAttackAnimationAsync();
+            PlayAttackAnimation();
           }
         }
       }
