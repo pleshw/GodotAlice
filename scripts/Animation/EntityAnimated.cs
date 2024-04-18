@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entity;
 
+
 public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(initialPosition)
 {
   [Export]
@@ -73,35 +74,65 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     AnimatedBody.Parts.ForEach(p => p.FlipH = directionState.FacingSide == DIRECTIONS.LEFT);
   }
 
-  public async Task PlayAnimationAsync(StringName animationName, OnFrameChangeEvent onFrameChange, OnAnimationFinishedEvent onFinished)
+  public async Task PlayAnimationAsync(AnimationRequestInput animationRequest)
   {
     var animationFinishedTask = new TaskCompletionSource<bool>();
     LockAnimations = true;
 
+    void _onFrameChange(AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount)
+    {
+      if (animationRequest.OnFrameChange is not null)
+      {
+        animationRequest.OnFrameChange(animatedSprite, initialTransform, currentFrame, animationFrameCount);
+      }
+    }
+
     void _onFinished(AnimatedSprite2D animatedSprite, Transform2D initialTransform)
     {
-      onFinished(animatedSprite, initialTransform);
+      if (animationRequest.OnFinished is not null)
+      {
+        animationRequest.OnFinished(animatedSprite, initialTransform);
+      }
       animationFinishedTask.SetResult(true);
       LockAnimations = false;
     }
 
     FlipAnimationToFacingSide();
-    AnimatedBody.Play(animationName, onFrameChange, _onFinished);
+    AnimatedBody.Play(animationRequest with
+    {
+      OnFrameChange = _onFrameChange,
+      OnFinished = _onFinished
+    });
 
     await animationFinishedTask.Task;
   }
 
-  public void PlayAnimation(StringName animationName, OnFrameChangeEvent onFrameChange, OnAnimationFinishedEvent onFinished)
+  public void PlayAnimation(AnimationRequestInput animationRequest)
   {
     LockAnimations = true;
 
+    void _onFrameChange(AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount)
+    {
+      if (animationRequest.OnFrameChange is not null)
+      {
+        animationRequest.OnFrameChange(animatedSprite, initialTransform, currentFrame, animationFrameCount);
+      }
+    }
+
     void _onFinished(AnimatedSprite2D animatedSprite, Transform2D initialTransform)
     {
-      onFinished(animatedSprite, initialTransform);
+      if (animationRequest.OnFinished is not null)
+      {
+        animationRequest.OnFinished(animatedSprite, initialTransform);
+      }
       LockAnimations = false;
     }
 
-    AnimatedBody.Play(animationName, onFrameChange, _onFinished);
+    AnimatedBody.Play(animationRequest with
+    {
+      OnFrameChange = _onFrameChange,
+      OnFinished = _onFinished
+    });
   }
 
   public void PlayAttackAnimation()
@@ -118,19 +149,19 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
 
     FlipAnimationToFacingSide();
 
-    PlayAnimation("Attacking",
-     (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
-     {
-
-     },
-
-     (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
-     {
-       LockGameState = false;
-       LockAnimations = false;
-       GameState = EntityGameState.IDLE;
-       MovementController.EnableMovement();
-     });
+    PlayAnimation(new()
+    {
+      Name = "Attacking",
+      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) => { },
+      OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
+      {
+        LockGameState = false;
+        LockAnimations = false;
+        GameState = EntityGameState.IDLE;
+        MovementController.EnableMovement();
+      },
+      ForceDuration = 1 / Stats.AttacksPerSecond,
+    });
   }
 
   public async Task PlayAttackAnimationAsync()
@@ -147,16 +178,16 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
 
     FlipAnimationToFacingSide();
 
-    await PlayAnimationAsync("Attacking",
-      (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
-      {
-
-      },
-
-      (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
+    await PlayAnimationAsync(new()
+    {
+      Name = "Attacking",
+      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) => { },
+      OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
       {
         GameState = EntityGameState.IDLE;
-      });
+      },
+      ForceDuration = .3f,
+    });
 
     LockGameState = false;
     LockAnimations = false;
@@ -167,21 +198,25 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
   {
     float initialSpeed = AnimatedBody.SpriteReference.SpeedScale;
     AnimatedBody.SetSpeedScale(initialSpeed * DashSpeedModifier);
-    AnimatedBody.Play("Dashing", (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
+    AnimatedBody.Play(new AnimationRequestInput()
     {
-      float reverseAnimationStage = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 0);
-      float reverseAnimationStateScaleFactor = Mathf.Remap(currentFrame, 0, animationFrameCount, .6f, 1);
+      Name = "Dashing",
+      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
+      {
+        float reverseAnimationStage = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 0);
+        float reverseAnimationStateScaleFactor = Mathf.Remap(currentFrame, 0, animationFrameCount, .6f, 1);
 
-      (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", reverseAnimationStage);
+        (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", reverseAnimationStage);
 
-      animatedSprite.Scale = initialTransform.Scale with { Y = initialTransform.Scale.Y * reverseAnimationStateScaleFactor };
-    },
-    (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
-    {
-      animatedSprite.Scale = initialTransform.Scale;
-      (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", 0);
-      LockAnimations = false;
-      AnimatedBody.SetSpeedScale(initialSpeed);
+        animatedSprite.Scale = initialTransform.Scale with { Y = initialTransform.Scale.Y * reverseAnimationStateScaleFactor };
+      },
+      OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
+      {
+        animatedSprite.Scale = initialTransform.Scale;
+        (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", 0);
+        LockAnimations = false;
+        AnimatedBody.SetSpeedScale(initialSpeed);
+      }
     });
   }
 

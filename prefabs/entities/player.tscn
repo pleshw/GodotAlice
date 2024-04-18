@@ -450,3 +450,4 @@ shape = SubResource("RectangleShape2D_6pus8")
 visible = false
 
 [node name="ArcherBody" parent="." instance=ExtResource("5_ul727")]
+visible = false

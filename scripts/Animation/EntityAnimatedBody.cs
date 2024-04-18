@@ -8,6 +8,14 @@ namespace Entity;
 public delegate void OnFrameChangeEvent(AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount);
 public delegate void OnAnimationFinishedEvent(AnimatedSprite2D animatedSprite, Transform2D initialTransform);
 
+public struct AnimationRequestInput()
+{
+	public required StringName Name;
+	public float ForceDuration = -1;
+	public OnFrameChangeEvent OnFrameChange = null;
+	public OnAnimationFinishedEvent OnFinished = null;
+}
+
 public partial class EntityAnimatedBody : Node2D
 {
 
@@ -47,12 +55,15 @@ public partial class EntityAnimatedBody : Node2D
 				return;
 			}
 
+			animatedSprite.GetParent<Node2D>().Visible = true;
+			animatedSprite.Visible = true;
+
 			AnimationPlaying = animationName;
 			animatedSprite.Play(animationName);
 		});
 	}
 
-	public void Play(StringName animationName, OnFrameChangeEvent onAnimationProgress, OnAnimationFinishedEvent onAnimationFinished = null)
+	public void Play(AnimationRequestInput animationRequest)
 	{
 		Parts.ForEach(animatedSprite =>
 		{
@@ -65,34 +76,56 @@ public partial class EntityAnimatedBody : Node2D
 
 			List<string> animationNames = [.. animatedSprite.SpriteFrames.GetAnimationNames()];
 
-			if (!animationNames.Contains(animationName))
+			if (!animationNames.Contains(animationRequest.Name))
 			{
 				return;
 			}
 
+			animatedSprite.GetParent<Node2D>().Visible = true;
+			animatedSprite.Visible = true;
+
 			Transform2D initialTransform = animatedSprite.Transform;
 
-			int animationFrameCount = spriteFrames.GetFrameCount(animationName);
+			int animationFrameCount = spriteFrames.GetFrameCount(animationRequest.Name);
+			float defaultAnimationSpeed = animatedSprite.SpeedScale;
+			double defaultAnimationFPS = spriteFrames.GetAnimationSpeed(animationRequest.Name);
 
-			void _onAnimationProgress() => ExecuteActionOnFrame(animatedSprite, initialTransform, animationFrameCount, onAnimationProgress);
+			if (animationRequest.ForceDuration > 0)
+			{
+				double animationDuration = animationFrameCount / defaultAnimationFPS;
+				double speedScale = animationDuration / animationRequest.ForceDuration;
+				animatedSprite.SpeedScale = (float)speedScale;
+			}
+
+			void _onAnimationProgress() => ExecuteActionOnFrame(animatedSprite, initialTransform, animationFrameCount, animationRequest.OnFrameChange);
 
 			void _onAnimationFinished()
 			{
 				animatedSprite.Disconnect(AnimatedSprite2D.SignalName.FrameChanged, Callable.From(_onAnimationProgress));
 				animatedSprite.Disconnect(AnimatedSprite2D.SignalName.AnimationFinished, Callable.From(_onAnimationFinished));
-				onAnimationFinished?.Invoke(animatedSprite, initialTransform);
+				animationRequest.OnFinished?.Invoke(animatedSprite, initialTransform);
+
+				if (animationRequest.ForceDuration > 0)
+				{
+					animatedSprite.SpeedScale = defaultAnimationSpeed;
+				}
 			};
 
 			animatedSprite.Connect(AnimatedSprite2D.SignalName.FrameChanged, Callable.From(_onAnimationProgress));
 			animatedSprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, Callable.From(_onAnimationFinished));
 
-			AnimationPlaying = animationName;
-			animatedSprite.Play(animationName);
+			AnimationPlaying = animationRequest.Name;
+			animatedSprite.Play(animationRequest.Name);
 		});
 	}
 
 	public static void ExecuteActionOnFrame(AnimatedSprite2D animatedSprite, Transform2D initialTransform, int animationFrameCount, OnFrameChangeEvent onFrameChange)
 	{
+		if (onFrameChange is null)
+		{
+			return;
+		}
+
 		int currentFrame = animatedSprite.Frame;
 		onFrameChange(animatedSprite, initialTransform, currentFrame, animationFrameCount);
 	}
