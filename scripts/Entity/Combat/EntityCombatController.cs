@@ -23,6 +23,9 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
 
   public int SightRange { get; set; } = sightRange;
 
+  public bool IsAlive { get; set; } = true;
+
+
   /// <summary>
   /// The range a unit has to be from another to activate awareness from danger 
   /// </summary>
@@ -157,8 +160,29 @@ public partial class EntityCombatController(Entity entity, int sightRange = 0, i
 
     damageTaken = Mathf.RoundToInt(flatDamageTaken);
 
+    entity.BeforeHealthLossEvent(actionInfo, damageTaken, wasCritical);
+
     entity.Stats.CurrentHealth -= damageTaken;
+
+    entity.AfterHealthLossEvent(actionInfo, damageTaken, wasCritical);
+
+    entity.BeforeDeathCheckEvent(actionInfo, damageTaken, wasCritical);
+
+    CheckDeath(actionInfo);
+
+    entity.AfterDeathCheckEvent(actionInfo, damageTaken, wasCritical);
+
     entity.WasHitEvent(actionInfo);
+  }
+
+  private void CheckDeath(EntityActionInfo actionInfo)
+  {
+    if (entity.Stats.CurrentHealth <= 0)
+    {
+      IsAlive = false;
+      entity.Stats.CurrentHealth = 0;
+      entity.ConfirmDeathEvent(actionInfo);
+    }
   }
 
   private void UpdateAwareness(EntityActionInfo actionInfo, int distanceFromPerformer)

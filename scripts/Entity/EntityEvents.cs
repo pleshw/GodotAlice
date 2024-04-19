@@ -54,6 +54,9 @@ public partial class Entity
   }
 
 
+
+  // COMBAT EVENTS BELOW
+
   public event Action<EntityActionInfo> OnWasHitEvent;
   public void WasHitEvent(EntityActionInfo hitInfo)
   {
@@ -126,10 +129,36 @@ public partial class Entity
     OnStartedCombatEvent?.Invoke(target, hitInfo);
   }
 
-
   public event Action<Entity, EntityActionInfo> OnNotEnoughRangeEvent;
   public void NotEnoughRangeEvent(Entity target, EntityActionInfo hitInfo)
   {
     OnNotEnoughRangeEvent?.Invoke(target, hitInfo);
+  }
+
+  public event Action<EntityActionInfo, int, bool> OnBeforeHealthLossEvent;
+  public void BeforeHealthLossEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
+  {
+    OnBeforeHealthLossEvent?.Invoke(actionInfo, damageTaken, wasCritical);
+  }
+  public event Action<EntityActionInfo, int, bool> OnAfterHealthLossEvent;
+  public void AfterHealthLossEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
+  {
+    OnAfterHealthLossEvent?.Invoke(actionInfo, damageTaken, wasCritical);
+  }
+  public event Action<EntityActionInfo, int, bool> OnBeforeDeathCheckEvent;
+  public void BeforeDeathCheckEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
+  {
+    OnBeforeDeathCheckEvent?.Invoke(actionInfo, damageTaken, wasCritical);
+  }
+  public event Action<EntityActionInfo, int, bool> OnAfterDeathCheckEvent;
+  public void AfterDeathCheckEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
+  {
+    OnAfterDeathCheckEvent?.Invoke(actionInfo, damageTaken, wasCritical);
+  }
+
+  public event Action<EntityActionInfo> OnConfirmDeathEvent;
+  public void ConfirmDeathEvent(EntityActionInfo actionInfo)
+  {
+    OnConfirmDeathEvent?.Invoke(actionInfo);
   }
 }
