@@ -1,7 +1,8 @@
 using Godot;
 using System.Collections.Generic;
 using System;
-using GameManagers;
+using GameManager;
+using Effect;
 
 namespace Entity;
 
@@ -15,6 +16,14 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
     get
     {
       return BaseInventory as PlayerInventory;
+    }
+  }
+
+  public DamageAlert DamageAlert
+  {
+    get
+    {
+      return GetNode<DamageAlert>("DamageAlert");
     }
   }
 
@@ -38,6 +47,20 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
     {
       movementKeyBinds.Execute(keyPressed, isRepeating);
       uiKeyBinds.Execute(keyPressed, isRepeating);
+    };
+
+
+    OnAttackAnimationFrameChangeEvent += (int currentFrame, int animationFrameCount) =>
+    {
+      if (currentFrame == animationFrameCount / 2)
+      {
+        AudioStreamPlayer2D[] soundEffect = [GetNode<AudioStreamPlayer2D>("Ponhonho"), GetNode<AudioStreamPlayer2D>("Inhonho")];
+        int randomSeed = (int)MainScene.Random.NextInt64(400, 1100);
+        DamageAlert.Spawn(randomSeed.ToString());
+        AudioStreamPlayer2D playSound = soundEffect[randomSeed % 2];
+        playSound.VolumeDb = randomSeed / 100;
+        playSound.Play();
+      }
     };
 
     MainScene.InputManager.OnMouseAction += (MouseButton button, bool isRepeating, TimeSpan heldTime) =>

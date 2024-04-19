@@ -44,9 +44,8 @@ public static class Utils
     return result;
   }
 
-  public static Vector2 RandomVector(float minX, float maxX, float minY, float maxY)
+  public static Vector2 GetRandomVector(float minX, float maxX, float minY, float maxY)
   {
-    Random rand = new();
     float randomX = (float)GD.RandRange(minX, maxX);
     float randomY = (float)GD.RandRange(minY, maxY);
     return new Vector2(randomX, randomY);

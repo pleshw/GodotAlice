@@ -2,7 +2,7 @@ using Entity;
 using Extras;
 using Godot;
 
-namespace GameManagers;
+namespace GameManager;
 
 public partial class PlayerManager() : EntityManager<Player>("res://prefabs/entities/", "pawn.tscn")
 {
@@ -19,8 +19,6 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
 
   public void InstantiatePlayer()
   {
-    Entity.Entity.GlobalCamera = GlobalCamera;
-
     TryInstantiateAtPosition(SpawnPoint, out playerInstance);
     playerInstance.movementKeyBinds.BindDefaults();
     playerInstance.uiKeyBinds.BindDefaults();

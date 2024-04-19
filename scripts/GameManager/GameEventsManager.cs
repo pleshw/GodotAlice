@@ -2,7 +2,7 @@ using System;
 using Entity;
 using Godot;
 
-namespace GameManagers;
+namespace GameManager;
 
 public partial class GameEventsManager : Node
 {

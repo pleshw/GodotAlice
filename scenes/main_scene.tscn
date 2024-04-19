@@ -1,13 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bj2p515w2nc8b"]
+[gd_scene load_steps=4 format=3 uid="uid://bj2p515w2nc8b"]
 
 [ext_resource type="Script" path="res://scripts/Scenes/MainScene.cs" id="1_gbgbr"]
+[ext_resource type="AudioStream" uid="uid://l3omi8cfa5go" path="res://assets/sounds/chaves2.mp3" id="3_27h5k"]
 [ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/menu/player_menu.tscn" id="4_jj40n"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_gbgbr")
 
 [node name="GlobalCamera" type="Camera2D" parent="."]
-anchor_mode = 0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -22,3 +22,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_27h5k")
+autoplay = true

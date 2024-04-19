@@ -53,7 +53,25 @@ public partial class Entity
     OnTryEquipSuccessEvent?.Invoke(equipment, positionTriedToEquip);
   }
 
+  // ANIMATION EVENTS BELOW
 
+  public event Action OnBeforeAttackAnimationEvent;
+  public void BeforeAttackAnimationEvent()
+  {
+    OnBeforeAttackAnimationEvent?.Invoke();
+  }
+
+  public event Action<int, int> OnAttackAnimationFrameChangeEvent;
+  public void AttackAnimationFrameChangeEvent(int currentFrame, int animationFrameCount)
+  {
+    OnAttackAnimationFrameChangeEvent?.Invoke(currentFrame, animationFrameCount);
+  }
+
+  public event Action OnAfterAttackAnimationEvent;
+  public void AfterAttackAnimationEvent()
+  {
+    OnAfterAttackAnimationEvent?.Invoke();
+  }
 
   // COMBAT EVENTS BELOW
 
@@ -140,16 +158,19 @@ public partial class Entity
   {
     OnBeforeHealthLossEvent?.Invoke(actionInfo, damageTaken, wasCritical);
   }
+
   public event Action<EntityActionInfo, int, bool> OnAfterHealthLossEvent;
   public void AfterHealthLossEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
   {
     OnAfterHealthLossEvent?.Invoke(actionInfo, damageTaken, wasCritical);
   }
+
   public event Action<EntityActionInfo, int, bool> OnBeforeDeathCheckEvent;
   public void BeforeDeathCheckEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
   {
     OnBeforeDeathCheckEvent?.Invoke(actionInfo, damageTaken, wasCritical);
   }
+
   public event Action<EntityActionInfo, int, bool> OnAfterDeathCheckEvent;
   public void AfterDeathCheckEvent(EntityActionInfo actionInfo, int damageTaken, bool wasCritical)
   {

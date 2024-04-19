@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cbqir0g74kog6"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_di1yp"]
-[ext_resource type="PackedScene" path="res://prefabs/entities/main_characters/body/PawnBody.tscn" id="2_xttbq"]
+[ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/main_characters/body/PawnBody.tscn" id="2_xttbq"]
+[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/damage_alert.tscn" id="3_synpv"]
+[ext_resource type="AudioStream" uid="uid://ceqkg6yjmxg20" path="res://assets/sounds/ponhonho.mp3" id="4_y0nsb"]
+[ext_resource type="AudioStream" uid="uid://bd77m00h67amd" path="res://assets/sounds/inhonhonho.mp3" id="5_x7ger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(59.8153, 79)
@@ -27,4 +30,11 @@ shape = SubResource("RectangleShape2D_6pus8")
 [node name="EquippedItems" type="Node" parent="."]
 
 [node name="PawnBody" parent="." instance=ExtResource("2_xttbq")]
-visible = false
+
+[node name="DamageAlert" parent="." instance=ExtResource("3_synpv")]
+
+[node name="Ponhonho" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_y0nsb")
+
+[node name="Inhonho" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_x7ger")

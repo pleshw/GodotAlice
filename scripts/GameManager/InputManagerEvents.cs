@@ -2,7 +2,7 @@
 using System;
 using Godot;
 
-namespace GameManagers;
+namespace GameManager;
 
 public partial class InputManager : Node2D
 {

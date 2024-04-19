@@ -1,6 +1,6 @@
 using Godot;
 
-namespace GameManagers;
+namespace GameManager;
 
 public interface IGameResource
 {

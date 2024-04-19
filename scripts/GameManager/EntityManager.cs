@@ -1,4 +1,4 @@
-using GameManagers;
+using GameManager;
 using Godot;
 using System;
 using System.Collections.Generic;

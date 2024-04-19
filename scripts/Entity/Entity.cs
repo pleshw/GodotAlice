@@ -8,8 +8,6 @@ namespace Entity;
 
 public abstract partial class Entity : Node2D, IEntityBaseNode
 {
-	public static Camera2D GlobalCamera { get; set; } = null;
-
 	public Guid Id = Guid.NewGuid();
 
 	public bool LockGameState = false;
@@ -60,13 +58,26 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public abstract EntityInventoryBase BaseInventory { get; set; }
 
+	private MainScene _mainScene;
 	public MainScene MainScene
 	{
 		get
 		{
-			return GetTree().Root.GetNode<MainScene>("MainScene");
+			_mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+			return _mainScene;
 		}
 	}
+
+	private Camera2D _globalCamera;
+	public Camera2D GlobalCamera
+	{
+		get
+		{
+			_globalCamera ??= MainScene.GetNode<Camera2D>("GlobalCamera");
+			return _globalCamera;
+		}
+	}
+
 
 	public bool ReadyToSpawn { get; set; } = false;
 

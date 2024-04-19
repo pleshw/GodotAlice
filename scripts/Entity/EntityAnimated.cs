@@ -1,7 +1,7 @@
 using Godot;
 using Entity;
 using System;
-using GameManagers;
+using GameManager;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -135,7 +135,7 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     });
   }
 
-  public void PlayAttackAnimation(Action shootSomething = null)
+  public void PlayAttackAnimation()
   {
     if (LockAnimations)
     {
@@ -148,50 +148,25 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     LockAnimations = true;
 
     FlipAnimationToFacingSide();
+
+    BeforeAttackAnimationEvent();
     PlayAnimation(new()
     {
       Name = "Attacking",
-      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) => { },
+      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) =>
+      {
+        AttackAnimationFrameChangeEvent(currentFrame, animationFrameCount);
+      },
       OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
       {
         LockGameState = false;
         LockAnimations = false;
         GameState = EntityGameState.IDLE;
         MovementController.EnableMovement();
-        shootSomething?.Invoke();
+        AfterAttackAnimationEvent();
       },
       ForceDuration = 1 / Stats.AttacksPerSecond,
     });
-  }
-
-  public async Task PlayAttackAnimationAsync()
-  {
-    if (LockAnimations)
-    {
-      return;
-    }
-
-    MovementController.DisableMovement();
-
-    LockGameState = true;
-    LockAnimations = true;
-
-    FlipAnimationToFacingSide();
-
-    await PlayAnimationAsync(new()
-    {
-      Name = "Attacking",
-      OnFrameChange = (AnimatedSprite2D animatedSprite, Transform2D initialTransform, int currentFrame, int animationFrameCount) => { },
-      OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
-      {
-        GameState = EntityGameState.IDLE;
-      },
-      ForceDuration = .3f,
-    });
-
-    LockGameState = false;
-    LockAnimations = false;
-    MovementController.EnableMovement();
   }
 
   public void PlayDashAnimation()

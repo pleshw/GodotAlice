@@ -4,7 +4,7 @@ using Extras;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace GameManagers;
+namespace GameManager;
 
 public partial class EnemyManager() : EntityManager<Enemy>("res://prefabs/entities/", "archer.tscn")
 {
@@ -15,7 +15,7 @@ public partial class EnemyManager() : EntityManager<Enemy>("res://prefabs/entiti
     for (int i = 0; i < 10; ++i)
     {
       int distance = 30 * i;
-      TryInstantiateAtPosition(Utils.RandomVector(100, 100, 170 + distance, 170 + distance), out Enemy enemyInstance);
+      TryInstantiateAtPosition(Utils.GetRandomVector(100, 100, 170 + distance, 170 + distance), out Enemy enemyInstance);
       enemies.Add(enemyInstance);
     }
   }

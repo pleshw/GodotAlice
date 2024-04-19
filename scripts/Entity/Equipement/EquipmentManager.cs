@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameManagers;
+using GameManager;
 using Godot;
 
 namespace Entity;

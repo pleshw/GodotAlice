@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-namespace GameManagers;
+namespace GameManager;
 
 public partial class GameResourceManager<T> : Node where T : Node
 {

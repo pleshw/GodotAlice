@@ -1,5 +1,5 @@
 
-using GameManagers;
+using GameManager;
 using Godot;
 
 namespace Entity;

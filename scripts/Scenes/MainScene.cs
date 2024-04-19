@@ -1,11 +1,13 @@
 
-using GameManagers;
+using System;
+using GameManager;
 using Godot;
 
 namespace Scene;
 
 public partial class MainScene : Node2D
 {
+	public readonly Random Random = new();
 
 	public PlayerManager PlayerManager
 	{
@@ -36,6 +38,6 @@ public partial class MainScene : Node2D
 		base._Ready();
 
 		PlayerManager.InstantiatePlayer();
-		EnemyManager.InstantiateEnemies();
+		// EnemyManager.InstantiateEnemies();
 	}
 }

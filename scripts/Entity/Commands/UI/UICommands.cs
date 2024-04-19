@@ -37,6 +37,7 @@ public partial class EntityCommands
       InventoryTween?.Kill();
 
       InventoryTween = owner.GetTree().CreateTween();
+
       owner.MovementController.DisableMovement();
       owner.directionState.FacingDirectionVector = new Vector2 { X = 1, Y = 0 };
 
@@ -54,7 +55,7 @@ public partial class EntityCommands
       {
         owner.UIMenu.Visible = true;
 
-        var viewportSize = Entity.GlobalCamera.GetViewport().GetVisibleRect().Size;
+        var viewportSize = owner.GlobalCamera.GetViewport().GetVisibleRect().Size;
         owner.UIMenu.SetSize(viewportSize);
         owner.UIMenu.Position = Vector2.Zero;
         owner.UIMenu.Scale = Vector2.One;
