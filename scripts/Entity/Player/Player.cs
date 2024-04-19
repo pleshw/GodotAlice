@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System;
+using GameManagers;
 
 namespace Entity;
 
@@ -31,82 +32,34 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
     AddToGroup("Players");
 
     // Camera.MakeCurrent();
-    // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
-  }
+    DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
 
-  private readonly Dictionary<KeyList, DateTime> keysPressed = [];
-  private readonly Dictionary<KeyList, TimeSpan> keysHeldDuration = [];
-  private readonly Dictionary<KeyList, bool> keysCommandExecuted = [];
-
-
-  public override void _Input(InputEvent @event)
-  {
-    if (@event is InputEventKey inputEventKey)
+    MainScene.InputManager.OnKeyAction += (Key keyPressed, bool isRepeating, TimeSpan heldTime) =>
     {
-      KeyList key = new(inputEventKey.Device, inputEventKey.Keycode);
-      if (inputEventKey.Pressed)
+      movementKeyBinds.Execute(keyPressed, isRepeating);
+      uiKeyBinds.Execute(keyPressed, isRepeating);
+    };
+
+    MainScene.InputManager.OnMouseAction += (MouseButton button, bool isRepeating, TimeSpan heldTime) =>
+    {
+      if (button == MouseButton.Left)
       {
-        if (!keysPressed.ContainsKey(key))
+        var outcome = CombatController.ExecuteAttack(null, new EntityActionInfo
         {
-          keysPressed.Add(key, DateTime.Now);
-          keysCommandExecuted[key] = false;
+          Attacker = this,
+          WeaponExtraDamage = 50,
+          RangeInCells = 900,
+          IsMelee = true,
+          DamageProportion = new DamageTypeProportion(1f, 0f),
+          DamageElementalProperty = DamageElementalProperty.NEUTRAL
+        });
+        var mousePosition = GetGlobalMousePosition();
+        directionState.FacingDirectionVector = GlobalPosition.DirectionTo(mousePosition);
+        if (outcome == AttackOutcome.MISS)
+        {
+          PlayAttackAnimation();
         }
       }
-      else
-      {
-        if (keysPressed.TryGetValue(key, out DateTime value))
-        {
-          TimeSpan heldDuration = DateTime.Now - value;
-          keysHeldDuration[key] = heldDuration;
-          keysPressed.Remove(key);
-          keysCommandExecuted.Remove(key);
-          // GD.Print("Key ", key.KeyCode, " held for ", heldDuration.TotalSeconds, " seconds.");
-        }
-      }
-    }
-
-    if (@event is InputEventMouseButton inputEventClick)
-    {
-      if (inputEventClick.Pressed)
-      {
-        var clickEventType = inputEventClick.ButtonIndex;
-        if (clickEventType == MouseButton.Left)
-        {
-          var outcome = CombatController.ExecuteAttack(null, new EntityActionInfo
-          {
-            Attacker = this,
-            WeaponExtraDamage = 50,
-            RangeInCells = 900,
-            IsMelee = true,
-            DamageProportion = new DamageTypeProportion(1f, 0f),
-            DamageElementalProperty = DamageElementalProperty.NEUTRAL
-          });
-          var mousePosition = GetGlobalMousePosition();
-          directionState.FacingDirectionVector = GlobalPosition.DirectionTo(mousePosition);
-          if (outcome == AttackOutcome.MISS)
-          {
-            PlayAttackAnimation();
-          }
-        }
-      }
-    }
-  }
-
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
-  public override void _Process(double delta)
-  {
-    base._Process(delta);
-
-    foreach (var keyAndTime in keysPressed)
-    {
-      bool isKeyRepeating = keysCommandExecuted[keyAndTime.Key];
-      Key keyPressed = keyAndTime.Key.KeyCode;
-      TimeSpan timeHeld = DateTime.Now - keyAndTime.Value;
-
-      movementKeyBinds.Execute(keyPressed, isKeyRepeating);
-      uiKeyBinds.Execute(keyPressed, isKeyRepeating);
-
-      keysCommandExecuted[keyAndTime.Key] = true;
-    }
+    };
   }
 }

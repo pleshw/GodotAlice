@@ -69,3 +69,35 @@ public struct KeyList(int device, Key keyCode)
     return !(left == right);
   }
 }
+
+
+public struct MouseInputList(MouseButton button)
+{
+  public MouseButton Button = button;
+
+  public override readonly int GetHashCode()
+  {
+    return Button.GetHashCode();
+  }
+
+  public override readonly bool Equals(object obj)
+  {
+    if (obj is not MouseInputList)
+    {
+      return false;
+    }
+
+    MouseInputList other = (MouseInputList)obj;
+    return Button == other.Button;
+  }
+
+  public static bool operator ==(MouseInputList left, MouseInputList right)
+  {
+    return left.Equals(right);
+  }
+
+  public static bool operator !=(MouseInputList left, MouseInputList right)
+  {
+    return !(left == right);
+  }
+}

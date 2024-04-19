@@ -44,9 +44,10 @@ public partial class EntityStats(Entity entity) : IEntityCombatStats
       /// Dont know what this is. 14.31 is sqrt of 205
       float penalty = 1 - (BaseAttackSpeed - 144) / 50;
       float aspdCorrection = (float)((14.3178210633 - Math.Sqrt(AGI)) / 7.15);
-      float aspdFromAttributes = (float)Math.Sqrt(AGI * 9.999 + DEX * 0.19212) * penalty;
-      float aspdReduction = 200 - BaseAttackSpeed - aspdCorrection + aspdFromAttributes;
-      float baseAttackSpeed = 200 - aspdReduction * (1 - AttackSpeedBuffs);
+      float aspdFromAttributes = (float)Math.Sqrt(AGI * 9.999f + DEX * 0.19212f) * penalty;
+      float aspdReduction = 200 - (BaseAttackSpeed - aspdCorrection + aspdFromAttributes);
+      float aspdReductionAfterBuffs = aspdReduction * (1 - AttackSpeedBuffs);
+      float baseAttackSpeed = 200 - aspdReductionAfterBuffs;
       return baseAttackSpeed;
     }
   }
@@ -55,7 +56,7 @@ public partial class EntityStats(Entity entity) : IEntityCombatStats
   {
     get
     {
-      return BaseAttackSpeedPoints + AttackSpeedPointsFromEquip + 2; /// 2 são os pontos que você ganha de um equipamento que dá attack speed bruta e não em porcentagem
+      return BaseAttackSpeedPoints + AttackSpeedPointsFromEquip + 0; /// 0 são os pontos que você ganha de um equipamento que dá attack speed bruta e não em porcentagem
     }
   }
 

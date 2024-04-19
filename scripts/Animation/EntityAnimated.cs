@@ -135,7 +135,7 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     });
   }
 
-  public void PlayAttackAnimation()
+  public void PlayAttackAnimation(Action shootSomething = null)
   {
     if (LockAnimations)
     {
@@ -148,7 +148,6 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     LockAnimations = true;
 
     FlipAnimationToFacingSide();
-
     PlayAnimation(new()
     {
       Name = "Attacking",
@@ -159,6 +158,7 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
         LockAnimations = false;
         GameState = EntityGameState.IDLE;
         MovementController.EnableMovement();
+        shootSomething?.Invoke();
       },
       ForceDuration = 1 / Stats.AttacksPerSecond,
     });

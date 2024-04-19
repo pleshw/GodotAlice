@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Entity.Commands;
 using Godot;
+using Scene;
 
 namespace Entity;
 
@@ -59,11 +60,11 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public abstract EntityInventoryBase BaseInventory { get; set; }
 
-	public Node2D MainScene
+	public MainScene MainScene
 	{
 		get
 		{
-			return GetTree().Root.GetNode<Node2D>("MainScene");
+			return GetTree().Root.GetNode<MainScene>("MainScene");
 		}
 	}
 

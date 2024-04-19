@@ -6,6 +6,7 @@ namespace Entity;
 
 public partial class Enemy(Vector2 initialPosition) : EntityAnimated(initialPosition)
 {
+  public int ShootCount = 0;
 
   [Export]
   public Node2D Bullet;
@@ -34,7 +35,16 @@ public partial class Enemy(Vector2 initialPosition) : EntityAnimated(initialPosi
     }
   }
 
-  public Vector2 BulletTarget { get; set; }
+  public AudioStreamPlayer2D BulletSound
+  {
+    get
+    {
+      return Bullet.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
+    }
+  }
+
+  public bool IsShooting { get; set; } = false;
+  public Vector2 BulletTarget { get; set; } = Vector2.Zero;
 
   private readonly Vector2 initialPosition = initialPosition;
   public override EntityInventoryBase BaseInventory { get; set; }
@@ -86,7 +96,6 @@ public partial class Enemy(Vector2 initialPosition) : EntityAnimated(initialPosi
           if (outcome == AttackOutcome.MISS)
           {
             PlayAttackAnimation();
-            Shoot(mousePosition);
           }
         }
       }
@@ -135,15 +144,54 @@ public partial class Enemy(Vector2 initialPosition) : EntityAnimated(initialPosi
     }
   }
 
+  public override void _PhysicsProcess(double delta)
+  {
+    base._PhysicsProcess(delta);
+    HandleShooting(delta);
+  }
+
   public void Shoot(Vector2 target)
   {
     Bullet.Visible = true;
     BulletTarget = target;
+    Bullet.Position = Vector2.Zero;
+    BulletSound.Play();
   }
 
-  public void HandleShooting()
+  public void HandleShooting(double delta)
   {
-    BulletSprite.FlipH = directionState.FacingSide == DIRECTIONS.LEFT;
-    BulletTarget = Vector2.Zero;
+    if (BulletTarget == Vector2.Zero)
+    {
+      return;
+    }
+
+    bool isLeft = directionState.FacingSide == DIRECTIONS.LEFT;
+    BulletSprite.FlipH = isLeft;
+
+    Bullet.Position += Bullet.Position with { X = (float)(isLeft ? -1 : 1 * 1000 * delta) };
+
+    if (Bullet.Position.X >= BulletTarget.X)
+    {
+      Bullet.Visible = false;
+      BulletTarget = Vector2.Zero;
+      ++ShootCount;
+
+      var fire = MainScene.GetNode<AnimatedSprite2D>("Fire");
+      if (ShootCount >= 5)
+      {
+        if (!fire.Visible)
+        {
+          fire.Play("default");
+          fire.Visible = true;
+          return;
+        }
+      }
+
+      if (ShootCount > 12)
+      {
+        fire.Position = fire.Position with { Y = fire.Position.Y - (fire.Position.Y * .1f) };
+        fire.Scale *= 1.05f;
+      }
+    }
   }
 }
