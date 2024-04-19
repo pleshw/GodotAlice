@@ -1,6 +1,6 @@
 [gd_scene load_steps=30 format=3 uid="uid://denygldordlrc"]
 
-[ext_resource type="Script" path="res://scripts/Animation/EntityAnimatedBody.cs" id="1_v2d6s"]
+[ext_resource type="Script" path="res://scripts/Entity/EntityAnimatedBody.cs" id="1_0ike7"]
 [ext_resource type="Texture2D" uid="uid://r4314brrijv8" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Purple/Pawn_Purple.png" id="2_6r1o1"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="2_id2eb"]
 
@@ -202,7 +202,7 @@ animations = [{
 
 [node name="PawnBody" type="Node2D"]
 visibility_layer = 2
-script = ExtResource("1_v2d6s")
+script = ExtResource("1_0ike7")
 
 [node name="Body" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_u0pre")

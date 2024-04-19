@@ -6,10 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(59.8153, 79)
 
-[node name="Pawn" type="Node2D" node_paths=PackedStringArray("Bullet", "AnimatedBody", "Camera", "CollisionBody")]
+[node name="Pawn" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
 visibility_layer = 2
 script = ExtResource("1_di1yp")
-Bullet = NodePath("")
 AnimatedBody = NodePath("PawnBody")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")

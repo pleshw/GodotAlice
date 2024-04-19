@@ -1,6 +1,6 @@
 [gd_scene load_steps=35 format=3 uid="uid://c1h1o65tnyjiy"]
 
-[ext_resource type="Script" path="res://scripts/Animation/EntityAnimatedBody.cs" id="1_p1iwj"]
+[ext_resource type="Script" path="res://scripts/Entity/EntityAnimatedBody.cs" id="1_sy2os"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="2_j7uus"]
 [ext_resource type="Texture2D" uid="uid://ds4wt4t0f3qeq" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Archer/Purple/Archer_Purlple.png" id="4_mii5c"]
 
@@ -237,7 +237,7 @@ animations = [{
 
 [node name="ArcherBody" type="Node2D"]
 visibility_layer = 2
-script = ExtResource("1_p1iwj")
+script = ExtResource("1_sy2os")
 
 [node name="Body" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_u0pre")

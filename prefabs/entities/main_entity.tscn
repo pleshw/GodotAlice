@@ -1,17 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dhja36r0w2iy7"]
+[gd_scene load_steps=3 format=3 uid="uid://dhja36r0w2iy7"]
 
-[ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_bq6ws"]
-[ext_resource type="PackedScene" uid="uid://c1h1o65tnyjiy" path="res://prefabs/entities/main_characters/body/ArcherBody.tscn" id="5_3ahe4"]
+[ext_resource type="Script" path="res://scripts/Entity/EntityAnimated.cs" id="1_xtp2v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
 size = Vector2(59.8153, 79)
 
-[node name="MainEntity" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
+[node name="MainEntity" type="Node2D"]
 visibility_layer = 2
-script = ExtResource("1_bq6ws")
-AnimatedBody = NodePath("ArcherBody")
-Camera = NodePath("Camera")
-CollisionBody = NodePath("CollisionBody")
+script = ExtResource("1_xtp2v")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -25,6 +21,3 @@ position = Vector2(-0.9347, -9.15527e-05)
 shape = SubResource("RectangleShape2D_6pus8")
 
 [node name="EquippedItems" type="Node" parent="."]
-
-[node name="ArcherBody" parent="." instance=ExtResource("5_3ahe4")]
-visible = false
