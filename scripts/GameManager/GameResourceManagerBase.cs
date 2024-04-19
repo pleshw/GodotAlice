@@ -4,44 +4,55 @@ using Godot;
 
 namespace GameManagers;
 
-public partial class GameResourceManager<T>(StringName resourcePath) : Node where T : Node
+public partial class GameResourceManager<T> : Node where T : Node
 {
-  public StringName ResourcePath = resourcePath;
+  public static readonly Dictionary<StringName, PackedScene> Prefabs = [];
 
-  [Export]
-  public PackedScene[] PrefabList = [];
-
-  public readonly Dictionary<StringName, PackedScene> Prefabs = [];
-
-  public override void _Ready()
+  private ResourcePreloader _preloader;
+  public ResourcePreloader Preloader
   {
-    base._Ready();
-    foreach (PackedScene prefab in PrefabList)
+    get
     {
-      PackedScene sceneImported = ResourceLoader.Load(prefab.ResourcePath) as PackedScene;
-      Prefabs.Add(prefab.ResourcePath, sceneImported);
+      _preloader ??= new();
+
+      return _preloader;
+    }
+  }
+
+  public StringName FolderPath;
+
+  public GameResourceManager(StringName folderPath, params StringName[] scenesToPreload)
+  {
+    FolderPath = folderPath;
+    foreach (StringName sceneToPreload in scenesToPreload)
+    {
+      StringName resourcePath = GetResourcePath(sceneToPreload);
+      PackedScene preloadResource = ResourceLoader.Load(resourcePath) as PackedScene;
+      Preloader.AddResource(resourcePath, preloadResource);
     }
   }
 
   public StringName GetResourcePath(StringName sceneFileName)
   {
-    return $"{ResourcePath}{sceneFileName}";
+    return $"{FolderPath}{sceneFileName}";
   }
 
   public T CreateInstance(StringName sceneName, StringName nodeName)
   {
     T result;
     StringName resourcePath = GetResourcePath(sceneName);
-    if (Prefabs.TryGetValue(resourcePath, out PackedScene packedScene))
+
+    var preload = Preloader.GetResource(resourcePath) as PackedScene;
+    if (preload is not null)
     {
-      result = packedScene.Instantiate() as T;
+      result = preload.Instantiate() as T;
       result.Name = nodeName;
       return result;
     }
 
     /// Importing scene and saving the resource for later use
     PackedScene sceneImported = ResourceLoader.Load(resourcePath) as PackedScene;
-    ResourceSaver.Save(sceneImported);
+    Preloader.AddResource(resourcePath, sceneImported);
     Prefabs.Add(resourcePath, sceneImported);
     result = sceneImported.Instantiate() as T;
     result.Name = nodeName;

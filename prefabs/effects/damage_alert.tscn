@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8yaqpudlblmq"]
+
+[ext_resource type="FontFile" uid="uid://dsun4h4sd1gfh" path="res://assets/fonts/Xolonium-Regular.ttf" id="1_66kxh"]
+
+[node name="DamageAlert" type="Marker2D"]
+
+[node name="Value" type="Label" parent="."]
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 20.0
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_66kxh")
+theme_override_font_sizes/font_size = 20
+text = "213123 "
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Entity;
 
-public partial class EntityManager<EntityType>(string resourcePath, string resourceName) : GameResourceManager<EntityType>(resourcePath) where EntityType : Entity, new()
+public partial class EntityManager<EntityType>(string resourcePath, string resourceName) : GameResourceManager<EntityType>(resourcePath, resourceName) where EntityType : Entity, new()
 {
 	public Node2D MainScene { get; set; } = null;
 
@@ -16,7 +16,6 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 	protected readonly EntityType _entityReference = new();
 	protected readonly Stack<Entity> _entityInstances = [];
 	protected readonly Dictionary<Guid, Entity> _entitiesById = [];
-
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
