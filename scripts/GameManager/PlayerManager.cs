@@ -1,17 +1,14 @@
 using Entity;
+using Extras;
 using Godot;
 
 namespace GameManagers;
 
-public partial class PlayerManager() : EntityManager<Player>("res://prefabs/entities/player.tscn")
+public partial class PlayerManager() : EntityManager<Player>("res://prefabs/entities/", "pawn.tscn")
 {
-
-  [Export]
   public Camera2D GlobalCamera;
 
   public Player playerInstance;
-
-  public Player playerInstance2;
 
   protected Vector2 playerSpawnPoint = new()
   {
@@ -23,10 +20,15 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
   public override void _Ready()
   {
     base._Ready();
+    GlobalCamera = MainScene.GetNode<Camera2D>("GlobalCamera");
+    CallDeferred(nameof(InstantiatePlayer));
+  }
 
+  public void InstantiatePlayer()
+  {
     Entity.Entity.GlobalCamera = GlobalCamera;
 
-    TryInstantiateAtPosition(playerSpawnPoint, out playerInstance, 1);
+    TryInstantiateAtPosition(playerSpawnPoint, out playerInstance);
     playerInstance.movementKeyBinds.BindDefaults();
     playerInstance.uiKeyBinds.BindDefaults();
   }

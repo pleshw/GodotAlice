@@ -6,12 +6,12 @@ namespace GameManagers;
 
 public partial class GameResourceManager<T>(StringName resourcePath) : Node where T : Node
 {
-  public StringName resourcePath = resourcePath;
+  public StringName ResourcePath = resourcePath;
 
   [Export]
   public PackedScene[] PrefabList = [];
 
-  public readonly HashSet<PackedScene> Prefabs = [];
+  public readonly Dictionary<StringName, PackedScene> Prefabs = [];
 
   public override void _Ready()
   {
@@ -19,31 +19,40 @@ public partial class GameResourceManager<T>(StringName resourcePath) : Node wher
     foreach (PackedScene prefab in PrefabList)
     {
       PackedScene sceneImported = ResourceLoader.Load(prefab.ResourcePath) as PackedScene;
-      Prefabs.Add(sceneImported);
+      Prefabs.Add(prefab.ResourcePath, sceneImported);
     }
   }
 
   public StringName GetResourcePath(StringName sceneFileName)
   {
-    return $"{resourcePath}{sceneFileName}.tscn";
+    return $"{ResourcePath}{sceneFileName}";
   }
 
-  public T CreateInstance(StringName sceneFileName, StringName nodeName)
+  public T CreateInstance(StringName sceneName, StringName nodeName)
   {
+    T result;
+    StringName resourcePath = GetResourcePath(sceneName);
+    if (Prefabs.TryGetValue(resourcePath, out PackedScene packedScene))
+    {
+      result = packedScene.Instantiate() as T;
+      result.Name = nodeName;
+      return result;
+    }
+
     /// Importing scene and saving the resource for later use
-    PackedScene sceneImported = ResourceLoader.Load(GetResourcePath(sceneFileName)) as PackedScene;
-    Prefabs.Add(sceneImported);
-    ResourceSaver.Save(sceneImported, sceneImported.GetInstanceId().ToString());
-    T instance = sceneImported.Instantiate() as T;
-    instance.Name = nodeName;
-    return instance;
+    PackedScene sceneImported = ResourceLoader.Load(resourcePath) as PackedScene;
+    ResourceSaver.Save(sceneImported);
+    Prefabs.Add(resourcePath, sceneImported);
+    result = sceneImported.Instantiate() as T;
+    result.Name = nodeName;
+    return result;
   }
 
   ~GameResourceManager()
   {
     foreach (var item in Prefabs)
     {
-      item.Free();
+      item.Value.Free();
     }
   }
 }

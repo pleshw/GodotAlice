@@ -43,6 +43,14 @@ public static class Utils
     float result = min + (randomFloat * (max - min));
     return result;
   }
+
+  public static Vector2 RandomVector(float minX, float maxX, float minY, float maxY)
+  {
+    Random rand = new();
+    float randomX = (float)GD.RandRange(minX, maxX);
+    float randomY = (float)GD.RandRange(minY, maxY);
+    return new Vector2(randomX, randomY);
+  }
 }
 
 

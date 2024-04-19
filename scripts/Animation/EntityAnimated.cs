@@ -196,8 +196,6 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
 
   public void PlayDashAnimation()
   {
-    float initialSpeed = AnimatedBody.SpriteReference.SpeedScale;
-    AnimatedBody.SetSpeedScale(initialSpeed * DashSpeedModifier);
     AnimatedBody.Play(new AnimationRequestInput()
     {
       Name = "Dashing",
@@ -215,8 +213,8 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
         animatedSprite.Scale = initialTransform.Scale;
         (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", 0);
         LockAnimations = false;
-        AnimatedBody.SetSpeedScale(initialSpeed);
-      }
+      },
+      ForceDuration = .3f
     });
   }
 

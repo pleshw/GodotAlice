@@ -6,7 +6,6 @@ namespace Entity;
 
 public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPosition)
 {
-
   private readonly Vector2 initialPosition = initialPosition;
   public override EntityInventoryBase BaseInventory { get; set; }
 

@@ -1,16 +1,17 @@
+using GameManagers;
 using Godot;
 using System;
 using System.Collections.Generic;
 
 namespace Entity;
 
-public partial class EntityManager<EntityType>(string resourceName) : Node where EntityType : Entity, new()
+public partial class EntityManager<EntityType>(string resourcePath, string resourceName) : GameResourceManager<EntityType>(resourcePath) where EntityType : Entity, new()
 {
-	private PackedScene EntityPrefab;
-
 	public Node2D MainScene { get; set; } = null;
 
 	protected StringName ResourceName = resourceName;
+
+	public static readonly List<EntityType> AllEntities = [];
 
 	protected readonly EntityType _entityReference = new();
 	protected readonly Stack<Entity> _entityInstances = [];
@@ -21,7 +22,6 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 	public override void _Ready()
 	{
 		base._Ready();
-		EntityPrefab = ResourceLoader.Load(ResourceName) as PackedScene;
 		MainScene = GetTree().Root.GetNode<Node2D>("MainScene");
 	}
 
@@ -35,8 +35,7 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 
 		entityInstance = GetEntityInstance();
 
-
-		CallDeferred(nameof(AddEntityNodeToScene), entityInstance);
+		AddEntityNodeToScene(entityInstance);
 
 		entityInstance.MovementController.TeleportToNearestCell(new EntityMovementInput
 		{
@@ -57,8 +56,9 @@ public partial class EntityManager<EntityType>(string resourceName) : Node where
 
 	private EntityType GetEntityInstance()
 	{
-		EntityType entityPrefab = EntityPrefab.Instantiate() as EntityType;
+		EntityType entityPrefab = CreateInstance(resourceName, "test" + AllEntities.Count);
 
+		AllEntities.Add(entityPrefab);
 		_entityInstances.Push(entityPrefab);
 		_entitiesById.Add(entityPrefab.Id, entityPrefab);
 

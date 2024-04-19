@@ -230,6 +230,8 @@ public class EntityMovementController(Entity entity, Vector2 initialPosition, in
       EndMovementOnNextIteration = false;
     }
 
+    entity.ZIndex = (int)entity.Position.Y;
+
     if ((_targetPosition == null && _dashTargetPosition == null) || MovementDisabled)
     {
       Idled();
