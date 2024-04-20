@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcyjulrfh2xn6"]
+
+[ext_resource type="ButtonGroup" uid="uid://dy8o4kpayodca" path="res://scenes/menus/character_selection_buttons.tres" id="1_puao1"]
+[ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_hgax8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_y8gjk"]
+font_size = 50
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vk7gp"]
+
+[node name="character_select_button" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl", "CharacterSprite")]
+custom_minimum_size = Vector2(350, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+toggle_mode = true
+button_group = ExtResource("1_puao1")
+script = ExtResource("2_hgax8")
+MarginContainer = NodePath("MarginContainer")
+VBoxContainer = NodePath("MarginContainer/VBoxContainer")
+TitleLabel = NodePath("MarginContainer/VBoxContainer/TitleLabel")
+CharacterSpriteControl = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl")
+CharacterSprite = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl/AnimatedSprite2D")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Yle"
+label_settings = SubResource("LabelSettings_y8gjk")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChracterSpriteControl" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/ChracterSpriteControl"]
+sprite_frames = SubResource("SpriteFrames_vk7gp")

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace GameManager;
 
-public partial class EnemyManager() : EntityManager<Enemy>("res://prefabs/entities/", "archer.tscn")
+public partial class EnemyManager() : EntityManager<Enemy>(GodotFolderPath.Entities, "archer.tscn")
 {
   public List<Enemy> enemies = [];
 

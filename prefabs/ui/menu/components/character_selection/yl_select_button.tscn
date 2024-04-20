@@ -1,0 +1,106 @@
+[gd_scene load_steps=11 format=3 uid="uid://mj0wrhc1wu8c"]
+
+[ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_481mp"]
+[ext_resource type="Texture2D" uid="uid://b6nl43ow02qlx" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Yellow/Warrior_Yellow.png" id="3_6xr7l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_y8gjk"]
+font_size = 50
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_felm3"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_glm07"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gt8a4"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3d0o"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5t3i"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogkr5"]
+atlas = ExtResource("3_6xr7l")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vk7gp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_felm3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_glm07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gt8a4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3d0o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5t3i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ogkr5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="yl_select_button" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl", "CharacterSprite")]
+custom_minimum_size = Vector2(350, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_481mp")
+MarginContainer = NodePath("MarginContainer")
+VBoxContainer = NodePath("MarginContainer/VBoxContainer")
+TitleLabel = NodePath("MarginContainer/VBoxContainer/TitleLabel")
+CharacterSpriteControl = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl")
+CharacterSprite = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl/AnimatedSprite2D")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Yl"
+label_settings = SubResource("LabelSettings_y8gjk")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChracterSpriteControl" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/ChracterSpriteControl"]
+position = Vector2(0, 307)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_vk7gp")
+autoplay = "default"
