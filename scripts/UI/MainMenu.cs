@@ -8,6 +8,18 @@ namespace UI;
 
 public partial class MainMenu : Control
 {
+
+	private ResourcePreloader _preloader;
+	public ResourcePreloader Preloader
+	{
+		get
+		{
+			_preloader ??= new();
+
+			return _preloader;
+		}
+	}
+
 	private Control _firstMenu;
 	public Control FirstMenu
 	{
@@ -28,16 +40,26 @@ public partial class MainMenu : Control
 		}
 	}
 
-
-	private Button _newGameButton;
-	public Button NewGameButton
+	private Button _singleGameButton;
+	public Button SingleGameButton
 	{
 		get
 		{
-			_newGameButton ??= FirstMenu.GetNode<Button>("NewGameButton");
-			return _newGameButton;
+			_singleGameButton ??= FirstMenu.GetNode<Button>("NewGameButton");
+			return _singleGameButton;
 		}
 	}
+
+	private Button _coopGameButton;
+	public Button CoopGameButton
+	{
+		get
+		{
+			_coopGameButton ??= FirstMenu.GetNode<Button>("CoopGameButton");
+			return _coopGameButton;
+		}
+	}
+
 
 	private Button _quitGameButton;
 	public Button QuitGameButton
@@ -49,35 +71,65 @@ public partial class MainMenu : Control
 		}
 	}
 
-	private Control NewCharacterScene;
+	private Control SingleCharacterMenuScene;
+	private Control CoopCharacterMenuScene;
+
+	PackedScene SingleCharacterMenuPackedScene;
+	PackedScene CoopCharacterMenuPackedScene;
 
 	private List<CanvasItem> AllScenes
 	{
 		get
 		{
-			return [(NewCharacterScene as CanvasItem),];
+			return [this, SingleCharacterMenuScene, CoopCharacterMenuScene];
 		}
+	}
+
+	private List<Button> AllButtons
+	{
+		get
+		{
+			return [LoadGameButton, SingleGameButton, CoopGameButton, QuitGameButton];
+		}
+	}
+
+	public MainMenu()
+	{
+		SingleCharacterMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.SingleCharacterMenu);
+		CoopCharacterMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.CoopCharacterMenu);
+
+		Preloader.AddResource(GodotFilePath.SingleCharacterMenu, SingleCharacterMenuPackedScene);
+		Preloader.AddResource(GodotFilePath.CoopCharacterMenu, CoopCharacterMenuPackedScene);
 	}
 
 	public override void _Ready()
 	{
 		base._Ready();
-		NewCharacterScene = ResourceLoader.Load<PackedScene>(GodotFilePath.CreateCharacterMenu).Instantiate() as Control;
+		SingleCharacterMenuScene = (Preloader.GetResource(GodotFilePath.SingleCharacterMenu) as PackedScene).Instantiate() as Control;
+		CoopCharacterMenuScene = (Preloader.GetResource(GodotFilePath.CoopCharacterMenu) as PackedScene).Instantiate() as Control;
 		SetButtonEvents();
 	}
 
 	public void SetButtonEvents()
 	{
 		QuitGameButton.Pressed += QuitEvent;
-		NewGameButton.Pressed += LoadNewCharacterScene;
+		SingleGameButton.Pressed += LoadSingleCharacterMenuScene;
+		CoopGameButton.Pressed += LoadCoopCharacterMenuScene;
+		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
 	}
 
-	public void LoadNewCharacterScene()
+	public void LoadSingleCharacterMenuScene()
 	{
-		Visible = false;
 		AllScenes.ForEach(s => s.Visible = false);
-		NewCharacterScene.Visible = true;
-		GetTree().Root.AddChild(NewCharacterScene);
+		SingleCharacterMenuScene.Visible = true;
+		GetTree().Root.AddChild(SingleCharacterMenuScene);
+	}
+
+	public void LoadCoopCharacterMenuScene()
+	{
+		AllScenes.ForEach(s => s.Visible = false);
+		CoopCharacterMenuScene.Visible = true;
+		GetTree().Root.AddChild(CoopCharacterMenuScene);
 	}
 
 	void QuitEvent()

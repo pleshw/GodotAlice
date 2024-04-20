@@ -19,4 +19,25 @@ public partial class CharacterSelectButton : Button
 
 	[Export]
 	public AnimatedSprite2D CharacterSprite;
+
+	public override void _Ready()
+	{
+		base._Ready();
+
+		(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", true);
+
+		Pressed += ReleaseFocus;
+		CharacterSprite.Stop();
+		MouseEntered += () =>
+		{
+			(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", false);
+			CharacterSprite.Play("default");
+		};
+
+		MouseExited += () =>
+		{
+			(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", true);
+			CharacterSprite.Stop();
+		};
+	}
 }

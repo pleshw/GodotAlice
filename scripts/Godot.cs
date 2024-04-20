@@ -25,11 +25,13 @@ public static class GodotFolderPath
 public static class GodotFilePath
 {
   public static readonly StringName MainMenu;
-  public static readonly StringName CreateCharacterMenu;
+  public static readonly StringName SingleCharacterMenu;
+  public static readonly StringName CoopCharacterMenu;
 
   static GodotFilePath()
   {
     MainMenu = GodotFolderPath.Places + "main_menu.tscn";
-    CreateCharacterMenu = GodotFolderPath.SceneMenus + "create_character_menu.tscn";
+    SingleCharacterMenu = GodotFolderPath.SceneMenus + "single_character_menu.tscn";
+    CoopCharacterMenu = GodotFolderPath.SceneMenus + "coop_character_menu.tscn";
   }
 }

@@ -187,14 +187,11 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
         float reverseAnimationStage = Mathf.Remap(currentFrame, 0, animationFrameCount, .7f, 0);
         float reverseAnimationStateScaleFactor = Mathf.Remap(currentFrame, 0, animationFrameCount, .6f, 1);
 
-        (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", reverseAnimationStage);
-
         animatedSprite.Scale = initialTransform.Scale with { Y = initialTransform.Scale.Y * reverseAnimationStateScaleFactor };
       },
       OnFinished = (AnimatedSprite2D animatedSprite, Transform2D initialTransform) =>
       {
         animatedSprite.Scale = initialTransform.Scale;
-        (animatedSprite.Material as ShaderMaterial).SetShaderParameter("blinkStage", 0);
         LockAnimations = false;
       },
       ForceDuration = .3f

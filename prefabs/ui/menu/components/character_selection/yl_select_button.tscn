@@ -1,10 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://mj0wrhc1wu8c"]
+[gd_scene load_steps=13 format=3 uid="uid://mj0wrhc1wu8c"]
 
 [ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_481mp"]
+[ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="2_eoqrc"]
 [ext_resource type="Texture2D" uid="uid://b6nl43ow02qlx" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Yellow/Warrior_Yellow.png" id="3_6xr7l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_y8gjk"]
 font_size = 50
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2xag"]
+shader = ExtResource("2_eoqrc")
+shader_parameter/active = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_felm3"]
 atlas = ExtResource("3_6xr7l")
@@ -100,6 +105,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/ChracterSpriteControl"]
+material = SubResource("ShaderMaterial_m2xag")
 position = Vector2(0, 307)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_vk7gp")
