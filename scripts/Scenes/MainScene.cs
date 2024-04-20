@@ -2,6 +2,7 @@
 using System;
 using GameManager;
 using Godot;
+using UI;
 
 namespace Scene;
 
@@ -33,11 +34,21 @@ public partial class MainScene : Node2D
 		}
 	}
 
+	private GameCursor _currentCursor;
+	public GameCursor CurrentCursor
+	{
+		get
+		{
+			_currentCursor ??= GetNode<GameCursor>("DefaultCursor");
+			return _currentCursor;
+		}
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();
 
 		PlayerManager.InstantiatePlayer();
-		// EnemyManager.InstantiateEnemies();
+		GetWindow().GrabFocus();
 	}
 }

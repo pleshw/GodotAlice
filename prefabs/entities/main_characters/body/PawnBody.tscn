@@ -1,10 +1,21 @@
-[gd_scene load_steps=30 format=3 uid="uid://denygldordlrc"]
+[gd_scene load_steps=32 format=3 uid="uid://denygldordlrc"]
 
 [ext_resource type="Script" path="res://scripts/Entity/EntityAnimatedBody.cs" id="1_0ike7"]
+[ext_resource type="Shader" path="res://assets/shaders/outline.gdshader" id="1_25hfd"]
 [ext_resource type="Texture2D" uid="uid://r4314brrijv8" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Purple/Pawn_Purple.png" id="2_6r1o1"]
 [ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="2_id2eb"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bp2s0"]
+resource_local_to_scene = true
+shader = ExtResource("1_25hfd")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 0.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = false
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0pre"]
+resource_local_to_scene = true
 shader = ExtResource("2_id2eb")
 shader_parameter/blinkStage = null
 
@@ -202,12 +213,15 @@ animations = [{
 
 [node name="PawnBody" type="Node2D"]
 visibility_layer = 2
+material = SubResource("ShaderMaterial_bp2s0")
 script = ExtResource("1_0ike7")
 
 [node name="Body" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_u0pre")
+use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_nodc0")
-animation = &"Attacking"
+animation = &"Idle"
+frame_progress = 0.325032
 
 [node name="Hat" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -117)

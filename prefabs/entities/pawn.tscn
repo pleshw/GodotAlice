@@ -2,12 +2,20 @@
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_di1yp"]
 [ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/main_characters/body/PawnBody.tscn" id="2_xttbq"]
-[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/damage_alert.tscn" id="3_synpv"]
-[ext_resource type="AudioStream" uid="uid://ceqkg6yjmxg20" path="res://assets/sounds/ponhonho.mp3" id="4_y0nsb"]
-[ext_resource type="AudioStream" uid="uid://bd77m00h67amd" path="res://assets/sounds/inhonhonho.mp3" id="5_x7ger"]
+[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/default_helper.tscn" id="3_synpv"]
+[ext_resource type="Shader" path="res://assets/shaders/outline.gdshader" id="3_wkli6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1idgu"]
+resource_local_to_scene = true
+shader = ExtResource("3_wkli6")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 0.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = false
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
-size = Vector2(59.8153, 79)
+size = Vector2(64.4884, 68)
 
 [node name="Pawn" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
 visibility_layer = 2
@@ -19,22 +27,26 @@ CollisionBody = NodePath("CollisionBody")
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 
-[node name="CollisionBody" type="CharacterBody2D" parent="."]
-position = Vector2(1.00009, 9.15527e-05)
-scale = Vector2(1.06996, 1)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
-position = Vector2(-0.9347, -9.15527e-05)
-shape = SubResource("RectangleShape2D_6pus8")
-
 [node name="EquippedItems" type="Node" parent="."]
 
 [node name="PawnBody" parent="." instance=ExtResource("2_xttbq")]
-
-[node name="DamageAlert" parent="." instance=ExtResource("3_synpv")]
+material = SubResource("ShaderMaterial_1idgu")
 
 [node name="Ponhonho" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_y0nsb")
 
 [node name="Inhonho" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_x7ger")
+
+[node name="CollisionBody" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
+position = Vector2(-1.5, 3)
+scale = Vector2(1.06996, 1)
+shape = SubResource("RectangleShape2D_6pus8")
+
+[node name="DamageAlert" parent="." instance=ExtResource("3_synpv")]
+visible = false
+
+[node name="PlayerName" parent="." instance=ExtResource("3_synpv")]
+visible = false
+position = Vector2(-1, -75)

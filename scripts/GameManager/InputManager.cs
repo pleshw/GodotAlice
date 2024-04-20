@@ -3,11 +3,32 @@ using System;
 using System.Collections.Generic;
 using Entity;
 using Godot;
+using Scene;
+using UI;
 
 namespace GameManager;
 
 public partial class InputManager : Node2D
 {
+  private MainScene _mainScene;
+  public MainScene MainScene
+  {
+    get
+    {
+      _mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+      return _mainScene;
+    }
+  }
+
+  public GameCursor Cursor
+  {
+    get
+    {
+      return MainScene.CurrentCursor;
+    }
+  }
+
+  public readonly HashSet<Entity.Entity> ListenCollisionSet = [];
   public readonly HashSet<Node2D> Hovering = [];
 
   private readonly Dictionary<KeyList, DateTime> keysPressed = [];
@@ -129,18 +150,32 @@ public partial class InputManager : Node2D
     }
   }
 
+  public override void _PhysicsProcess(double delta)
+  {
+    base._PhysicsProcess(delta);
+  }
+
   public void ListenTo(Entity.Entity node)
   {
-    node.CollisionBody.InputPickable = true;
+    ListenCollisionSet.Add(node);
 
-    node.CollisionBody.MouseEntered += () =>
+    Cursor.CollisionArea.AreaEntered += (Area2D area) =>
     {
-      Hovering.Add(node);
+      if (area.GetParent() is Entity.Entity entity)
+      {
+        Hovering.Add(entity);
+        entity.MouseOver();
+      }
     };
 
-    node.CollisionBody.MouseExited += () =>
+
+    Cursor.CollisionArea.AreaExited += (Area2D area) =>
     {
-      Hovering.Remove(node);
+      if (area.GetParent() is Entity.Entity entity)
+      {
+        Hovering.Remove(entity);
+        entity.MouseOut();
+      }
     };
   }
 }

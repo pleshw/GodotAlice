@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Entity;
 using Extras;
 using Godot;
@@ -8,6 +9,8 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
 {
   public Camera2D GlobalCamera;
   public Camera2D PlayerCamera;
+
+  public static readonly List<Player> AllPlayers = [];
 
   public Player playerInstance;
 
@@ -23,9 +26,8 @@ public partial class PlayerManager() : EntityManager<Player>("res://prefabs/enti
     playerInstance.movementKeyBinds.BindDefaults();
     playerInstance.uiKeyBinds.BindDefaults();
 
-    playerInstance.Ready += () =>
-    {
-      PlayerCamera = playerInstance.Camera;
-    };
+    PlayerCamera = playerInstance.Camera;
+    AllPlayers.Add(playerInstance);
+    playerInstance.DisplayName = "porra games";
   }
 }

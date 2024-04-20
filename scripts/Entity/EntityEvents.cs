@@ -53,6 +53,20 @@ public partial class Entity
     OnTryEquipSuccessEvent?.Invoke(equipment, positionTriedToEquip);
   }
 
+  // INPUT EVENTS BELOW
+
+  public event Action OnMouseOver;
+  public void MouseOver()
+  {
+    OnMouseOver?.Invoke();
+  }
+
+  public event Action OnMouseOut;
+  public void MouseOut()
+  {
+    OnMouseOut?.Invoke();
+  }
+
   // ANIMATION EVENTS BELOW
 
   public event Action OnBeforeAttackAnimationEvent;

@@ -69,9 +69,17 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
     };
   }
 
+  public bool FlipH
+  {
+    get
+    {
+      return directionState.FacingSide == DIRECTIONS.LEFT;
+    }
+  }
+
   public void FlipAnimationToFacingSide()
   {
-    AnimatedBody.Parts.ForEach(p => p.FlipH = directionState.FacingSide == DIRECTIONS.LEFT);
+    AnimatedBody.Parts.ForEach(p => p.FlipH = FlipH);
   }
 
   public async Task PlayAnimationAsync(AnimationRequestInput animationRequest)
