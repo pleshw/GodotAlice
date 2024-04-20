@@ -1,5 +1,7 @@
 
 using System;
+using System.Collections.Generic;
+using Entity;
 using Godot;
 
 namespace GameManager;
@@ -18,16 +20,16 @@ public partial class InputManager : Node2D
     OnKeyUp?.Invoke(key, heldTime);
   }
 
-  public event Action<MouseButton> OnMouseButtonDown;
-  public void MouseButtonDownEvent(MouseButton mouseButton)
+  public event Action<MouseInputAction> OnMouseButtonDown;
+  public void MouseButtonDownEvent(MouseInputAction mouseButton)
   {
     OnMouseButtonDown?.Invoke(mouseButton);
   }
 
-  public event Action<MouseButton, TimeSpan> OnMouseButtonUp;
-  public void MouseButtonUpEvent(MouseButton mouseButton, TimeSpan heldTime)
+  public event Action<MouseInputAction, Vector2, TimeSpan, HashSet<Node2D>> OnMouseButtonUp;
+  public void MouseButtonUpEvent(MouseInputAction mouseButton, Vector2 finalPosition, TimeSpan heldTime, HashSet<Node2D> hoveringEnd)
   {
-    OnMouseButtonUp?.Invoke(mouseButton, heldTime);
+    OnMouseButtonUp?.Invoke(mouseButton, finalPosition, heldTime, hoveringEnd);
   }
 
   public event Action<Key, bool, TimeSpan> OnKeyAction;
@@ -36,12 +38,11 @@ public partial class InputManager : Node2D
     OnKeyAction?.Invoke(key, isRepeating, heldTime);
   }
 
-  public event Action<MouseButton, bool, TimeSpan> OnMouseAction;
-  public void MouseActionEvent(MouseButton button, bool isRepeating, TimeSpan heldTime)
+  public event Action<MouseInputAction, bool, TimeSpan, HashSet<Node2D>> OnMouseAction;
+  public void MouseActionEvent(MouseInputAction button, bool isRepeating, TimeSpan heldTime, HashSet<Node2D> hovering)
   {
-    OnMouseAction?.Invoke(button, isRepeating, heldTime);
+    OnMouseAction?.Invoke(button, isRepeating, heldTime, hovering);
   }
-
 
   public event Action OnLeftClick;
   public void LeftClickEvent()
@@ -55,15 +56,15 @@ public partial class InputManager : Node2D
     OnRightClick?.Invoke();
   }
 
-  public event Action<bool, TimeSpan> OnLeftClickAction;
-  public void LeftClickActionEvent(bool isRepeating, TimeSpan heldTime)
+  public event Action<MouseInputAction, bool, TimeSpan, HashSet<Node2D>> OnLeftClickAction;
+  public void LeftClickActionEvent(MouseInputAction inputInfo, bool isRepeating, TimeSpan heldTime, HashSet<Node2D> hovering)
   {
-    OnLeftClickAction?.Invoke(isRepeating, heldTime);
+    OnLeftClickAction?.Invoke(inputInfo, isRepeating, heldTime, hovering);
   }
 
-  public event Action<bool, TimeSpan> OnRightClickAction;
-  public void RightClickActionEvent(bool isRepeating, TimeSpan heldTime)
+  public event Action<MouseInputAction, bool, TimeSpan, HashSet<Node2D>> OnRightClickAction;
+  public void RightClickActionEvent(MouseInputAction inputInfo, bool isRepeating, TimeSpan heldTime, HashSet<Node2D> hovering)
   {
-    OnRightClickAction?.Invoke(isRepeating, heldTime);
+    OnRightClickAction?.Invoke(inputInfo, isRepeating, heldTime, hovering);
   }
 }

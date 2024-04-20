@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace Entity;
@@ -71,32 +72,56 @@ public struct KeyList(int device, Key keyCode)
 }
 
 
-public struct MouseInputList(MouseButton button)
+public struct MouseInputAction(InputEventMouseButton inputEvent, Vector2 position, HashSet<Node2D> hovering) : IEquatable<MouseInputAction>
 {
-  public MouseButton Button = button;
+  public InputEventMouseButton Event = inputEvent;
+  public Vector2 StartPosition = position;
+  public HashSet<Node2D> StartHovering = hovering;
 
   public override readonly int GetHashCode()
   {
-    return Button.GetHashCode();
+    return Event.ButtonIndex.GetHashCode();
+  }
+
+  public bool IsLeftClick
+  {
+    get
+    {
+      return Event.ButtonIndex == MouseButton.Left;
+    }
+  }
+
+
+  public bool IsRightClick
+  {
+    get
+    {
+      return Event.ButtonIndex == MouseButton.Right;
+    }
   }
 
   public override readonly bool Equals(object obj)
   {
-    if (obj is not MouseInputList)
+    if (obj is not MouseInputAction)
     {
       return false;
     }
 
-    MouseInputList other = (MouseInputList)obj;
-    return Button == other.Button;
+    MouseInputAction other = (MouseInputAction)obj;
+    return Event.ButtonIndex == other.Event.ButtonIndex;
   }
 
-  public static bool operator ==(MouseInputList left, MouseInputList right)
+  public readonly bool Equals(MouseInputAction other)
+  {
+    return Event.ButtonIndex == other.Event.ButtonIndex;
+  }
+
+  public static bool operator ==(MouseInputAction left, MouseInputAction right)
   {
     return left.Equals(right);
   }
 
-  public static bool operator !=(MouseInputList left, MouseInputList right)
+  public static bool operator !=(MouseInputAction left, MouseInputAction right)
   {
     return !(left == right);
   }

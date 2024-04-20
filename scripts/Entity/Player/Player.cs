@@ -41,7 +41,7 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
     AddToGroup("Players");
 
     // Camera.MakeCurrent();
-    DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
+    // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
 
     MainScene.InputManager.OnKeyAction += (Key keyPressed, bool isRepeating, TimeSpan heldTime) =>
     {
@@ -49,13 +49,12 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
       uiKeyBinds.Execute(keyPressed, isRepeating);
     };
 
-
     OnAttackAnimationFrameChangeEvent += (int currentFrame, int animationFrameCount) =>
     {
       if (currentFrame == animationFrameCount / 2)
       {
         AudioStreamPlayer2D[] soundEffect = [GetNode<AudioStreamPlayer2D>("Ponhonho"), GetNode<AudioStreamPlayer2D>("Inhonho")];
-        int randomSeed = (int)MainScene.Random.NextInt64(400, 1100);
+        int randomSeed = (int)MainScene.Random.NextInt64(800, 1400);
         DamageAlert.Spawn(randomSeed.ToString());
         AudioStreamPlayer2D playSound = soundEffect[randomSeed % 2];
         playSound.VolumeDb = randomSeed / 100;
@@ -63,9 +62,14 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
       }
     };
 
-    MainScene.InputManager.OnMouseAction += (MouseButton button, bool isRepeating, TimeSpan heldTime) =>
+    MainScene.InputManager.OnMouseAction += (MouseInputAction input, bool isRepeating, TimeSpan heldTime, HashSet<Node2D> hovering) =>
     {
-      if (button == MouseButton.Left)
+      foreach (var en in hovering)
+      {
+        GD.Print(en.Name);
+      }
+
+      if (input.IsLeftClick)
       {
         var outcome = CombatController.ExecuteAttack(null, new EntityActionInfo
         {

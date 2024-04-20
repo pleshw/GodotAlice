@@ -1,5 +1,6 @@
 using GameManager;
 using Godot;
+using Scene;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,15 @@ namespace Entity;
 
 public partial class EntityManager<EntityType>(string resourcePath, string resourceName) : GameResourceManager<EntityType>(resourcePath, resourceName) where EntityType : Entity, new()
 {
-	public Node2D MainScene { get; set; } = null;
+	private MainScene _mainScene;
+	public MainScene MainScene
+	{
+		get
+		{
+			_mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+			return _mainScene;
+		}
+	}
 
 	protected StringName ResourceName = resourceName;
 
@@ -21,7 +30,6 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 	public override void _Ready()
 	{
 		base._Ready();
-		MainScene = GetTree().Root.GetNode<Node2D>("MainScene");
 	}
 
 	public bool TryInstantiateAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
@@ -55,11 +63,12 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 
 	private EntityType GetEntityInstance()
 	{
-		EntityType entityPrefab = CreateInstance(resourceName, "test" + AllEntities.Count);
+		EntityType entityPrefab = CreateInstance(resourceName, resourceName + AllEntities.Count);
 
 		AllEntities.Add(entityPrefab);
 		_entityInstances.Push(entityPrefab);
 		_entitiesById.Add(entityPrefab.Id, entityPrefab);
+		MainScene.InputManager.ListenTo(entityPrefab);
 
 		return entityPrefab;
 	}

@@ -8,13 +8,15 @@ namespace GameManager;
 
 public partial class InputManager : Node2D
 {
+  public readonly HashSet<Node2D> Hovering = [];
+
   private readonly Dictionary<KeyList, DateTime> keysPressed = [];
   private readonly Dictionary<KeyList, TimeSpan> keysHeldDuration = [];
   private readonly Dictionary<KeyList, bool> keysCommandExecuted = [];
 
-  private readonly Dictionary<MouseInputList, DateTime> mouseButtonPressed = [];
-  private readonly Dictionary<MouseInputList, TimeSpan> mouseButtonHeldDuration = [];
-  private readonly Dictionary<MouseInputList, bool> mouseButtonCommandExecuted = [];
+  private readonly Dictionary<MouseInputAction, DateTime> mouseButtonPressed = [];
+  private readonly Dictionary<MouseInputAction, TimeSpan> mouseButtonHeldDuration = [];
+  private readonly Dictionary<MouseInputAction, bool> mouseButtonCommandExecuted = [];
 
   public override void _Input(InputEvent @event)
   {
@@ -44,24 +46,23 @@ public partial class InputManager : Node2D
       keysCommandExecuted[keyAndTime.Key] = true;
     }
 
-    foreach (var buttonAndTime in mouseButtonPressed)
+    foreach (var mouseInputEvent in mouseButtonPressed)
     {
-      bool isRepeating = mouseButtonCommandExecuted[buttonAndTime.Key];
-      MouseButton button = buttonAndTime.Key.Button;
-      TimeSpan heldTime = DateTime.Now - buttonAndTime.Value;
+      bool isRepeating = mouseButtonCommandExecuted[mouseInputEvent.Key];
+      TimeSpan heldTime = DateTime.Now - mouseInputEvent.Value;
 
-      MouseActionEvent(button, isRepeating, heldTime);
-      switch (button)
+      MouseActionEvent(mouseInputEvent.Key, isRepeating, heldTime, Hovering);
+      switch (mouseInputEvent.Key.Event.ButtonIndex)
       {
         case MouseButton.Right:
-          RightClickActionEvent(isRepeating, heldTime);
+          RightClickActionEvent(mouseInputEvent.Key, isRepeating, heldTime, Hovering);
           break;
         case MouseButton.Left:
-          LeftClickActionEvent(isRepeating, heldTime);
+          LeftClickActionEvent(mouseInputEvent.Key, isRepeating, heldTime, Hovering);
           break;
       }
 
-      mouseButtonCommandExecuted[buttonAndTime.Key] = true;
+      mouseButtonCommandExecuted[mouseInputEvent.Key] = true;
     }
   }
 
@@ -71,14 +72,14 @@ public partial class InputManager : Node2D
   /// <param name="inputEventClick"></param>
   private void InputMouseHandler(InputEventMouseButton inputEventClick)
   {
-    MouseInputList button = new(inputEventClick.ButtonIndex);
+    MouseInputAction inputEvent = new(inputEventClick, inputEventClick.Position, Hovering);
     if (inputEventClick.Pressed)
     {
-      if (!mouseButtonPressed.ContainsKey(button))
+      if (!mouseButtonPressed.ContainsKey(inputEvent))
       {
-        mouseButtonPressed.Add(button, DateTime.Now);
-        mouseButtonCommandExecuted[button] = false;
-        MouseButtonDownEvent(inputEventClick.ButtonIndex);
+        mouseButtonPressed.Add(inputEvent, DateTime.Now);
+        mouseButtonCommandExecuted[inputEvent] = false;
+        MouseButtonDownEvent(inputEvent);
         switch (inputEventClick.ButtonIndex)
         {
           case MouseButton.Right:
@@ -92,13 +93,13 @@ public partial class InputManager : Node2D
     }
     else
     {
-      if (mouseButtonPressed.TryGetValue(button, out DateTime value))
+      if (mouseButtonPressed.TryGetValue(inputEvent, out DateTime value))
       {
         TimeSpan heldDuration = DateTime.Now - value;
-        mouseButtonHeldDuration[button] = heldDuration;
-        mouseButtonPressed.Remove(button);
-        mouseButtonCommandExecuted.Remove(button);
-        MouseButtonUpEvent(inputEventClick.ButtonIndex, heldDuration);
+        mouseButtonHeldDuration[inputEvent] = heldDuration;
+        mouseButtonPressed.Remove(inputEvent);
+        mouseButtonCommandExecuted.Remove(inputEvent);
+        MouseButtonUpEvent(inputEvent, inputEventClick.Position, heldDuration, Hovering);
       }
     }
   }
@@ -128,4 +129,18 @@ public partial class InputManager : Node2D
     }
   }
 
+  public void ListenTo(Entity.Entity node)
+  {
+    node.CollisionBody.InputPickable = true;
+
+    node.CollisionBody.MouseEntered += () =>
+    {
+      Hovering.Add(node);
+    };
+
+    node.CollisionBody.MouseExited += () =>
+    {
+      Hovering.Remove(node);
+    };
+  }
 }
