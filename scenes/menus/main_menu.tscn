@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhnoppu8mrbsb"]
+[gd_scene load_steps=3 format=3 uid="uid://dhnoppu8mrbsb"]
 
 [ext_resource type="Script" path="res://scripts/UI/MainMenu.cs" id="1_nxj0n"]
+[ext_resource type="Script" path="res://scripts/Multiplayer/MultiplayerController.cs" id="2_iyb2w"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("MultiplayerController")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
 script = ExtResource("1_nxj0n")
+MultiplayerController = NodePath("MultiplayerController")
 
 [node name="FirstMenu" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -43,3 +45,6 @@ text = "Co-op"
 [node name="QuitGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
 text = "Quit"
+
+[node name="MultiplayerController" type="Node" parent="."]
+script = ExtResource("2_iyb2w")

@@ -1,30 +1,91 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcyjulrfh2xn6"]
+[gd_scene load_steps=13 format=3 uid="uid://mj0wrhc1wu8c"]
 
-[ext_resource type="ButtonGroup" uid="uid://dy8o4kpayodca" path="res://scenes/menus/character_selection_buttons.tres" id="1_puao1"]
 [ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_hgax8"]
+[ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="2_jhhi7"]
+[ext_resource type="Texture2D" uid="uid://b7wbq6v1eeajg" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Red/Pawn_Red.png" id="3_xngnc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_y8gjk"]
-font_size = 50
+resource_local_to_scene = true
+font_size = 30
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_vk7gp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2xag"]
+resource_local_to_scene = true
+shader = ExtResource("2_jhhi7")
+shader_parameter/active = false
 
-[node name="character_select_button" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl", "CharacterSprite")]
-custom_minimum_size = Vector2(350, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba83m"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxxpj"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n44ow"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfc5r"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23pjo"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8nlps"]
+atlas = ExtResource("3_xngnc")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_46etn"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba83m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxxpj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n44ow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfc5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23pjo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8nlps")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="CharacterSelectButton" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl", "CharacterSprite")]
+clip_contents = true
+custom_minimum_size = Vector2(200, 250)
+anchors_preset = -1
+anchor_right = 0.174
+anchor_bottom = 0.386
+offset_right = -0.448013
+offset_bottom = -0.128006
 grow_horizontal = 2
 grow_vertical = 2
-toggle_mode = true
-button_group = ExtResource("1_puao1")
+size_flags_horizontal = 0
+size_flags_vertical = 0
 script = ExtResource("2_hgax8")
 MarginContainer = NodePath("MarginContainer")
 VBoxContainer = NodePath("MarginContainer/VBoxContainer")
 TitleLabel = NodePath("MarginContainer/VBoxContainer/TitleLabel")
 CharacterSpriteControl = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl")
 CharacterSprite = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl/AnimatedSprite2D")
+metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(200, 250)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,13 +104,17 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Yle"
+text = "pleshw"
 label_settings = SubResource("LabelSettings_y8gjk")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ChracterSpriteControl" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="ChracterSpriteControl" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/ChracterSpriteControl"]
-sprite_frames = SubResource("SpriteFrames_vk7gp")
+material = SubResource("ShaderMaterial_m2xag")
+position = Vector2(79, 86)
+sprite_frames = SubResource("SpriteFrames_46etn")
+autoplay = "default"

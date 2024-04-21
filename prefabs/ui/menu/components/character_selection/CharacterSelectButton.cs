@@ -5,6 +5,20 @@ namespace UI;
 
 public partial class CharacterSelectButton : Button
 {
+	private bool _selected = false;
+	public bool Selected
+	{
+		get
+		{
+			return _selected;
+		}
+		set
+		{
+			_selected = value;
+			SetGrayscaleShader(!_selected);
+		}
+	}
+
 	[Export]
 	public MarginContainer MarginContainer;
 
@@ -26,18 +40,34 @@ public partial class CharacterSelectButton : Button
 
 		(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", true);
 
-		Pressed += ReleaseFocus;
+		Pressed += () =>
+		{
+			ReleaseFocus();
+			Selected = !Selected;
+		};
+
 		CharacterSprite.Stop();
+
 		MouseEntered += () =>
 		{
-			(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", false);
-			CharacterSprite.Play("default");
+			if (!Selected)
+			{
+				SetGrayscaleShader(false);
+			}
 		};
 
 		MouseExited += () =>
 		{
-			(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", true);
-			CharacterSprite.Stop();
+			if (!Selected)
+			{
+				SetGrayscaleShader(true);
+			}
 		};
+	}
+
+	public void SetGrayscaleShader(bool state)
+	{
+		(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", state);
+		CharacterSprite.Play("default");
 	}
 }

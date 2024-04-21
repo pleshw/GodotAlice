@@ -27,11 +27,13 @@ public static class GodotFilePath
   public static readonly StringName MainMenu;
   public static readonly StringName SingleCharacterMenu;
   public static readonly StringName CoopCharacterMenu;
+  public static readonly StringName MultiplayerConnectionMenu;
 
   static GodotFilePath()
   {
     MainMenu = GodotFolderPath.Places + "main_menu.tscn";
-    SingleCharacterMenu = GodotFolderPath.SceneMenus + "single_character_menu.tscn";
+    SingleCharacterMenu = GodotFolderPath.SceneMenus + "select_character_menu.tscn";
     CoopCharacterMenu = GodotFolderPath.SceneMenus + "coop_character_menu.tscn";
+    MultiplayerConnectionMenu = GodotFolderPath.SceneMenus + "coop_network_options.tscn";
   }
 }
