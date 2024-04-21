@@ -64,15 +64,9 @@ public partial class CharacterSelectButton : Button
 		StageLoader stageLoader = GetTree().Root.GetNode<MainMenu>("MainMenu").StageLoader;
 		Player = stageLoader.PlayerManager.InstantiatePlayerByName(GodotFileName.MainCharacters.Pawn, stageLoader);
 		Player.UseParentMaterial = true;
+		CharacterSpriteControl.AddChild(Player);
 
 		CharacterSprite = Player.AnimatedBody;
-		CharacterSprite.Ready += () =>
-		{
-			CharacterSprite.Freeze = true;
-			CharacterSprite.Stop();
-
-			CharacterSpriteControl.AddChild(Player);
-		};
 	}
 
 	public void SetGrayscaleShader(bool grayScaleActive)
