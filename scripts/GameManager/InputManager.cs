@@ -144,13 +144,13 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
   public void ListenTo(Entity.Entity node)
   {
     ListenCollisionSet.Add(node);
-
     Cursor.CollisionArea.AreaEntered += (Area2D area) =>
     {
       if (area.GetParent() is Entity.Entity entity)
       {
         Hovering.Add(entity);
         entity.MouseOver();
+        GD.Print("test");
       }
     };
 
@@ -161,6 +161,7 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
       {
         Hovering.Remove(entity);
         entity.MouseOut();
+        GD.Print("test");
       }
     };
   }
