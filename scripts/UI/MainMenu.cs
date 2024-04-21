@@ -1,6 +1,8 @@
 using Extras;
+using GameManager;
 using Godot;
 using Multiplayer;
+using Scene;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,14 @@ namespace UI;
 
 public partial class MainMenu : Control
 {
+
+	[Export]
+	public StageLoader StageLoader;
+
 	[Export]
 	public MultiplayerController MultiplayerController;
 
-	private ResourcePreloader _preloader;
-	public ResourcePreloader Preloader
-	{
-		get
-		{
-			_preloader ??= new();
-
-			return _preloader;
-		}
-	}
+	public GameResourceManager<CanvasItem> ResourceManager;
 
 	private Control _firstMenu;
 	public Control FirstMenu
@@ -99,23 +96,21 @@ public partial class MainMenu : Control
 
 	public MainMenu()
 	{
-		SingleCharacterMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.SingleCharacterMenu);
-		MultiplayerConnectionMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.MultiplayerConnectionMenu);
-		CoopCharacterMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.CoopCharacterMenu);
-		CoopCharacterMenuPackedScene = ResourceLoader.Load<PackedScene>(GodotFilePath.CoopCharacterMenu);
-
-
-		Preloader.AddResource(GodotFilePath.SingleCharacterMenu, SingleCharacterMenuPackedScene);
-		Preloader.AddResource(GodotFilePath.MultiplayerConnectionMenu, MultiplayerConnectionMenuPackedScene);
-		Preloader.AddResource(GodotFilePath.CoopCharacterMenu, CoopCharacterMenuPackedScene);
+		ResourceManager = new(GodotFolderPath.SceneMenus,
+			GodotFileName.Menus.SingleCharacterMenu,
+			GodotFileName.Menus.CoopCharacterMenu,
+			GodotFileName.Menus.MultiplayerConnectionMenu);
 	}
 
 	public override void _Ready()
 	{
 		base._Ready();
-		SingleCharacterMenuScene = (Preloader.GetResource(GodotFilePath.SingleCharacterMenu) as PackedScene).Instantiate<Control>();
-		MultiplayerMenuScene = (Preloader.GetResource(GodotFilePath.MultiplayerConnectionMenu) as PackedScene).Instantiate<CoopNetworkOptionsMenu>();
-		CoopCharacterMenuScene = (Preloader.GetResource(GodotFilePath.CoopCharacterMenu) as PackedScene).Instantiate<CoopCharacterMenu>();
+
+		GetWindow().GrabFocus();
+
+		SingleCharacterMenuScene = ResourceManager.CreateInstance<Control>(GodotFileName.Menus.SingleCharacterMenu, "SingleCharacterMenu");
+		MultiplayerMenuScene = ResourceManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFileName.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
+		CoopCharacterMenuScene = ResourceManager.CreateInstance<CoopCharacterMenu>(GodotFileName.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		CallDeferred(nameof(AddScenesToRoot));
 

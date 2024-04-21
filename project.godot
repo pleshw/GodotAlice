@@ -17,12 +17,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-EnemyManager="*res://scripts/GameManager/EnemyManager.cs"
 PlayerManager="*res://scripts/GameManager/PlayerManager.cs"
 InputManager="*res://scripts/GameManager/InputManager.cs"
 
 [display]
 
+window/size/mode=3
 window/size/resizable=false
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"

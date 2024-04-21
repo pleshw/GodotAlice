@@ -2,31 +2,16 @@
 using System;
 using System.Collections.Generic;
 using Entity;
+using Extras;
 using Godot;
 using Scene;
 using UI;
 
 namespace GameManager;
 
-public partial class InputManager : Node2D
+public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolderPath.CursorsPrefabs, GodotFileName.UI.DefaultCursor)
 {
-  private MainScene _mainScene;
-  public MainScene MainScene
-  {
-    get
-    {
-      _mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
-      return _mainScene;
-    }
-  }
-
-  public GameCursor Cursor
-  {
-    get
-    {
-      return MainScene.CurrentCursor;
-    }
-  }
+  public GameCursor Cursor;
 
   public readonly HashSet<Entity.Entity> ListenCollisionSet = [];
   public readonly HashSet<Node2D> Hovering = [];
@@ -38,6 +23,12 @@ public partial class InputManager : Node2D
   private readonly Dictionary<MouseInputAction, DateTime> mouseButtonPressed = [];
   private readonly Dictionary<MouseInputAction, TimeSpan> mouseButtonHeldDuration = [];
   private readonly Dictionary<MouseInputAction, bool> mouseButtonCommandExecuted = [];
+
+  public override void _Ready()
+  {
+    base._Ready();
+    Cursor = CreateInstance<GameCursor>(GodotFileName.UI.DefaultCursor, "MainCursor");
+  }
 
   public override void _Input(InputEvent @event)
   {
@@ -148,11 +139,6 @@ public partial class InputManager : Node2D
         KeyUpEvent(inputEventKey.Keycode, heldDuration);
       }
     }
-  }
-
-  public override void _PhysicsProcess(double delta)
-  {
-    base._PhysicsProcess(delta);
   }
 
   public void ListenTo(Entity.Entity node)

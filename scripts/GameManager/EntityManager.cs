@@ -6,19 +6,17 @@ using System.Collections.Generic;
 
 namespace Entity;
 
-public partial class EntityManager<EntityType>(string resourcePath, string resourceName) : GameResourceManager<EntityType>(resourcePath, resourceName) where EntityType : Entity, new()
+public partial class EntityManager<EntityType>(string resourcePath, params StringName[] scenesToPreload) : GameResourceManager<EntityType>(resourcePath, scenesToPreload) where EntityType : Entity, new()
 {
-	private MainScene _mainScene;
-	public MainScene MainScene
+	private StageLoader _mainScene;
+	public StageLoader MainScene
 	{
 		get
 		{
-			_mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+			_mainScene ??= GetTree().Root.GetNode<StageLoader>("MainScene");
 			return _mainScene;
 		}
 	}
-
-	protected StringName ResourceName = resourceName;
 
 	public static readonly List<EntityType> AllEntities = [];
 
@@ -32,7 +30,7 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 		base._Ready();
 	}
 
-	public bool TryInstantiateAtPosition(Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
+	public bool TryInstantiateAtPosition(string entityFileName, StageLoader stageLoader, Vector2 position, out EntityType entityInstance, int maxAmountOfInstances = -1)
 	{
 		if (maxAmountOfInstances > 0 && _entityInstances.Count >= maxAmountOfInstances)
 		{
@@ -40,7 +38,7 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 			return false;
 		}
 
-		entityInstance = GetEntityInstance();
+		entityInstance = GetEntityInstanceByName(entityFileName, stageLoader);
 
 		AddEntityNodeToScene(entityInstance);
 
@@ -61,14 +59,14 @@ public partial class EntityManager<EntityType>(string resourcePath, string resou
 		entityPrefab.Spawned = true;
 	}
 
-	private EntityType GetEntityInstance()
+	private EntityType GetEntityInstanceByName(string entityFileName, StageLoader stageLoader)
 	{
-		EntityType entityPrefab = CreateInstance(resourceName, resourceName + AllEntities.Count);
+		EntityType entityPrefab = CreateInstance(entityFileName, entityFileName + AllEntities.Count);
 
 		AllEntities.Add(entityPrefab);
 		_entityInstances.Push(entityPrefab);
 		_entitiesById.Add(entityPrefab.Id, entityPrefab);
-		MainScene.InputManager.ListenTo(entityPrefab);
+		stageLoader.InputManager.ListenTo(entityPrefab);
 
 		return entityPrefab;
 	}

@@ -1,13 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbqir0g74kog6"]
+[gd_scene load_steps=7 format=3 uid="uid://brnnvfcvqfq0b"]
 
-[ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_oi385"]
-[ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/main_characters/body/pawn_body.tscn" id="2_yt7ow"]
-[ext_resource type="Shader" path="res://assets/shaders/outline.gdshader" id="3_6a5t2"]
-[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/default_helper.tscn" id="4_xik0p"]
+[ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_b5h0d"]
+[ext_resource type="PackedScene" uid="uid://denygldordlrc" path="res://prefabs/entities/main_characters/body/pawn_body.tscn" id="2_bslg7"]
+[ext_resource type="Shader" path="res://assets/shaders/outline.gdshader" id="3_d5dby"]
+[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/default_helper.tscn" id="4_42j4p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1idgu"]
 resource_local_to_scene = true
-shader = ExtResource("3_6a5t2")
+shader = ExtResource("3_d5dby")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/width = 0.0
 shader_parameter/pattern = 0
@@ -20,7 +20,7 @@ size = Vector2(64.4884, 68)
 [node name="DefaultPlayer" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
 visibility_layer = 2
 use_parent_material = true
-script = ExtResource("1_oi385")
+script = ExtResource("1_b5h0d")
 AnimatedBody = NodePath("PlayerBody")
 Camera = NodePath("Camera")
 CollisionBody = NodePath("CollisionBody")
@@ -30,7 +30,7 @@ enabled = false
 
 [node name="EquippedItems" type="Node" parent="."]
 
-[node name="PlayerBody" parent="." instance=ExtResource("2_yt7ow")]
+[node name="PlayerBody" parent="." instance=ExtResource("2_bslg7")]
 visibility_layer = 1
 material = SubResource("ShaderMaterial_1idgu")
 use_parent_material = true
@@ -43,9 +43,9 @@ position = Vector2(-1.5, 3)
 scale = Vector2(1.06996, 1)
 shape = SubResource("RectangleShape2D_6pus8")
 
-[node name="DamageAlert" parent="." instance=ExtResource("4_xik0p")]
+[node name="DamageAlert" parent="." instance=ExtResource("4_42j4p")]
 visible = false
 
-[node name="PlayerName" parent="." instance=ExtResource("4_xik0p")]
+[node name="PlayerName" parent="." instance=ExtResource("4_42j4p")]
 visible = false
 position = Vector2(-1, -75)

@@ -6,7 +6,7 @@ using Godot;
 
 namespace GameManager;
 
-public partial class InputManager : Node2D
+public partial class InputManager
 {
   public event Action<Key> OnKeyDown;
   public void KeyDownEvent(Key key)

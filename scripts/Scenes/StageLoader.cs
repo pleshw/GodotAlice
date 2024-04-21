@@ -1,12 +1,13 @@
 
 using System;
+using Extras;
 using GameManager;
 using Godot;
 using UI;
 
 namespace Scene;
 
-public partial class MainScene : Node2D
+public partial class StageLoader() : GameResourceManager<Node2D>(GodotFolderPath.Stages, "stage_1.tscn")
 {
 	public readonly Random Random = new();
 
@@ -15,14 +16,6 @@ public partial class MainScene : Node2D
 		get
 		{
 			return GetNode<PlayerManager>("/root/PlayerManager");
-		}
-	}
-
-	public EnemyManager EnemyManager
-	{
-		get
-		{
-			return GetNode<EnemyManager>("/root/EnemyManager");
 		}
 	}
 
@@ -47,8 +40,5 @@ public partial class MainScene : Node2D
 	public override void _Ready()
 	{
 		base._Ready();
-
-		PlayerManager.InstantiatePlayer();
-		GetWindow().GrabFocus();
 	}
 }

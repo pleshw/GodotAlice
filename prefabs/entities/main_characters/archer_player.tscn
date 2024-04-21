@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://drijat5vmr0ab"]
+
+[ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_5pdam"]
+[ext_resource type="PackedScene" uid="uid://c1h1o65tnyjiy" path="res://prefabs/entities/main_characters/body/archer_body.tscn" id="2_vomts"]
+[ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/default_helper.tscn" id="4_6s2nu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
+size = Vector2(71.9653, 75)
+
+[node name="DefaultPlayer" type="Node2D" node_paths=PackedStringArray("AnimatedBody", "Camera", "CollisionBody")]
+visibility_layer = 2
+use_parent_material = true
+script = ExtResource("1_5pdam")
+AnimatedBody = NodePath("PlayerBody")
+Camera = NodePath("Camera")
+CollisionBody = NodePath("CollisionBody")
+
+[node name="Camera" type="Camera2D" parent="."]
+enabled = false
+
+[node name="EquippedItems" type="Node" parent="."]
+
+[node name="PlayerBody" parent="." instance=ExtResource("2_vomts")]
+
+[node name="CollisionBody" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionBody"]
+position = Vector2(-5.5, -0.5)
+scale = Vector2(1.06996, 1)
+shape = SubResource("RectangleShape2D_6pus8")
+
+[node name="DamageAlert" parent="." instance=ExtResource("4_6s2nu")]
+visible = false
+
+[node name="PlayerName" parent="." instance=ExtResource("4_6s2nu")]
+visible = false
+position = Vector2(-1, -75)

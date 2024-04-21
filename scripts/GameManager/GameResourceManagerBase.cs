@@ -59,6 +59,11 @@ public partial class GameResourceManager<T> : Node where T : Node
     return result;
   }
 
+  public ConvertedType CreateInstance<ConvertedType>(StringName sceneName, StringName nodeName) where ConvertedType : GodotObject
+  {
+    return CreateInstance(sceneName, nodeName) as ConvertedType;
+  }
+
   ~GameResourceManager()
   {
     foreach (var item in Prefabs)

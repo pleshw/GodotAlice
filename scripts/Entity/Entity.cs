@@ -57,12 +57,12 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 
 	public abstract EntityInventoryBase BaseInventory { get; set; }
 
-	private MainScene _mainScene;
-	public MainScene MainScene
+	private StageLoader _mainScene;
+	public StageLoader MainScene
 	{
 		get
 		{
-			_mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+			_mainScene ??= GetTree().Root.GetNode<StageLoader>("MainScene");
 			return _mainScene;
 		}
 	}

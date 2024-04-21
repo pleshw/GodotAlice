@@ -1,0 +1,220 @@
+[gd_scene load_steps=30 format=3 uid="uid://dopnmfjmwe4p0"]
+
+[ext_resource type="Shader" path="res://assets/shaders/outline.gdshader" id="1_k2rs5"]
+[ext_resource type="Script" path="res://scripts/Entity/EntityAnimatedBody.cs" id="2_2pocw"]
+[ext_resource type="Shader" path="res://assets/shaders/dashing_blink.gdshader" id="3_hmlty"]
+[ext_resource type="Texture2D" uid="uid://c22clmp1q3hqn" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="5_gocu8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bp2s0"]
+resource_local_to_scene = true
+shader = ExtResource("1_k2rs5")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 0.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u0pre"]
+resource_local_to_scene = true
+shader = ExtResource("3_hmlty")
+shader_parameter/blinkStage = null
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on5me"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fatea"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hk6bv"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68d3n"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sau8t"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qdxtk"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5md7v"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcugo"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmv32"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xueec"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w11k3"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7oqq"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2i6j"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jbt4"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pk6g"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyutp"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjju8"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ti4xf"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1we4u"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0ab3"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sghso"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdb8n"]
+atlas = ExtResource("5_gocu8")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nodc0"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on5me")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fatea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hk6bv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68d3n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sau8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qdxtk")
+}],
+"loop": false,
+"name": &"Attacking",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5md7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcugo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmv32")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xueec")
+}],
+"loop": false,
+"name": &"Dashing",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w11k3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i7oqq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2i6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6jbt4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pk6g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dyutp")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjju8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ti4xf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1we4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0ab3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sghso")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdb8n")
+}],
+"loop": false,
+"name": &"Moving",
+"speed": 12.0
+}]
+
+[node name="PawnBody" type="Node2D"]
+visibility_layer = 2
+material = SubResource("ShaderMaterial_bp2s0")
+script = ExtResource("2_2pocw")
+
+[node name="Body" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_u0pre")
+use_parent_material = true
+sprite_frames = SubResource("SpriteFrames_nodc0")
+animation = &"Moving"
+
+[node name="Hat" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -117)
+
+[node name="Shirt" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -19)
+scale = Vector2(0.734375, 0.53125)
+
+[node name="Pants" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2.38419e-07, 87)
+scale = Vector2(1.84375, 1.67188)

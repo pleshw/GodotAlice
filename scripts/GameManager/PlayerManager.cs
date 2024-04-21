@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using Entity;
 using Extras;
 using Godot;
+using Scene;
 
 namespace GameManager;
 
-public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Entities, "default_player.tscn")
+public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.MainCharacters, "warrior_player.tscn", "pawn_player.tscn", "archer_player.tscn")
 {
   public Camera2D GlobalCamera;
   public Camera2D PlayerCamera;
@@ -20,14 +21,13 @@ public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Ent
     Y = 0
   };
 
-  public void InstantiatePlayer()
+  public Player InstantiatePlayerByName(StringName entityFileName, StageLoader stageLoader)
   {
-    TryInstantiateAtPosition(SpawnPoint, out playerInstance);
-    playerInstance.movementKeyBinds.BindDefaults();
-    playerInstance.uiKeyBinds.BindDefaults();
+    TryInstantiateAtPosition(entityFileName, stageLoader, SpawnPoint, out playerInstance);
 
     PlayerCamera = playerInstance.Camera;
     AllPlayers.Add(playerInstance);
     playerInstance.DisplayName = "porra games";
+    return playerInstance;
   }
 }

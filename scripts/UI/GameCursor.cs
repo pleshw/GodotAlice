@@ -6,12 +6,12 @@ namespace UI;
 
 public partial class GameCursor : Node2D
 {
-	private MainScene _mainScene;
-	public MainScene MainScene
+	private StageLoader _mainScene;
+	public StageLoader MainScene
 	{
 		get
 		{
-			_mainScene ??= GetTree().Root.GetNode<MainScene>("MainScene");
+			_mainScene ??= GetTree().Root.GetNode<StageLoader>("MainScene");
 			return _mainScene;
 		}
 	}

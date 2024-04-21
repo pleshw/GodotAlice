@@ -68,7 +68,6 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
 
   public void PlayerEnteredInGame()
   {
-
     uiKeyBinds = new UICommandKeybindMap(this);
     MainScene.InputManager.OnKeyAction += (Key keyPressed, bool isRepeating, TimeSpan heldTime) =>
     {

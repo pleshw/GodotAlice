@@ -1,12 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bj2p515w2nc8b"]
+[gd_scene load_steps=4 format=3 uid="uid://bj2p515w2nc8b"]
 
-[ext_resource type="Script" path="res://scripts/Scenes/MainScene.cs" id="1_q30yt"]
 [ext_resource type="PackedScene" uid="uid://dg7lw6brvdugq" path="res://prefabs/ui/menu/player_menu.tscn" id="2_wtbyy"]
 [ext_resource type="AudioStream" uid="uid://l3omi8cfa5go" path="res://assets/sounds/chaves2.mp3" id="3_8pvii"]
 [ext_resource type="PackedScene" uid="uid://do2m6mtos4qig" path="res://prefabs/ui/cursors/default_cursor.tscn" id="4_pg24d"]
 
-[node name="MainScene" type="Node2D"]
-script = ExtResource("1_q30yt")
+[node name="Stage1" type="Node2D"]
 
 [node name="GlobalCamera" type="Camera2D" parent="."]
 

@@ -1,5 +1,7 @@
 using Entity;
+using Extras;
 using Godot;
+using Scene;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +11,6 @@ public partial class CharacterSelectButton : Button
 {
 	[Export]
 	public Player Player;
-
 
 	[Export]
 	public MarginContainer MarginContainer;
@@ -37,15 +38,13 @@ public partial class CharacterSelectButton : Button
 	{
 		base._Ready();
 
-		CharacterSprite = Player.AnimatedBody;
+		CallDeferred(nameof(SetPlayerCards));
 
 		Pressed += () =>
 		{
 			ReleaseFocus();
 		};
 
-		CharacterSprite.Freeze = true;
-		CharacterSprite.Stop();
 
 		MouseEntered += () =>
 		{
@@ -57,7 +56,22 @@ public partial class CharacterSelectButton : Button
 			SetGrayscaleShader(true);
 			CharacterSprite.Freeze = true;
 			CharacterSprite.Stop();
-			GD.Print("Stopped");
+		};
+	}
+
+	private void SetPlayerCards()
+	{
+		StageLoader stageLoader = GetTree().Root.GetNode<MainMenu>("MainMenu").StageLoader;
+		Player = stageLoader.PlayerManager.InstantiatePlayerByName(GodotFileName.MainCharacters.Pawn, stageLoader);
+		Player.UseParentMaterial = true;
+
+		CharacterSprite = Player.AnimatedBody;
+		CharacterSprite.Ready += () =>
+		{
+			CharacterSprite.Freeze = true;
+			CharacterSprite.Stop();
+
+			CharacterSpriteControl.AddChild(Player);
 		};
 	}
 
@@ -68,7 +82,6 @@ public partial class CharacterSelectButton : Button
 		if (!grayScaleActive)
 		{
 			Player.PlayAttackAnimation();
-			GD.Print("played");
 		}
 	}
 

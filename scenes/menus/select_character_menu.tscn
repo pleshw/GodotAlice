@@ -65,6 +65,3 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CharacterSelectButton2" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
 layout_mode = 2
-
-[node name="CharacterSelectButton" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
-layout_mode = 2
