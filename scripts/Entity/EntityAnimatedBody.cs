@@ -18,7 +18,6 @@ public struct AnimationRequestInput()
 
 public partial class EntityAnimatedBody : Node2D
 {
-
 	/// <summary>
 	/// The sprite with the most number of frames. Used as reference to know if the animation have to stop.
 	/// </summary>
@@ -30,6 +29,21 @@ public partial class EntityAnimatedBody : Node2D
 
 	public string AnimationPlaying = "";
 
+	private bool _freeze = false;
+	public bool Freeze
+	{
+		get
+		{
+			return _freeze;
+		}
+		set
+		{
+			Parts.ForEach(p => p.EmitSignal(AnimatedSprite2D.SignalName.AnimationFinished));
+			Stop();
+			_freeze = value;
+		}
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();
@@ -40,6 +54,7 @@ public partial class EntityAnimatedBody : Node2D
 
 	public void Play(StringName animationName)
 	{
+		Freeze = false;
 		Parts.ForEach(animatedSprite =>
 		{
 			SpriteFrames spriteFrames = animatedSprite.SpriteFrames;
@@ -65,6 +80,7 @@ public partial class EntityAnimatedBody : Node2D
 
 	public void Play(AnimationRequestInput animationRequest)
 	{
+		Freeze = false;
 		Parts.ForEach(animatedSprite =>
 		{
 			SpriteFrames spriteFrames = animatedSprite.SpriteFrames;

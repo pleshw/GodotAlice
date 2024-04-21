@@ -3,7 +3,7 @@ using Godot;
 
 namespace Entity;
 
-public partial class Entity
+public partial class Player
 {
   public Control UI
   {

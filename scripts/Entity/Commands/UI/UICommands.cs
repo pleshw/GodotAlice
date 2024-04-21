@@ -2,11 +2,11 @@ using Godot;
 
 namespace Entity.Commands;
 
-public partial class EntityCommands
+public partial class PlayerCommands
 {
   public class TogglePlayerMenuCommand : EntityCommandBase
   {
-    private readonly Entity owner;
+    private readonly Player owner;
 
     private Tween InventoryTween;
 
@@ -17,7 +17,7 @@ public partial class EntityCommands
 
     public Vector2 playerAnimPosition;
 
-    public TogglePlayerMenuCommand(Entity entity) : base(entity)
+    public TogglePlayerMenuCommand(Player entity) : base(entity)
     {
       owner = entity;
 

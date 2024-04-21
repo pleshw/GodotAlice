@@ -2,7 +2,7 @@ using Godot;
 
 namespace Entity.Commands;
 
-public class UICommandKeybindMap(Entity entity) : EntityCommandKeybind(entity)
+public class UICommandKeybindMap(Player entity) : EntityCommandKeybind(entity)
 {
   public UICommandController UI = new(entity);
 

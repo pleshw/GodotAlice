@@ -11,10 +11,8 @@ public static class NetworkController
   {
     get
     {
-      return "localhost";
       // Get all local IP addresses of the host PC
-      IPAddress[]
-      localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+      IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
 
       // Filter and return the first IPv4 address (you may adjust this logic based on your requirements)
       foreach (IPAddress localIP in localIPs)

@@ -1,70 +1,19 @@
-[gd_scene load_steps=13 format=3 uid="uid://mj0wrhc1wu8c"]
+[gd_scene load_steps=6 format=3 uid="uid://mj0wrhc1wu8c"]
 
 [ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_hgax8"]
 [ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="2_jhhi7"]
-[ext_resource type="Texture2D" uid="uid://b7wbq6v1eeajg" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Red/Pawn_Red.png" id="3_xngnc"]
+[ext_resource type="PackedScene" uid="uid://cbqir0g74kog6" path="res://prefabs/entities/default_player.tscn" id="3_42uom"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_y8gjk"]
 resource_local_to_scene = true
 font_size = 30
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2xag"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c47du"]
 resource_local_to_scene = true
 shader = ExtResource("2_jhhi7")
-shader_parameter/active = false
+shader_parameter/active = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ba83m"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(0, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gxxpj"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(192, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n44ow"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(384, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mfc5r"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(576, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_23pjo"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(768, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8nlps"]
-atlas = ExtResource("3_xngnc")
-region = Rect2(960, 0, 192, 192)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_46etn"]
-resource_local_to_scene = true
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ba83m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gxxpj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_n44ow")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mfc5r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_23pjo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8nlps")
-}],
-"loop": true,
-"name": &"default",
-"speed": 12.0
-}]
-
-[node name="CharacterSelectButton" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl", "CharacterSprite")]
+[node name="CharacterSelectButton" type="Button" node_paths=PackedStringArray("Player", "MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl")]
 clip_contents = true
 custom_minimum_size = Vector2(200, 250)
 anchors_preset = -1
@@ -77,11 +26,11 @@ grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("2_hgax8")
+Player = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl/Pawn")
 MarginContainer = NodePath("MarginContainer")
 VBoxContainer = NodePath("MarginContainer/VBoxContainer")
 TitleLabel = NodePath("MarginContainer/VBoxContainer/TitleLabel")
 CharacterSpriteControl = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl")
-CharacterSprite = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl/AnimatedSprite2D")
 metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -110,11 +59,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ChracterSpriteControl" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+material = SubResource("ShaderMaterial_c47du")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/ChracterSpriteControl"]
-material = SubResource("ShaderMaterial_m2xag")
-position = Vector2(79, 86)
-sprite_frames = SubResource("SpriteFrames_46etn")
-autoplay = "default"
+[node name="Pawn" parent="MarginContainer/VBoxContainer/ChracterSpriteControl" instance=ExtResource("3_42uom")]
+visibility_layer = 1
+position = Vector2(76, 76)

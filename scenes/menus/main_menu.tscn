@@ -39,6 +39,7 @@ layout_mode = 2
 text = "New Game"
 
 [node name="CoopGameButton" type="Button" parent="FirstMenu"]
+visible = false
 layout_mode = 2
 text = "Co-op"
 
@@ -48,3 +49,6 @@ text = "Quit"
 
 [node name="MultiplayerController" type="Node" parent="."]
 script = ExtResource("2_iyb2w")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0

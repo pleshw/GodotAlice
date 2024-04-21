@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System;
 using Effect;
+using Entity.Commands;
 
 namespace Entity;
 
@@ -20,6 +21,8 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
       NameHelper.Text = _displayName;
     }
   }
+
+  public UICommandKeybindMap uiKeyBinds;
 
   private readonly Vector2 initialPosition = initialPosition;
   public override EntityInventoryBase BaseInventory { get; set; }
@@ -61,9 +64,12 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
 
     AddToGroup("Players");
 
-    // Camera.MakeCurrent();
-    // DisplayServer.WindowSetMode(DisplayServer.WindowMode.Maximized);
+  }
 
+  public void PlayerEnteredInGame()
+  {
+
+    uiKeyBinds = new UICommandKeybindMap(this);
     MainScene.InputManager.OnKeyAction += (Key keyPressed, bool isRepeating, TimeSpan heldTime) =>
     {
       movementKeyBinds.Execute(keyPressed, isRepeating);

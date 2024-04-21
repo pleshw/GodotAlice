@@ -63,14 +63,8 @@ theme_override_constants/separation = 50
 alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="yl_select_button" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+[node name="CharacterSelectButton2" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
 layout_mode = 2
 
-[node name="drummond_select_button" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
-layout_mode = 2
-
-[node name="mariana_select_button2" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
-layout_mode = 2
-
-[node name="julia_select_button" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+[node name="CharacterSelectButton" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
 layout_mode = 2

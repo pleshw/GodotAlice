@@ -54,7 +54,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 	public EntityEquipmentSlots equipmentSlots;
 
 	public MovementCommandKeybindMap movementKeyBinds;
-	public UICommandKeybindMap uiKeyBinds;
 
 	public abstract EntityInventoryBase BaseInventory { get; set; }
 
@@ -104,7 +103,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		MovementController = new EntityMovementController(this, initialPosition, gridCellWidth);
 		CombatController = new EntityCombatController(this);
 		movementKeyBinds = new MovementCommandKeybindMap(this);
-		uiKeyBinds = new UICommandKeybindMap(this);
 		equipmentSlots = new EntityEquipmentSlots(this);
 		Stats = new(this);
 	}
@@ -130,8 +128,6 @@ public abstract partial class Entity : Node2D, IEntityBaseNode
 		{
 			GameState = EntityGameState.DASHING;
 		};
-
-		UIMenu.Visible = false;
 
 		equipmentSlots.ForEveryItemSlot((EntityEquipmentSlot itemSlot) =>
 		{

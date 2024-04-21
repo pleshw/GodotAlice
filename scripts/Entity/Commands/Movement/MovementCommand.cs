@@ -3,7 +3,7 @@ using Godot;
 namespace Entity.Commands;
 
 
-public partial class EntityCommands
+public partial class PlayerCommands
 {
   public class WalkTopCommand(Entity entityToMove) : EntityMovementCommand(entityToMove)
   {

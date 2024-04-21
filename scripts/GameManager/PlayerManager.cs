@@ -5,7 +5,7 @@ using Godot;
 
 namespace GameManager;
 
-public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Entities, "pawn.tscn")
+public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Entities, "default_player.tscn")
 {
   public Camera2D GlobalCamera;
   public Camera2D PlayerCamera;

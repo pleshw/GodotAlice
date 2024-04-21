@@ -1,23 +1,15 @@
+using Entity;
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace UI;
 
 public partial class CharacterSelectButton : Button
 {
-	private bool _selected = false;
-	public bool Selected
-	{
-		get
-		{
-			return _selected;
-		}
-		set
-		{
-			_selected = value;
-			SetGrayscaleShader(!_selected);
-		}
-	}
+	[Export]
+	public Player Player;
+
 
 	[Export]
 	public MarginContainer MarginContainer;
@@ -31,43 +23,64 @@ public partial class CharacterSelectButton : Button
 	[Export]
 	public Control CharacterSpriteControl;
 
-	[Export]
-	public AnimatedSprite2D CharacterSprite;
+	public EntityAnimatedBody CharacterSprite;
+
+	public Control CharacterSpriteContainer
+	{
+		get
+		{
+			return Player.GetParent<Control>();
+		}
+	}
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", true);
+		CharacterSprite = Player.AnimatedBody;
 
 		Pressed += () =>
 		{
 			ReleaseFocus();
-			Selected = !Selected;
 		};
 
+		CharacterSprite.Freeze = true;
 		CharacterSprite.Stop();
 
 		MouseEntered += () =>
 		{
-			if (!Selected)
-			{
-				SetGrayscaleShader(false);
-			}
+			SetGrayscaleShader(false);
 		};
 
 		MouseExited += () =>
 		{
-			if (!Selected)
-			{
-				SetGrayscaleShader(true);
-			}
+			SetGrayscaleShader(true);
+			CharacterSprite.Freeze = true;
+			CharacterSprite.Stop();
+			GD.Print("Stopped");
 		};
 	}
 
-	public void SetGrayscaleShader(bool state)
+	public void SetGrayscaleShader(bool grayScaleActive)
 	{
-		(CharacterSprite.Material as ShaderMaterial).SetShaderParameter("active", state);
-		CharacterSprite.Play("default");
+		ShaderMaterial shaderMaterial = CharacterSpriteContainer.Material as ShaderMaterial;
+		shaderMaterial.SetShaderParameter("active", grayScaleActive);
+		if (!grayScaleActive)
+		{
+			Player.PlayAttackAnimation();
+			GD.Print("played");
+		}
+	}
+
+	public event Action OnSelectedByPlayer;
+	public void SelectedByPlayerEvent()
+	{
+		OnSelectedByPlayer?.Invoke();
+	}
+
+	public event Action OnQuitLobby;
+	public void QuitLobbyEvent()
+	{
+		OnQuitLobby?.Invoke();
 	}
 }
