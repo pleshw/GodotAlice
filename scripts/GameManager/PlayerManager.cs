@@ -23,7 +23,7 @@ public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Mai
 
   public Player InstantiatePlayerByName(StringName entityFileName, StageLoader stageLoader)
   {
-    TryInstantiateAtPosition(entityFileName, stageLoader, SpawnPoint, out playerInstance);
+    Player playerInstance = GetEntityInstanceByName(entityFileName, stageLoader);
 
     PlayerCamera = playerInstance.Camera;
     AllPlayers.Add(playerInstance);
