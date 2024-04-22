@@ -7,15 +7,17 @@ using UI;
 
 namespace Scene;
 
-public partial class StageLoader() : GameResourceManager<Node2D>(GodotFolderPath.Stages, "stage_1.tscn")
+public partial class StageLoader(Node parent) : GameResourceManager<Node2D>(GodotFolderPath.Stages, "stage_1.tscn")
 {
 	public readonly Random Random = new();
+
+	public Node Parent = parent;
 
 	public PlayerManager PlayerManager
 	{
 		get
 		{
-			return GetNode<PlayerManager>("/root/PlayerManager");
+			return Parent.GetNode<PlayerManager>("/root/PlayerManager");
 		}
 	}
 
@@ -23,7 +25,15 @@ public partial class StageLoader() : GameResourceManager<Node2D>(GodotFolderPath
 	{
 		get
 		{
-			return GetNode<InputManager>("/root/InputManager");
+			return Parent.GetNode<InputManager>("/root/InputManager");
+		}
+	}
+
+	public SceneManager SceneManager
+	{
+		get
+		{
+			return Parent.GetNode<SceneManager>("/root/SceneManager");
 		}
 	}
 
@@ -32,13 +42,8 @@ public partial class StageLoader() : GameResourceManager<Node2D>(GodotFolderPath
 	{
 		get
 		{
-			_currentCursor ??= GetNode<GameCursor>("DefaultCursor");
+			_currentCursor ??= Parent.GetNode<GameCursor>("DefaultCursor");
 			return _currentCursor;
 		}
-	}
-
-	public override void _Ready()
-	{
-		base._Ready();
 	}
 }

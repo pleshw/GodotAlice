@@ -13,12 +13,17 @@ public partial class MainMenu : Control
 {
 
 	[Export]
-	public StageLoader StageLoader;
-
-	[Export]
 	public MultiplayerController MultiplayerController;
 
 	public GameResourceManager<CanvasItem> ResourceManager;
+
+	public SceneManager SceneManager
+	{
+		get
+		{
+			return GetNode<SceneManager>("/root/SceneManager");
+		}
+	}
 
 	private Control _firstMenu;
 	public Control FirstMenu
@@ -96,10 +101,7 @@ public partial class MainMenu : Control
 
 	public MainMenu()
 	{
-		ResourceManager = new(GodotFolderPath.SceneMenus,
-			GodotFileName.Menus.SingleCharacterMenu,
-			GodotFileName.Menus.CoopCharacterMenu,
-			GodotFileName.Menus.MultiplayerConnectionMenu);
+		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu, GodotFilePath.Menus.CoopCharacterMenu, GodotFilePath.Menus.MultiplayerConnectionMenu]);
 	}
 
 	public override void _Ready()
@@ -108,9 +110,9 @@ public partial class MainMenu : Control
 
 		GetWindow().GrabFocus();
 
-		SingleCharacterMenuScene = ResourceManager.CreateInstance<Control>(GodotFileName.Menus.SingleCharacterMenu, "SingleCharacterMenu");
-		MultiplayerMenuScene = ResourceManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFileName.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
-		CoopCharacterMenuScene = ResourceManager.CreateInstance<CoopCharacterMenu>(GodotFileName.Menus.CoopCharacterMenu, "CoopCharacterMenu");
+		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFileName.Menus.SingleCharacterMenu, "SingleCharacterMenu");
+		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFileName.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
+		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFileName.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		CallDeferred(nameof(AddScenesToRoot));
 

@@ -6,16 +6,6 @@ namespace UI;
 
 public partial class GameCursor : Node2D
 {
-	private StageLoader _mainScene;
-	public StageLoader MainScene
-	{
-		get
-		{
-			_mainScene ??= GetTree().Root.GetNode<StageLoader>("MainScene");
-			return _mainScene;
-		}
-	}
-
 	private Area2D _collisionArea;
 	public Area2D CollisionArea
 	{
@@ -41,10 +31,8 @@ public partial class GameCursor : Node2D
 		base._Ready();
 		TopLevel = true;
 		ZIndex = 200;
-		MainScene.Ready += () =>
-		{
-			Input.MouseMode = Input.MouseModeEnum.Hidden;
-		};
+
+		Input.MouseMode = Input.MouseModeEnum.Hidden;
 	}
 
 	public override void _PhysicsProcess(double delta)

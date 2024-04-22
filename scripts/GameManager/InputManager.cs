@@ -28,6 +28,30 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
   {
     base._Ready();
     Cursor = CreateInstance<GameCursor>(GodotFileName.UI.DefaultCursor, "MainCursor");
+    CallDeferred(nameof(SetupCursor));
+  }
+
+  public void SetupCursor()
+  {
+    Cursor.CollisionArea.AreaEntered += (Area2D area) =>
+    {
+      if (area.GetParent() is Entity.Entity entity)
+      {
+        Hovering.Add(entity);
+        entity.MouseOver();
+        GD.Print("test in");
+      }
+    };
+
+    Cursor.CollisionArea.AreaExited += (Area2D area) =>
+    {
+      if (area.GetParent() is Entity.Entity entity)
+      {
+        Hovering.Remove(entity);
+        entity.MouseOut();
+        GD.Print("test out");
+      }
+    };
   }
 
   public override void _Input(InputEvent @event)
@@ -144,25 +168,7 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
   public void ListenTo(Entity.Entity node)
   {
     ListenCollisionSet.Add(node);
-    Cursor.CollisionArea.AreaEntered += (Area2D area) =>
-    {
-      if (area.GetParent() is Entity.Entity entity)
-      {
-        Hovering.Add(entity);
-        entity.MouseOver();
-        GD.Print("test");
-      }
-    };
+    GD.Print(node.Name);
 
-
-    Cursor.CollisionArea.AreaExited += (Area2D area) =>
-    {
-      if (area.GetParent() is Entity.Entity entity)
-      {
-        Hovering.Remove(entity);
-        entity.MouseOut();
-        GD.Print("test");
-      }
-    };
   }
 }

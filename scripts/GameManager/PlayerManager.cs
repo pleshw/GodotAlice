@@ -13,19 +13,19 @@ public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Mai
 
   public static readonly List<Player> AllPlayers = [];
 
-  public Player playerInstance;
+  public StringName PlayerStage;
 
-  protected Vector2 SpawnPoint = new()
-  {
-    X = 0,
-    Y = 0
-  };
+  public Player MainPlayerInstance;
 
   public Player InstantiatePlayerByName(StringName entityFileName, StageLoader stageLoader)
   {
     Player playerInstance = GetEntityInstanceByName(entityFileName, stageLoader);
 
     PlayerCamera = playerInstance.Camera;
+    if (AllPlayers.Count == 0)
+    {
+      MainPlayerInstance = playerInstance;
+    }
     AllPlayers.Add(playerInstance);
     playerInstance.DisplayName = "porra games";
     return playerInstance;

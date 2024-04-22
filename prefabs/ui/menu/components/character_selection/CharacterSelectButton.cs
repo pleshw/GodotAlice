@@ -34,6 +34,14 @@ public partial class CharacterSelectButton : Button
 		}
 	}
 
+	public MainMenu MainMenu
+	{
+		get
+		{
+			return GetTree().Root.GetNode<MainMenu>("MainMenu");
+		}
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();
@@ -61,7 +69,7 @@ public partial class CharacterSelectButton : Button
 
 	private void SetPlayerCards()
 	{
-		StageLoader stageLoader = GetTree().Root.GetNode<MainMenu>("MainMenu").StageLoader;
+		StageLoader stageLoader = MainMenu.StageLoader;
 		Player = stageLoader.PlayerManager.InstantiatePlayerByName(GodotFileName.MainCharacters.Pawn, stageLoader);
 		Player.UseParentMaterial = true;
 		CharacterSpriteControl.AddChild(Player);

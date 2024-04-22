@@ -19,8 +19,8 @@ public static class GodotFolderPath
   {
     Resources = "res://";
     Scenes = Resources + "scenes/";
-    Stages = Scenes + "stages/";
     SceneMenus = Scenes + "menus/";
+    Stages = Scenes + "stages/";
     Prefabs = Resources + "prefabs/";
     Entities = Prefabs + "entities/";
     UIPrefabs = Prefabs + "ui/";

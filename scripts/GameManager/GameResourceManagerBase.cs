@@ -7,6 +7,7 @@ namespace GameManager;
 public partial class GameResourceManager<T> : Node where T : Node
 {
   public static readonly Dictionary<StringName, PackedScene> Prefabs = [];
+  public readonly Dictionary<StringName, T> Scenes = [];
 
   private ResourcePreloader _preloader;
   public ResourcePreloader Preloader
@@ -21,6 +22,12 @@ public partial class GameResourceManager<T> : Node where T : Node
 
   public StringName FolderPath;
 
+  public GameResourceManager()
+  {
+    FolderPath = null;
+  }
+
+
   public GameResourceManager(StringName folderPath, params StringName[] scenesToPreload)
   {
     FolderPath = folderPath;
@@ -32,8 +39,29 @@ public partial class GameResourceManager<T> : Node where T : Node
     }
   }
 
+  public void Preload(StringName[] paths)
+  {
+    foreach (StringName sceneToPreload in paths)
+    {
+      StringName resourcePath = GetResourcePath(sceneToPreload);
+      PackedScene preloadResource = ResourceLoader.Load(resourcePath) as PackedScene;
+      Preloader.AddResource(resourcePath, preloadResource);
+    }
+  }
+
+
+  /// <summary>
+  /// If the class have no path folder this function will return the input
+  /// </summary>
+  /// <param name="sceneFileName"></param>
+  /// <returns></returns>
   public StringName GetResourcePath(StringName sceneFileName)
   {
+    if (FolderPath == null)
+    {
+      return sceneFileName;
+    }
+
     return $"{FolderPath}{sceneFileName}";
   }
 
@@ -53,9 +81,14 @@ public partial class GameResourceManager<T> : Node where T : Node
     /// Importing scene and saving the resource for later use
     PackedScene sceneImported = ResourceLoader.Load(resourcePath) as PackedScene;
     Preloader.AddResource(resourcePath, sceneImported);
+
     Prefabs.Add(resourcePath, sceneImported);
+
     result = sceneImported.Instantiate() as T;
     result.Name = nodeName;
+
+    Scenes.Add(nodeName, result);
+
     return result;
   }
 
