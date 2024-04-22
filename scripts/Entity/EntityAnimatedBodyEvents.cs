@@ -7,9 +7,15 @@ namespace Entity;
 
 public partial class EntityAnimatedBody : Node2D
 {
-  public event Action OnReadyEvent;
+  public event Action OnReady;
   public void ReadyEvent()
   {
-    OnReadyEvent?.Invoke();
+    OnReady?.Invoke();
+  }
+
+  public event Action OnFreeze;
+  public void FreezeEvent()
+  {
+    OnFreeze?.Invoke();
   }
 }

@@ -40,6 +40,7 @@ public partial class EntityAnimatedBody : Node2D
 		{
 			Parts.ForEach(p => p.EmitSignal(AnimatedSprite2D.SignalName.AnimationFinished));
 			Stop();
+			FreezeEvent();
 			_freeze = value;
 		}
 	}
