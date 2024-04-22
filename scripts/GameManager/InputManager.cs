@@ -13,6 +13,14 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
 {
   public GameCursor Cursor;
 
+  public SceneManager SceneManager
+  {
+    get
+    {
+      return GetNode<SceneManager>("/root/SceneManager");
+    }
+  }
+
   public readonly HashSet<Entity.Entity> ListenCollisionSet = [];
   public readonly HashSet<Node2D> Hovering = [];
 
@@ -38,8 +46,8 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
       if (area.GetParent() is Entity.Entity entity)
       {
         Hovering.Add(entity);
-        entity.MouseOver();
-        GD.Print("test in");
+        entity.MouseIn();
+        // GD.Print("Hovered: ", entity.Name);
       }
     };
 
@@ -49,9 +57,13 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
       {
         Hovering.Remove(entity);
         entity.MouseOut();
-        GD.Print("test out");
+        // GD.Print("Hover Out: ", entity.Name);
       }
     };
+
+    Input.MouseMode = Input.MouseModeEnum.Hidden;
+
+    GetTree().Root.AddChild(Cursor);
   }
 
   public override void _Input(InputEvent @event)
@@ -168,7 +180,5 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
   public void ListenTo(Entity.Entity node)
   {
     ListenCollisionSet.Add(node);
-    GD.Print(node.Name);
-
   }
 }

@@ -31,8 +31,6 @@ public partial class GameCursor : Node2D
 		base._Ready();
 		TopLevel = true;
 		ZIndex = 200;
-
-		Input.MouseMode = Input.MouseModeEnum.Hidden;
 	}
 
 	public override void _PhysicsProcess(double delta)

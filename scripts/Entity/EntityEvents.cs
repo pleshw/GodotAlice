@@ -55,10 +55,10 @@ public partial class Entity
 
   // INPUT EVENTS BELOW
 
-  public event Action OnMouseOver;
-  public void MouseOver()
+  public event Action OnMouseIn;
+  public void MouseIn()
   {
-    OnMouseOver?.Invoke();
+    OnMouseIn?.Invoke();
   }
 
   public event Action OnMouseOut;

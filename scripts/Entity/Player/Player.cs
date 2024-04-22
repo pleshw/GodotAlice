@@ -88,7 +88,7 @@ public partial class Player(Vector2 initialPosition) : EntityAnimated(initialPos
       }
     };
 
-    OnMouseOver += () =>
+    OnMouseIn += () =>
     {
       (AnimatedBody.Material as ShaderMaterial).SetShaderParameter("color", new Vector4(255, 255, 255, 1));
       (AnimatedBody.Material as ShaderMaterial).SetShaderParameter("width", 4);

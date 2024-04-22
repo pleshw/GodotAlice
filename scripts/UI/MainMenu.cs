@@ -79,18 +79,6 @@ public partial class MainMenu : Control
 	private Control SingleCharacterMenuScene;
 	private CoopNetworkOptionsMenu MultiplayerMenuScene;
 
-	PackedScene CoopCharacterMenuPackedScene;
-	PackedScene SingleCharacterMenuPackedScene;
-	PackedScene MultiplayerConnectionMenuPackedScene;
-
-	private List<CanvasItem> AllScenes
-	{
-		get
-		{
-			return [this, SingleCharacterMenuScene, MultiplayerMenuScene, CoopCharacterMenuScene];
-		}
-	}
-
 	private List<Button> AllButtons
 	{
 		get
