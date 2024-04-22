@@ -101,18 +101,18 @@ public partial class MainMenu : Control
 
 	public MainMenu()
 	{
-		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu, GodotFilePath.Menus.CoopCharacterMenu, GodotFilePath.Menus.MultiplayerConnectionMenu]);
 	}
 
 	public override void _Ready()
 	{
 		base._Ready();
+		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu, GodotFilePath.Menus.CoopCharacterMenu, GodotFilePath.Menus.MultiplayerConnectionMenu]);
 
 		GetWindow().GrabFocus();
 
-		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFileName.Menus.SingleCharacterMenu, "SingleCharacterMenu");
-		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFileName.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
-		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFileName.Menus.CoopCharacterMenu, "CoopCharacterMenu");
+		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFilePath.Menus.SingleCharacterMenu, "SingleCharacterMenu");
+		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFilePath.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
+		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		SceneManager.AddScenesToRootDeferred();
 

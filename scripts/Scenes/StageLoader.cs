@@ -38,6 +38,7 @@ public partial class StageLoader(Node parent) : GameResourceManager<Node2D>(Godo
 	}
 
 	private GameCursor _currentCursor;
+
 	public GameCursor CurrentCursor
 	{
 		get
