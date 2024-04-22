@@ -114,7 +114,7 @@ public partial class MainMenu : Control
 		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFileName.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
 		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFileName.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
-		CallDeferred(nameof(AddScenesToRoot));
+		SceneManager.AddScenesToRootDeferred();
 
 		HideScenes();
 		SwitchToScene(this);

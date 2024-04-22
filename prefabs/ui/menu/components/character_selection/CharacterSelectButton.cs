@@ -69,7 +69,7 @@ public partial class CharacterSelectButton : Button
 
 	private void SetPlayerCards()
 	{
-		StageLoader stageLoader = MainMenu.StageLoader;
+		StageLoader stageLoader = MainMenu.SceneManager.StageLoader;
 		Player = stageLoader.PlayerManager.InstantiatePlayerByName(GodotFileName.MainCharacters.Pawn, stageLoader);
 		Player.UseParentMaterial = true;
 		CharacterSpriteControl.AddChild(Player);
