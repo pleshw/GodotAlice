@@ -114,7 +114,7 @@ public partial class MainMenu : Control
 		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFilePath.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
 		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
-		SceneManager.AddScenesToRoot();
+		SceneManager.AddScenesToRootDeferred();
 
 		SceneManager.SetScene(this);
 		SetButtonEvents();
@@ -126,7 +126,6 @@ public partial class MainMenu : Control
 		MultiplayerController.OnLobbyHosted += () =>
 		{
 			CoopCharacterMenuScene.IsHost = true;
-
 			SceneManager.SetScene(CoopCharacterMenuScene);
 		};
 	}
