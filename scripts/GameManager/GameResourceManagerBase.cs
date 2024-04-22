@@ -75,6 +75,13 @@ public partial class GameResourceManager<T> : Node where T : Node
     {
       result = preload.Instantiate() as T;
       result.Name = nodeName;
+
+      if (!Scenes.TryAdd(nodeName, result))
+      {
+        Scenes[nodeName].Free();
+        Scenes[nodeName] = result;
+      }
+
       return result;
     }
 

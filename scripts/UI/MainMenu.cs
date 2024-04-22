@@ -114,10 +114,9 @@ public partial class MainMenu : Control
 		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFilePath.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
 		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
-		SceneManager.AddScenesToRootDeferred();
+		SceneManager.AddScenesToRoot();
 
-		HideScenes();
-		SwitchToScene(this);
+		SceneManager.SetScene(this);
 		SetButtonEvents();
 		SetMultiplayerEvents();
 	}
@@ -127,15 +126,16 @@ public partial class MainMenu : Control
 		MultiplayerController.OnLobbyHosted += () =>
 		{
 			CoopCharacterMenuScene.IsHost = true;
-			SwitchToScene(CoopCharacterMenuScene);
+
+			SceneManager.SetScene(CoopCharacterMenuScene);
 		};
 	}
 
 	public void SetButtonEvents()
 	{
 		QuitGameButton.Pressed += QuitEvent;
-		SingleGameButton.Pressed += () => SwitchToScene(SingleCharacterMenuScene);
-		CoopGameButton.Pressed += () => SwitchToScene(MultiplayerMenuScene);
+		SingleGameButton.Pressed += () => SceneManager.SetScene(SingleCharacterMenuScene);
+		CoopGameButton.Pressed += () => SceneManager.SetScene(MultiplayerMenuScene);
 
 		MultiplayerMenuScene.OnHostGameButtonPressed += () =>
 		{
@@ -150,40 +150,6 @@ public partial class MainMenu : Control
 		};
 
 		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
-	}
-
-	public void LoadMultiplayerMenuScene()
-	{
-		HideScenes();
-		MultiplayerMenuScene.Visible = true;
-	}
-
-	public void LoadCoopMenuScene()
-	{
-		HideScenes();
-		MultiplayerMenuScene.Visible = true;
-	}
-
-	private void AddScenesToRoot()
-	{
-		AllScenes.ForEach(s =>
-		{
-			if (s.GetParent() != GetTree().Root)
-			{
-				GetTree().Root.AddChild(s);
-			}
-		});
-	}
-
-	private void HideScenes()
-	{
-		AllScenes.ForEach(s => s.Visible = false);
-	}
-
-	private void SwitchToScene(CanvasItem scene)
-	{
-		HideScenes();
-		scene.Visible = true;
 	}
 
 	private void QuitEvent()

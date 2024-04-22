@@ -43,6 +43,7 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
 
   public void HideScenes()
   {
+    MainMenu.Hide();
     foreach (var item in Scenes)
     {
       item.Value.Hide();
@@ -53,6 +54,7 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
   {
     HideScenes();
     sceneInstance.Show();
+    sceneInstance.Visible = true;
   }
 
   public void AddScenesToRootDeferred()
@@ -64,9 +66,9 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
   {
     foreach (var item in Scenes)
     {
-      if (item.Value.GetParent().GetParent() != GetTree().Root)
+      if (item.Value.GetParent() != GetTree().Root)
       {
-        GetTree().Root.AddChild(item.Value.GetParent());
+        GetTree().Root.AddChild(item.Value);
       }
     }
   }
