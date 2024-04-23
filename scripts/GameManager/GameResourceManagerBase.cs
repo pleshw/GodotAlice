@@ -114,7 +114,25 @@ public partial class GameResourceManager<T> : Node where T : Node
     return result;
   }
 
-  public ConvertedType CreateInstance<ConvertedType>(StringName sceneName, StringName nodeName) where ConvertedType : GodotObject
+  public Node LoadScene(StringName resourcePath, StringName resourceName)
+  {
+    PackedScene sceneImported = ResourceLoader.Load(resourcePath) as PackedScene;
+
+    Node result = sceneImported.Instantiate();
+    result.Name = resourceName;
+    return result;
+  }
+
+  public ConvertedType LoadScene<ConvertedType>(StringName resourcePath, StringName resourceName) where ConvertedType : Node
+  {
+    PackedScene sceneImported = ResourceLoader.Load(resourcePath) as PackedScene;
+
+    Node result = sceneImported.Instantiate();
+    result.Name = resourceName;
+    return result as ConvertedType;
+  }
+
+  public ConvertedType CreateInstance<ConvertedType>(StringName sceneName, StringName nodeName) where ConvertedType : Node
   {
     return CreateInstance(sceneName, nodeName) as ConvertedType;
   }
@@ -122,6 +140,11 @@ public partial class GameResourceManager<T> : Node where T : Node
   public void AddScenesToRootDeferred()
   {
     CallDeferred(nameof(AddScenesToRoot));
+  }
+
+  public void AddScenesToRootDeferred(Node[] scenes)
+  {
+    CallDeferred(nameof(AddScenesToRoot), scenes);
   }
 
   public void AddScenesToRoot()
@@ -135,7 +158,18 @@ public partial class GameResourceManager<T> : Node where T : Node
     }
   }
 
-  public ConvertedType GetScene<ConvertedType>(StringName sceneName) where ConvertedType : GodotObject
+  public void AddScenesToRoot(Node[] scenes)
+  {
+    foreach (var item in scenes)
+    {
+      if (item.GetParent() != GetTree().Root)
+      {
+        GetTree().Root.AddChild(item);
+      }
+    }
+  }
+
+  public ConvertedType GetScene<ConvertedType>(StringName sceneName) where ConvertedType : Node
   {
     return this[sceneName] as ConvertedType;
   }

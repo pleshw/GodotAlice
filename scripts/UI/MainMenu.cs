@@ -88,7 +88,6 @@ public partial class MainMenu : Control
 	public override void _Ready()
 	{
 		base._Ready();
-		SceneManager.CurrentScene = this;
 		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu]);
 
 		GetWindow().GrabFocus();
@@ -99,18 +98,6 @@ public partial class MainMenu : Control
 		AudioManager.AddScenesToRootDeferred();
 
 		SceneManager.SetScene(this);
-
-		SceneManager.OnSceneStackChange += () =>
-		{
-			if (SceneManager.SceneStack.Count > 1)
-			{
-				SceneManager.BackSceneButton.Show();
-			}
-			else
-			{
-				SceneManager.BackSceneButton.Hide();
-			}
-		};
 
 		SetButtonEvents();
 	}

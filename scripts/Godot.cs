@@ -74,8 +74,11 @@ public static partial class GodotFileName
     public static readonly StringName SingleCharacterMenu;
     public static readonly StringName BackSceneButton;
 
+    public static readonly StringName OverCanvasLayer;
+
     static Menus()
     {
+      OverCanvasLayer = "over_canvas_layer.tscn";
       BackSceneButton = "back_scene_button.tscn";
       MainMenu = "main_menu.tscn";
       SingleCharacterMenu = "select_character_menu.tscn";
@@ -104,9 +107,11 @@ public static partial class GodotFilePath
     public static readonly StringName MainMenu;
     public static readonly StringName SingleCharacterMenu;
     public static readonly StringName BackSceneButton;
+    public static readonly StringName OverCanvasLayer;
 
     static Menus()
     {
+      OverCanvasLayer = GodotFolderPath.MenuPrefabs + GodotFileName.Menus.OverCanvasLayer;
       BackSceneButton = GodotFolderPath.MenuPrefabs + GodotFileName.Menus.BackSceneButton;
       MainMenu = GodotFolderPath.Stages + GodotFileName.Menus.MainMenu;
       SingleCharacterMenu = GodotFolderPath.SceneMenus + GodotFileName.Menus.SingleCharacterMenu;

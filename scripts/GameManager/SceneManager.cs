@@ -23,6 +23,16 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
     }
   }
 
+  public AudioManager AudioManager
+  {
+    get
+    {
+      return GetNode<AudioManager>("/root/AudioManager");
+    }
+  }
+
+  public CanvasLayer OverCanvasLayer;
+
   public Button BackSceneButton;
 
   public CanvasItem CurrentScene;
@@ -39,13 +49,29 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
   {
     base._Ready();
 
+    OverCanvasLayer = LoadScene<CanvasLayer>(GodotFilePath.Menus.OverCanvasLayer, "OverCanvasLayer");
     BackSceneButton = CreateInstance<Button>(GodotFilePath.Menus.BackSceneButton, "BackSceneButton");
 
-    BackSceneButton.TopLevel = true;
-    BackSceneButton.ZIndex = 100;
-    BackSceneButton.Visible = true;
+    BackSceneButton.Pressed += () =>
+    {
+      Back();
+      AudioManager["MenuButtonConfirm"].Play();
+    };
 
-    AddScenesToRootDeferred();
+    OverCanvasLayer.AddChild(BackSceneButton);
+    AddScenesToRootDeferred([OverCanvasLayer]);
+
+    OnSceneStackChange += () =>
+    {
+      if (CanGoBack)
+      {
+        BackSceneButton.Show();
+      }
+      else
+      {
+        BackSceneButton.Hide();
+      }
+    };
   }
 
   public void HideScenes()
@@ -59,8 +85,21 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
 
   public void SetScene(CanvasItem sceneInstance)
   {
-    SceneStack.Push(CurrentScene);
+    HideScenes();
+    sceneInstance.Show();
+    sceneInstance.Visible = true;
+
+    if (CurrentScene is not null)
+    {
+      SceneStack.Push(CurrentScene);
+    }
+
+    CurrentScene = sceneInstance;
     SceneStackChangeEvent();
+  }
+
+  private void SetSceneWithoutModifyingStack(CanvasItem sceneInstance)
+  {
     HideScenes();
     sceneInstance.Show();
     sceneInstance.Visible = true;
@@ -71,7 +110,7 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
   {
     get
     {
-      return SceneStack.Count > 1;
+      return SceneStack.Count > 0;
     }
   }
 
@@ -82,7 +121,8 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
       return;
     }
 
-    SetScene(SceneStack.Pop());
+    SetSceneWithoutModifyingStack(SceneStack.Pop());
+
     SceneStackChangeEvent();
   }
 
