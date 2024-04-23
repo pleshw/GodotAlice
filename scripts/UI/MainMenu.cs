@@ -40,16 +40,6 @@ public partial class MainMenu : Control
 		}
 	}
 
-	private Button _backSceneButton;
-	public Button BackSceneButton
-	{
-		get
-		{
-			_backSceneButton ??= GetNode<Button>("BackSceneButton");
-			return _backSceneButton;
-		}
-	}
-
 	private Button _loadGameButton;
 	public Button LoadGameButton
 	{
@@ -114,11 +104,11 @@ public partial class MainMenu : Control
 		{
 			if (SceneManager.SceneStack.Count > 1)
 			{
-				BackSceneButton.Show();
+				SceneManager.BackSceneButton.Show();
 			}
 			else
 			{
-				BackSceneButton.Hide();
+				SceneManager.BackSceneButton.Hide();
 			}
 		};
 

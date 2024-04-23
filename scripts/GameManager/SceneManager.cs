@@ -22,6 +22,9 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
       return GetTree().Root.GetNode<MainMenu>("MainMenu");
     }
   }
+
+  public Button BackSceneButton;
+
   public CanvasItem CurrentScene;
 
   public readonly Stack<CanvasItem> SceneStack = [];
@@ -36,10 +39,11 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
   {
     base._Ready();
 
-    var buttonInstance = CreateInstance<CanvasItem>(GodotFilePath.Menus.BackSceneButton, "BackSceneButton");
+    BackSceneButton = CreateInstance<Button>(GodotFilePath.Menus.BackSceneButton, "BackSceneButton");
 
-    buttonInstance.TopLevel = true;
-    buttonInstance.ZIndex = 100;
+    BackSceneButton.TopLevel = true;
+    BackSceneButton.ZIndex = 100;
+    BackSceneButton.Visible = true;
 
     AddScenesToRootDeferred();
   }

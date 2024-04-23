@@ -107,7 +107,7 @@ public static partial class GodotFilePath
 
     static Menus()
     {
-      BackSceneButton = GodotFolderPath.UIPrefabs + GodotFileName.Menus.BackSceneButton;
+      BackSceneButton = GodotFolderPath.MenuPrefabs + GodotFileName.Menus.BackSceneButton;
       MainMenu = GodotFolderPath.Stages + GodotFileName.Menus.MainMenu;
       SingleCharacterMenu = GodotFolderPath.SceneMenus + GodotFileName.Menus.SingleCharacterMenu;
     }
