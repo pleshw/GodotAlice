@@ -144,10 +144,14 @@ public partial class MainMenu : Control
 			}
 		};
 
-		var test = AudioManager["MenuButtonHover"];
-
 		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
-		AllButtons.ForEach(b => b.MouseEntered += () => AudioManager["MenuButtonHover"].Play());
+		AllButtons.ForEach(b => b.MouseEntered += () =>
+		{
+			if (!b.Disabled)
+			{
+				AudioManager["MenuButtonHover"].Play();
+			}
+		});
 	}
 
 	private void QuitEvent()

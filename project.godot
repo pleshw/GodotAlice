@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+AudioManager="*res://scripts/GameManager/AudioManager.cs"
 SceneManager="*res://scripts/GameManager/SceneManager.cs"
 PlayerManager="*res://scripts/GameManager/PlayerManager.cs"
 InputManager="*res://scripts/GameManager/InputManager.cs"
@@ -25,6 +26,7 @@ InputManager="*res://scripts/GameManager/InputManager.cs"
 
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+mouse_cursor/custom_image="res://assets/packs/Tiny Swords/UI/Pointers/main-cursor.png"
 
 [dotnet]
 

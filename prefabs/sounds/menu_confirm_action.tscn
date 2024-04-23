@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3dqvnq6snoud"]
+
+[ext_resource type="PackedScene" uid="uid://b146ngackhicr" path="res://prefabs/sounds/sound_parent.tscn" id="1_n4dbm"]
+[ext_resource type="AudioStream" uid="uid://cr4jospyhky6b" path="res://assets/sounds/menu-big-action.wav" id="2_2nm4f"]
+
+[node name="MenuMajorAction" instance=ExtResource("1_n4dbm")]
+stream = ExtResource("2_2nm4f")

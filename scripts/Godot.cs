@@ -21,11 +21,11 @@ public static class GodotFolderPath
   {
     Resources = "res://";
     Assets = Resources + "assets/";
-    Sounds = Prefabs + "sounds/";
     Scenes = Resources + "scenes/";
     SceneMenus = Scenes + "menus/";
     Stages = Scenes + "stages/";
     Prefabs = Resources + "prefabs/";
+    Sounds = Prefabs + "sounds/";
     Entities = Prefabs + "entities/";
     UIPrefabs = Prefabs + "ui/";
     CursorsPrefabs = UIPrefabs + "cursors/";
@@ -142,8 +142,8 @@ public static partial class GodotFileName
     public static readonly StringName MenuMajorAction;
     static Sounds()
     {
-      MenuHoverAction = "menu_minimal_action.tscn";
-      MenuMajorAction = "menu_major_action.tscn";
+      MenuHoverAction = "menu_hover_action.tscn";
+      MenuMajorAction = "menu_confirm_action.tscn";
     }
   }
 }

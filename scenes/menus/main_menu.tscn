@@ -90,21 +90,20 @@ centered = false
 
 [node name="FirstMenu" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -152.0
-offset_top = -50.5
-offset_right = 152.0
-offset_bottom = 50.5
+anchors_preset = -1
+anchor_left = 0.458767
+anchor_top = 0.415895
+anchor_right = 0.541233
+anchor_bottom = 0.584105
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 20
 alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="LoadGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
+theme = ExtResource("1_0mu7t")
 disabled = true
 text = "Load Game"
 

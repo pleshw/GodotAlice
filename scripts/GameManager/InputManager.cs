@@ -61,7 +61,7 @@ public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolde
       }
     };
 
-    Input.MouseMode = Input.MouseModeEnum.Hidden;
+    // Input.MouseMode = Input.MouseModeEnum.Hidden;
 
     GetTree().Root.AddChild(Cursor);
   }

@@ -29,10 +29,10 @@ public partial class AudioManager() : GameResourceManager<AudioStreamPlayer2D>()
   public override void _Ready()
   {
     base._Ready();
-    SceneManager.Preload(MenuActionFilePaths);
+    Preload(MenuActionFilePaths);
 
-    _ = SceneManager.CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuHoverAction, "MenuButtonHover");
-    _ = SceneManager.CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuConfirmAction, "MenuButtonConfirm");
+    CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuHoverAction, "MenuButtonHover");
+    CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuConfirmAction, "MenuButtonConfirm");
 
     AddScenesToRootDeferred();
   }
