@@ -56,20 +56,4 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
     sceneInstance.Show();
     sceneInstance.Visible = true;
   }
-
-  public void AddScenesToRootDeferred()
-  {
-    CallDeferred(nameof(AddScenesToRoot));
-  }
-
-  public void AddScenesToRoot()
-  {
-    foreach (var item in Scenes)
-    {
-      if (item.Value.GetParent() != GetTree().Root)
-      {
-        GetTree().Root.AddChild(item.Value);
-      }
-    }
-  }
 }

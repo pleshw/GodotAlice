@@ -1,11 +1,181 @@
-[gd_scene load_steps=4 format=3 uid="uid://c117rrgk6ho4f"]
+[gd_scene load_steps=33 format=3 uid="uid://c117rrgk6ho4f"]
 
-[ext_resource type="FontFile" uid="uid://b1jn07yrkqi3b" path="res://assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf" id="1_hu3qc"]
 [ext_resource type="PackedScene" uid="uid://mj0wrhc1wu8c" path="res://prefabs/ui/menu/components/character_selection/character_select_button.tscn" id="2_kmkgu"]
+[ext_resource type="Theme" uid="uid://coq1prp0uovmw" path="res://assets/themes/main_theme.tres" id="2_riivq"]
+[ext_resource type="FontFile" uid="uid://e4jyb1gd1oyv" path="res://assets/fonts/Lugrasimo-Regular.ttf" id="3_xvis3"]
+[ext_resource type="Texture2D" uid="uid://coragfvyug45y" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Warrior/Red/Warrior_Red.png" id="4_7544d"]
+[ext_resource type="Texture2D" uid="uid://xqao3gv8kb0o" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Pawn/Yellow/Pawn_Yellow.png" id="5_so5h5"]
+[ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="6_255f7"]
+[ext_resource type="Texture2D" uid="uid://c4p7yh642yjix" path="res://assets/packs/Tiny Swords/Factions/Knights/Troops/Archer/Red/Archer_Red.png" id="6_spmku"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_a4fdg"]
-font = ExtResource("1_hu3qc")
+font = ExtResource("3_xvis3")
 font_size = 40
+font_color = Color(0.214121, 0.148893, 0.0440018, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ydrpj"]
+shader = ExtResource("6_255f7")
+shader_parameter/active = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wxudk"]
+atlas = ExtResource("4_7544d")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wawba"]
+atlas = ExtResource("4_7544d")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wt6ps"]
+atlas = ExtResource("4_7544d")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5chel"]
+atlas = ExtResource("4_7544d")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2dgn"]
+atlas = ExtResource("4_7544d")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ouxri"]
+atlas = ExtResource("4_7544d")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2tofe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wxudk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wawba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wt6ps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5chel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2dgn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ouxri")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jtudx"]
+resource_local_to_scene = true
+shader = ExtResource("6_255f7")
+shader_parameter/active = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7srol"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_278dp"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5x5c"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7wlq"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4rmt"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8pm75"]
+atlas = ExtResource("5_so5h5")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_76nrn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7srol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_278dp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5x5c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7wlq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4rmt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8pm75")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aircf"]
+resource_local_to_scene = true
+shader = ExtResource("6_255f7")
+shader_parameter/active = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onymu"]
+atlas = ExtResource("6_spmku")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tmuis"]
+atlas = ExtResource("6_spmku")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1n7f"]
+atlas = ExtResource("6_spmku")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0c6s"]
+atlas = ExtResource("6_spmku")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2y7p6"]
+atlas = ExtResource("6_spmku")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bms0"]
+atlas = ExtResource("6_spmku")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w1tq4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onymu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tmuis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1n7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0c6s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2y7p6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6bms0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="SelectCharacterMenu" type="Control"]
 layout_mode = 3
@@ -31,9 +201,12 @@ theme_override_constants/margin_bottom = 50
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
+theme = ExtResource("2_riivq")
+tabs_visible = false
 
 [node name="CharacterSelection" type="Panel" parent="MarginContainer/TabContainer"]
 layout_mode = 2
+theme = ExtResource("2_riivq")
 
 [node name="Label" type="Label" parent="MarginContainer/TabContainer/CharacterSelection"]
 layout_mode = 1
@@ -47,21 +220,51 @@ offset_top = 0.294998
 offset_right = 0.0599365
 offset_bottom = 0.352997
 grow_horizontal = 2
-text = "Choose your character"
+theme = ExtResource("2_riivq")
+text = "Who you are."
 label_settings = SubResource("LabelSettings_a4fdg")
 vertical_alignment = 1
 
 [node name="Container" type="HBoxContainer" parent="MarginContainer/TabContainer/CharacterSelection"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.25822
+anchor_top = 0.235977
 anchor_right = 1.0
-anchor_bottom = 0.74178
+anchor_bottom = 0.912959
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 120
 alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="CharacterSelectButton2" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+[node name="CharacterSelect1" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+material = SubResource("ShaderMaterial_ydrpj")
 layout_mode = 2
+CharacterName = &"The First"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/TabContainer/CharacterSelection/Container/CharacterSelect1"]
+use_parent_material = true
+position = Vector2(79, 173.685)
+scale = Vector2(1.8, 1.8)
+sprite_frames = SubResource("SpriteFrames_2tofe")
+
+[node name="CharacterSelect2" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+layout_mode = 2
+CharacterName = &"The Fallen"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/TabContainer/CharacterSelection/Container/CharacterSelect2"]
+material = SubResource("ShaderMaterial_jtudx")
+position = Vector2(84, 185.685)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_76nrn")
+
+[node name="CharacterSelect3" parent="MarginContainer/TabContainer/CharacterSelection/Container" instance=ExtResource("2_kmkgu")]
+material = SubResource("ShaderMaterial_aircf")
+layout_mode = 2
+CharacterName = &"The Girl"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/TabContainer/CharacterSelection/Container/CharacterSelect3"]
+use_parent_material = true
+position = Vector2(81, 180.685)
+scale = Vector2(1.58854, 1.78646)
+sprite_frames = SubResource("SpriteFrames_w1tq4")

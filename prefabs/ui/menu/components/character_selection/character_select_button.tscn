@@ -1,60 +1,48 @@
-[gd_scene load_steps=5 format=3 uid="uid://mj0wrhc1wu8c"]
+[gd_scene load_steps=4 format=3 uid="uid://mj0wrhc1wu8c"]
 
 [ext_resource type="Theme" uid="uid://coq1prp0uovmw" path="res://assets/themes/main_theme.tres" id="1_p1oe5"]
 [ext_resource type="Script" path="res://prefabs/ui/menu/components/character_selection/CharacterSelectButton.cs" id="2_hgax8"]
-[ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="2_jhhi7"]
+[ext_resource type="Texture2D" uid="uid://c2bhr0dqgl71a" path="res://assets/packs/Tiny Swords/UI/Banners/Banner_Connection_Right.png" id="3_6xwo0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_c47du"]
-resource_local_to_scene = true
-shader = ExtResource("2_jhhi7")
-shader_parameter/active = true
-
-[node name="CharacterSelectButton" type="Button" node_paths=PackedStringArray("MarginContainer", "VBoxContainer", "TitleLabel", "CharacterSpriteControl")]
-clip_contents = true
-custom_minimum_size = Vector2(200, 250)
+[node name="CharacterSelectButton" type="Button" node_paths=PackedStringArray("TitleLabel")]
+custom_minimum_size = Vector2(200, 350)
 anchors_preset = -1
-anchor_right = 0.174
-anchor_bottom = 0.386
-offset_right = -0.448013
-offset_bottom = -0.128006
-grow_horizontal = 2
-grow_vertical = 2
+anchor_right = 0.173611
+anchor_bottom = 0.540123
+offset_bottom = -100.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = ExtResource("1_p1oe5")
 script = ExtResource("2_hgax8")
-MarginContainer = NodePath("MarginContainer")
-VBoxContainer = NodePath("MarginContainer/VBoxContainer")
-TitleLabel = NodePath("MarginContainer/VBoxContainer/TitleLabel")
-CharacterSpriteControl = NodePath("MarginContainer/VBoxContainer/ChracterSpriteControl")
+CharacterName = &""
+TitleLabel = NodePath("NinePatchRect/VBoxContainer/Label")
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(200, 250)
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(200, 350)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+texture = ExtResource("3_6xwo0")
+region_rect = Rect2(46.2728, 48.9091, 144.546, 121.393)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.065
+anchor_top = 0.0714286
+anchor_right = 0.665
+anchor_bottom = 0.748571
+grow_horizontal = 2
+grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="NinePatchRect/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_p1oe5")
-text = "pleshw"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="ChracterSpriteControl" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-material = SubResource("ShaderMaterial_c47du")
-layout_mode = 2
-size_flags_vertical = 3

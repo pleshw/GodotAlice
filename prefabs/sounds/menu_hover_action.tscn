@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://ix5pfrta8n5w"]
+
+[ext_resource type="PackedScene" uid="uid://b146ngackhicr" path="res://prefabs/sounds/sound_parent.tscn" id="1_fqkfr"]
+[ext_resource type="AudioStream" uid="uid://b58t4cqf13aay" path="res://assets/sounds/Menu Selection Click.wav" id="2_tqbp2"]
+
+[node name="MenuMinimalAction" instance=ExtResource("1_fqkfr")]
+stream = ExtResource("2_tqbp2")

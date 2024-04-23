@@ -11,11 +11,18 @@ namespace UI;
 
 public partial class MainMenu : Control
 {
-
 	[Export]
 	public MultiplayerController MultiplayerController;
 
 	public GameResourceManager<CanvasItem> ResourceManager;
+
+	public AudioManager AudioManager
+	{
+		get
+		{
+			return GetNode<AudioManager>("/root/AudioManager");
+		}
+	}
 
 	public SceneManager SceneManager
 	{
@@ -103,6 +110,7 @@ public partial class MainMenu : Control
 		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		SceneManager.AddScenesToRootDeferred();
+		AudioManager.AddScenesToRootDeferred();
 
 		SceneManager.SetScene(this);
 		SetButtonEvents();
@@ -136,7 +144,10 @@ public partial class MainMenu : Control
 			}
 		};
 
+		var test = AudioManager["MenuButtonHover"];
+
 		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
+		AllButtons.ForEach(b => b.MouseEntered += () => AudioManager["MenuButtonHover"].Play());
 	}
 
 	private void QuitEvent()

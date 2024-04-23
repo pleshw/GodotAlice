@@ -7,7 +7,7 @@ using UI;
 
 namespace Scene;
 
-public partial class StageLoader(Node parent) : GameResourceManager<Node2D>(GodotFolderPath.Stages, "stage_1.tscn")
+public partial class StageLoader(Node parent) : GameResourceManager<Node2D>()
 {
 	public readonly Random Random = new();
 

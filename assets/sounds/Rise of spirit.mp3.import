@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b1tbdgp550xij"
+path="res://.godot/imported/Rise of spirit.mp3-9de25cfdeb5a1be8149caf64a431b067.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Rise of spirit.mp3"
+dest_files=["res://.godot/imported/Rise of spirit.mp3-9de25cfdeb5a1be8149caf64a431b067.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

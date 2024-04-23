@@ -1,7 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhnoppu8mrbsb"]
+[gd_scene load_steps=15 format=3 uid="uid://dhnoppu8mrbsb"]
 
+[ext_resource type="Theme" uid="uid://coq1prp0uovmw" path="res://assets/themes/main_theme.tres" id="1_0mu7t"]
 [ext_resource type="Script" path="res://scripts/UI/MainMenu.cs" id="1_nxj0n"]
 [ext_resource type="Script" path="res://scripts/Multiplayer/MultiplayerController.cs" id="2_iyb2w"]
+[ext_resource type="Shader" path="res://assets/shaders/scrolling_background.gdshader" id="3_of0el"]
+[ext_resource type="Texture2D" uid="uid://bq5k1243maooa" path="res://assets/packs/parallax-mountain/parallax-mountain-bg.png" id="3_p1ec8"]
+[ext_resource type="Texture2D" uid="uid://cfkf3hren6pou" path="res://assets/packs/parallax-mountain/parallax-mountain-montain-far.png" id="4_ry6hb"]
+[ext_resource type="Texture2D" uid="uid://dq1cfyuwrlvc" path="res://assets/packs/parallax-mountain/parallax-mountain-mountains.png" id="5_qcrgi"]
+[ext_resource type="Texture2D" uid="uid://dy1236l76eahm" path="res://assets/packs/parallax-mountain/parallax-mountain-trees.png" id="6_s1lc6"]
+[ext_resource type="Texture2D" uid="uid://dbnawovusn02k" path="res://assets/packs/parallax-mountain/parallax-mountain-foreground-trees.png" id="7_3bdqe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ixs65"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ktnwb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amasc"]
+shader = ExtResource("3_of0el")
+shader_parameter/speed = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gplct"]
+shader = ExtResource("3_of0el")
+shader_parameter/speed = 0.05
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4y3h8"]
+shader = ExtResource("3_of0el")
+shader_parameter/speed = 0.1
 
 [node name="MainMenu" type="Control" node_paths=PackedStringArray("MultiplayerController")]
 layout_mode = 3
@@ -11,8 +34,59 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
+theme = ExtResource("1_0mu7t")
 script = ExtResource("1_nxj0n")
 MultiplayerController = NodePath("MultiplayerController")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+material = SubResource("ShaderMaterial_ixs65")
+scale = Vector2(4.23529, 4.05)
+texture = ExtResource("3_p1ec8")
+centered = false
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(4, 1)
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+material = SubResource("ShaderMaterial_ktnwb")
+scale = Vector2(4.23529, 4.05)
+texture = ExtResource("4_ry6hb")
+centered = false
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_amasc")
+scale = Vector2(2.11765, 4.05)
+texture = ExtResource("5_qcrgi")
+centered = false
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(4, 1)
+motion_mirroring = Vector2(1080, 0)
+
+[node name="Sprite2D5" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_gplct")
+scale = Vector2(2.11765, 4.05)
+texture = ExtResource("6_s1lc6")
+centered = false
+
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(3, 1)
+motion_mirroring = Vector2(1080, 0)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer5"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_4y3h8")
+scale = Vector2(2.11765, 4.05)
+texture = ExtResource("7_3bdqe")
+centered = false
 
 [node name="FirstMenu" type="VBoxContainer" parent="."]
 layout_mode = 1

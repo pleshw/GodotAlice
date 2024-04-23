@@ -9,6 +9,21 @@ public partial class GameResourceManager<T> : Node where T : Node
   public static readonly Dictionary<StringName, PackedScene> Prefabs = [];
   public readonly Dictionary<StringName, T> Scenes = [];
 
+  public T this[StringName sceneName]
+  {
+    get
+    {
+      if (Scenes.TryGetValue(sceneName, out T value))
+      {
+        return value;
+      }
+      else
+      {
+        throw new KeyNotFoundException($"Scene '{sceneName}' not found.");
+      }
+    }
+  }
+
   private ResourcePreloader _preloader;
   public ResourcePreloader Preloader
   {
@@ -102,6 +117,27 @@ public partial class GameResourceManager<T> : Node where T : Node
   public ConvertedType CreateInstance<ConvertedType>(StringName sceneName, StringName nodeName) where ConvertedType : GodotObject
   {
     return CreateInstance(sceneName, nodeName) as ConvertedType;
+  }
+
+  public void AddScenesToRootDeferred()
+  {
+    CallDeferred(nameof(AddScenesToRoot));
+  }
+
+  public void AddScenesToRoot()
+  {
+    foreach (var item in Scenes)
+    {
+      if (item.Value.GetParent() != GetTree().Root)
+      {
+        GetTree().Root.AddChild(item.Value);
+      }
+    }
+  }
+
+  public ConvertedType GetScene<ConvertedType>(StringName sceneName) where ConvertedType : GodotObject
+  {
+    return this[sceneName] as ConvertedType;
   }
 
   ~GameResourceManager()
