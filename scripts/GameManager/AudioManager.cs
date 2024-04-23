@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GameManager;
 
-public partial class AudioManager() : GameResourceManager<AudioStreamPlayer2D>()
+public partial class AudioManager : GameResourceManager<AudioStreamPlayer2D>
 {
   public SceneManager SceneManager
   {
@@ -26,10 +26,14 @@ public partial class AudioManager() : GameResourceManager<AudioStreamPlayer2D>()
     }
   }
 
+  public AudioManager() : base()
+  {
+    Preload(MenuActionFilePaths);
+  }
+
   public override void _Ready()
   {
     base._Ready();
-    Preload(MenuActionFilePaths);
 
     CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuHoverAction, "MenuButtonHover");
     CreateInstance<AudioStreamPlayer2D>(GodotFilePath.Sounds.MenuConfirmAction, "MenuButtonConfirm");

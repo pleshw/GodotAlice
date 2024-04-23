@@ -27,8 +27,6 @@ InputManager="*res://scripts/GameManager/InputManager.cs"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
-window/size/resizable=false
-window/stretch/mode="viewport"
 mouse_cursor/custom_image="res://assets/packs/Tiny Swords/UI/Pointers/main-cursor.png"
 
 [dotnet]

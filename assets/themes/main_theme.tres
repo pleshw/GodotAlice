@@ -17,6 +17,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qwuht"]
 
 [resource]
+Button/colors/font_hover_color = Color(0.678942, 0.678944, 0.678945, 1)
 Button/fonts/font = ExtResource("1_236fy")
 Button/styles/disabled = SubResource("StyleBoxEmpty_8eb3v")
 Button/styles/focus = SubResource("StyleBoxEmpty_78i6e")

@@ -40,6 +40,16 @@ public partial class MainMenu : Control
 		}
 	}
 
+	private Button _backSceneButton;
+	public Button BackSceneButton
+	{
+		get
+		{
+			_backSceneButton ??= GetNode<Button>("BackSceneButton");
+			return _backSceneButton;
+		}
+	}
+
 	private Button _loadGameButton;
 	public Button LoadGameButton
 	{
@@ -88,17 +98,30 @@ public partial class MainMenu : Control
 	public override void _Ready()
 	{
 		base._Ready();
-		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu, GodotFilePath.Menus.CoopCharacterMenu, GodotFilePath.Menus.MultiplayerConnectionMenu]);
+		SceneManager.CurrentScene = this;
+		SceneManager.Preload([GodotFilePath.Menus.SingleCharacterMenu]);
 
 		GetWindow().GrabFocus();
 
 		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFilePath.Menus.SingleCharacterMenu, "SingleCharacterMenu");
-		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		SceneManager.AddScenesToRootDeferred();
 		AudioManager.AddScenesToRootDeferred();
 
 		SceneManager.SetScene(this);
+
+		SceneManager.OnSceneStackChange += () =>
+		{
+			if (SceneManager.SceneStack.Count > 1)
+			{
+				BackSceneButton.Show();
+			}
+			else
+			{
+				BackSceneButton.Hide();
+			}
+		};
+
 		SetButtonEvents();
 	}
 
@@ -107,7 +130,16 @@ public partial class MainMenu : Control
 		QuitGameButton.Pressed += QuitEvent;
 		SingleGameButton.Pressed += () => SceneManager.SetScene(SingleCharacterMenuScene);
 
-		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
+		AllButtons.ForEach(b => b.Pressed += () =>
+		{
+			if (!b.Disabled)
+			{
+				AudioManager["MenuButtonConfirm"].Play();
+			}
+
+			b.ReleaseFocus();
+		});
+
 		AllButtons.ForEach(b => b.MouseEntered += () =>
 		{
 			if (!b.Disabled)

@@ -14,6 +14,7 @@ public static class GodotFolderPath
   public static readonly StringName Prefabs;
   public static readonly StringName Entities;
   public static readonly StringName UIPrefabs;
+  public static readonly StringName MenuPrefabs;
   public static readonly StringName CursorsPrefabs;
   public static readonly StringName MainCharacters;
 
@@ -28,6 +29,7 @@ public static class GodotFolderPath
     Sounds = Prefabs + "sounds/";
     Entities = Prefabs + "entities/";
     UIPrefabs = Prefabs + "ui/";
+    MenuPrefabs = UIPrefabs + "menu/";
     CursorsPrefabs = UIPrefabs + "cursors/";
     MainCharacters = Entities + "main_characters/";
   }
@@ -70,15 +72,13 @@ public static partial class GodotFileName
   {
     public static readonly StringName MainMenu;
     public static readonly StringName SingleCharacterMenu;
-    public static readonly StringName CoopCharacterMenu;
-    public static readonly StringName MultiplayerConnectionMenu;
+    public static readonly StringName BackSceneButton;
 
     static Menus()
     {
+      BackSceneButton = "back_scene_button.tscn";
       MainMenu = "main_menu.tscn";
       SingleCharacterMenu = "select_character_menu.tscn";
-      CoopCharacterMenu = "coop_character_menu.tscn";
-      MultiplayerConnectionMenu = "coop_network_options.tscn";
     }
   }
 }
@@ -103,15 +103,13 @@ public static partial class GodotFilePath
   {
     public static readonly StringName MainMenu;
     public static readonly StringName SingleCharacterMenu;
-    public static readonly StringName CoopCharacterMenu;
-    public static readonly StringName MultiplayerConnectionMenu;
+    public static readonly StringName BackSceneButton;
 
     static Menus()
     {
+      BackSceneButton = GodotFolderPath.UIPrefabs + GodotFileName.Menus.BackSceneButton;
       MainMenu = GodotFolderPath.Stages + GodotFileName.Menus.MainMenu;
       SingleCharacterMenu = GodotFolderPath.SceneMenus + GodotFileName.Menus.SingleCharacterMenu;
-      CoopCharacterMenu = GodotFolderPath.SceneMenus + GodotFileName.Menus.CoopCharacterMenu;
-      MultiplayerConnectionMenu = GodotFolderPath.SceneMenus + GodotFileName.Menus.MultiplayerConnectionMenu;
     }
   }
 }

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bww7kfh7lush"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmvn2"]
+bg_color = Color(0.230315, 0.230315, 0.230315, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jyrtr"]
+bg_color = Color(0.231373, 0.231373, 0.231373, 0.811765)
+
+[node name="BackSceneButton" type="Button"]
+anchors_preset = -1
+anchor_left = 0.0541667
+anchor_top = 0.0694444
+anchor_right = 0.108854
+anchor_bottom = 0.0981481
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_gmvn2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jyrtr")
+text = "Back"
+metadata/_edit_use_anchors_ = true
