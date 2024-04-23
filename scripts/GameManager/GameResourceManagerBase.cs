@@ -151,7 +151,7 @@ public partial class GameResourceManager<T> : Node where T : Node
   {
     foreach (var item in Scenes)
     {
-      if (item.Value.GetParent() != GetTree().Root)
+      if (item.Value.GetParent() is null)
       {
         GetTree().Root.AddChild(item.Value);
       }
