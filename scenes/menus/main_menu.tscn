@@ -111,11 +111,6 @@ text = "Load Game"
 layout_mode = 2
 text = "New Game"
 
-[node name="CoopGameButton" type="Button" parent="FirstMenu"]
-visible = false
-layout_mode = 2
-text = "Co-op"
-
 [node name="QuitGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
 text = "Quit"

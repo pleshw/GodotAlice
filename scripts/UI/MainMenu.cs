@@ -11,8 +11,6 @@ namespace UI;
 
 public partial class MainMenu : Control
 {
-	[Export]
-	public MultiplayerController MultiplayerController;
 
 	public GameResourceManager<CanvasItem> ResourceManager;
 
@@ -62,16 +60,6 @@ public partial class MainMenu : Control
 		}
 	}
 
-	private Button _coopGameButton;
-	public Button CoopGameButton
-	{
-		get
-		{
-			_coopGameButton ??= FirstMenu.GetNode<Button>("CoopGameButton");
-			return _coopGameButton;
-		}
-	}
-
 	private Button _quitGameButton;
 	public Button QuitGameButton
 	{
@@ -84,13 +72,12 @@ public partial class MainMenu : Control
 
 	private CoopCharacterMenu CoopCharacterMenuScene;
 	private Control SingleCharacterMenuScene;
-	private CoopNetworkOptionsMenu MultiplayerMenuScene;
 
 	private List<Button> AllButtons
 	{
 		get
 		{
-			return [LoadGameButton, SingleGameButton, CoopGameButton, QuitGameButton];
+			return [LoadGameButton, SingleGameButton, QuitGameButton];
 		}
 	}
 
@@ -106,7 +93,6 @@ public partial class MainMenu : Control
 		GetWindow().GrabFocus();
 
 		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFilePath.Menus.SingleCharacterMenu, "SingleCharacterMenu");
-		MultiplayerMenuScene = SceneManager.CreateInstance<CoopNetworkOptionsMenu>(GodotFilePath.Menus.MultiplayerConnectionMenu, "MultiplayerConnectionMenu");
 		CoopCharacterMenuScene = SceneManager.CreateInstance<CoopCharacterMenu>(GodotFilePath.Menus.CoopCharacterMenu, "CoopCharacterMenu");
 
 		SceneManager.AddScenesToRootDeferred();
@@ -114,35 +100,12 @@ public partial class MainMenu : Control
 
 		SceneManager.SetScene(this);
 		SetButtonEvents();
-		SetMultiplayerEvents();
-	}
-
-	private void SetMultiplayerEvents()
-	{
-		MultiplayerController.OnLobbyHosted += () =>
-		{
-			CoopCharacterMenuScene.IsHost = true;
-			SceneManager.SetScene(CoopCharacterMenuScene);
-		};
 	}
 
 	public void SetButtonEvents()
 	{
 		QuitGameButton.Pressed += QuitEvent;
 		SingleGameButton.Pressed += () => SceneManager.SetScene(SingleCharacterMenuScene);
-		CoopGameButton.Pressed += () => SceneManager.SetScene(MultiplayerMenuScene);
-
-		MultiplayerMenuScene.OnHostGameButtonPressed += () =>
-		{
-			if (MultiplayerController.TryCreateLobby(out Error err))
-			{
-				GD.Print("Lobby created");
-			}
-			else
-			{
-				GD.Print("Failed to create new lobby: ", err.ToString());
-			}
-		};
 
 		AllButtons.ForEach(b => b.Pressed += () => b.ReleaseFocus());
 		AllButtons.ForEach(b => b.MouseEntered += () =>
