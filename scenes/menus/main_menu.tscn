@@ -44,7 +44,7 @@ MultiplayerController = NodePath("MultiplayerController")
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 material = SubResource("ShaderMaterial_ixs65")
-scale = Vector2(4.23529, 4.05)
+scale = Vector2(7.05882, 6.75)
 texture = ExtResource("3_p1ec8")
 centered = false
 
@@ -53,7 +53,7 @@ motion_scale = Vector2(4, 1)
 
 [node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
 material = SubResource("ShaderMaterial_ktnwb")
-scale = Vector2(4.23529, 4.05)
+scale = Vector2(7.05882, 6.75)
 texture = ExtResource("4_ry6hb")
 centered = false
 
@@ -62,29 +62,29 @@ centered = false
 [node name="Sprite2D4" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_amasc")
-scale = Vector2(2.11765, 4.05)
+scale = Vector2(3.52941, 6.75)
 texture = ExtResource("5_qcrgi")
 centered = false
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(4, 1)
-motion_mirroring = Vector2(1080, 0)
+motion_mirroring = Vector2(2080, 0)
 
 [node name="Sprite2D5" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_gplct")
-scale = Vector2(2.11765, 4.05)
+scale = Vector2(3.52941, 6.75)
 texture = ExtResource("6_s1lc6")
 centered = false
 
 [node name="ParallaxLayer5" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(3, 1)
-motion_mirroring = Vector2(1080, 0)
+motion_scale = Vector2(4, 1)
+motion_mirroring = Vector2(2080, 0)
 
 [node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer5"]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_4y3h8")
-scale = Vector2(2.11765, 4.05)
+scale = Vector2(3.52941, 6.75)
 texture = ExtResource("7_3bdqe")
 centered = false
 
