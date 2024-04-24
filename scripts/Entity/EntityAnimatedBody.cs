@@ -45,6 +45,14 @@ public partial class EntityAnimatedBody : Node2D
 		}
 	}
 
+	public Vector2 Size
+	{
+		get
+		{
+			return GetChildren().OfType<AnimatedSprite2D>().First().SpriteFrames.GetFrameTexture("Idle", 0).GetSize();
+		}
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();
@@ -52,6 +60,22 @@ public partial class EntityAnimatedBody : Node2D
 		Parts.ForEach(bp => PartsByName.Add(bp.Name, bp));
 		SpriteReference = Parts.OrderByDescending(e => e.Frame).FirstOrDefault();
 	}
+
+	public void ChangePart(StringName partName, SpriteFrames newSprite)
+	{
+		Stop();
+		Freeze = true;
+
+		List<AnimatedSprite2D> selectedParts = Parts.Where(p => p.Name == partName).ToList();
+		selectedParts.ForEach(p =>
+		{
+			p.Free();
+			p.SpriteFrames = newSprite;
+		});
+
+		Freeze = false;
+	}
+
 
 	public void Play(StringName animationName)
 	{

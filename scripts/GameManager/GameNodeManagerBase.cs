@@ -4,7 +4,7 @@ using Godot;
 
 namespace GameManager;
 
-public partial class GameResourceManagerBase<T> : Node where T : Resource
+public partial class GameNodeManagerBase<T> : Node where T : Node
 {
   public static readonly Dictionary<StringName, PackedScene> Prefabs = [];
   public readonly Dictionary<StringName, T> Scenes = [];
@@ -37,13 +37,13 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
 
   public StringName FolderPath;
 
-  public GameResourceManagerBase()
+  public GameNodeManagerBase()
   {
     FolderPath = null;
   }
 
 
-  public GameResourceManagerBase(StringName folderPath, params StringName[] scenesToPreload)
+  public GameNodeManagerBase(StringName folderPath, params StringName[] scenesToPreload)
   {
     FolderPath = folderPath;
     foreach (StringName sceneToPreload in scenesToPreload)
@@ -64,6 +64,13 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
     }
   }
 
+  public void Preload(Resource[] nodes)
+  {
+    foreach (Resource sceneToPreload in nodes)
+    {
+      Preloader.AddResource(sceneToPreload.ResourceName, sceneToPreload);
+    }
+  }
 
   /// <summary>
   /// If the class have no path folder this function will return the input
@@ -89,7 +96,7 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
     if (preload is not null)
     {
       result = preload.Instantiate() as T;
-      result.ResourceName = nodeName;
+      result.Name = nodeName;
 
       if (!Scenes.TryAdd(nodeName, result))
       {
@@ -107,7 +114,7 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
     Prefabs.Add(resourcePath, sceneImported);
 
     result = sceneImported.Instantiate() as T;
-    result.ResourceName = nodeName;
+    result.Name = nodeName;
 
     Scenes.Add(nodeName, result);
 
@@ -137,12 +144,44 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
     return CreateInstance(sceneName, nodeName) as ConvertedType;
   }
 
-  public ConvertedType GetResource<ConvertedType>(StringName sceneName) where ConvertedType : Node
+  public void AddScenesToRootDeferred()
+  {
+    CallDeferred(nameof(AddScenesToRoot));
+  }
+
+  public void AddScenesToRootDeferred(Node[] scenes)
+  {
+    CallDeferred(nameof(AddScenesToRoot), scenes);
+  }
+
+  public void AddScenesToRoot()
+  {
+    foreach (var item in Scenes)
+    {
+      if (item.Value.GetParent() is null)
+      {
+        GetTree().Root.AddChild(item.Value);
+      }
+    }
+  }
+
+  public void AddScenesToRoot(Node[] scenes)
+  {
+    foreach (var item in scenes)
+    {
+      if (item.GetParent() != GetTree().Root)
+      {
+        GetTree().Root.AddChild(item);
+      }
+    }
+  }
+
+  public ConvertedType GetScene<ConvertedType>(StringName sceneName) where ConvertedType : Node
   {
     return this[sceneName] as ConvertedType;
   }
 
-  ~GameResourceManagerBase()
+  ~GameNodeManagerBase()
   {
     foreach (var item in Prefabs)
     {

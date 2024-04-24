@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://0qkv8s1javkd"]
-
-[ext_resource type="PackedScene" uid="uid://c117rrgk6ho4f" path="res://scenes/menus/select_character_menu.tscn" id="1_6kaku"]
-[ext_resource type="Script" path="res://scripts/UI/CoopCharacterMenu.cs" id="1_7men6"]
-
-[node name="CoopCharacterMenu" instance=ExtResource("1_6kaku")]
-script = ExtResource("1_7men6")

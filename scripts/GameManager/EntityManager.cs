@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Entity;
 
-public partial class EntityManager<EntityType>(string resourcePath, params StringName[] scenesToPreload) : GameResourceManager<EntityType>(resourcePath, scenesToPreload) where EntityType : Entity, new()
+public partial class EntityManager<EntityType>(string resourcePath, params StringName[] scenesToPreload) : GameNodeManagerBase<EntityType>(resourcePath, scenesToPreload) where EntityType : Entity, new()
 {
 	public static readonly List<EntityType> AllEntities = [];
 
@@ -14,20 +14,30 @@ public partial class EntityManager<EntityType>(string resourcePath, params Strin
 	protected readonly Stack<Entity> _entityInstances = [];
 	protected readonly Dictionary<Guid, Entity> _entitiesById = [];
 
+
+
+	public InputManager InputManager
+	{
+		get
+		{
+			return GetNode<InputManager>("/root/InputManager");
+		}
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		base._Ready();
 	}
 
-	public EntityType GetEntityInstanceByName(string entityFileName, StageLoader stageLoader)
+	public EntityType GetEntityInstance(string entityScenePath)
 	{
-		EntityType entityPrefab = CreateInstance(entityFileName, entityFileName + AllEntities.Count);
+		EntityType entityPrefab = CreateInstance(entityScenePath, entityScenePath + AllEntities.Count);
 
 		AllEntities.Add(entityPrefab);
 		_entityInstances.Push(entityPrefab);
 		_entitiesById.Add(entityPrefab.Id, entityPrefab);
-		stageLoader.InputManager.ListenTo(entityPrefab);
+		InputManager.ListenTo(entityPrefab);
 
 		return entityPrefab;
 	}

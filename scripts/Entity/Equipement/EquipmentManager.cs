@@ -5,7 +5,7 @@ using Godot;
 
 namespace Entity;
 
-public partial class EquipmentManager : GameResourceManager<EntityEquipmentBase>
+public partial class EquipmentManager : GameNodeManagerBase<EntityEquipmentBase>
 {
 
   private static EquipmentManager _instance;

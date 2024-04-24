@@ -27,8 +27,17 @@ InputManager="*res://scripts/GameManager/InputManager.cs"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
-mouse_cursor/custom_image="res://assets/packs/Tiny Swords/UI/Pointers/main-cursor.png"
 
 [dotnet]
 
 project/assembly_name="Alice"
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://assets/packs/": "blue",
+"res://prefabs/": "orange",
+"res://resources/": "yellow",
+"res://scenes/": "green"
+}

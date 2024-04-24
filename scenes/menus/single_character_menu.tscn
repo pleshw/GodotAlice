@@ -1,5 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2e3w2kolhqo8"]
+[gd_scene load_steps=5 format=3 uid="uid://d2e3w2kolhqo8"]
 
 [ext_resource type="PackedScene" uid="uid://c117rrgk6ho4f" path="res://scenes/menus/select_character_menu.tscn" id="1_ufybo"]
+[ext_resource type="Shader" path="res://assets/shaders/grayscale.gdshader" id="2_dhoyk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q16te"]
+resource_local_to_scene = true
+shader = ExtResource("2_dhoyk")
+shader_parameter/active = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yf6ay"]
+resource_local_to_scene = true
+shader = ExtResource("2_dhoyk")
+shader_parameter/active = true
 
 [node name="SingleCharacterMenu" instance=ExtResource("1_ufybo")]
+
+[node name="AnimatedSprite2D" parent="MarginContainer/TabContainer/CharacterSelection/Container/CharacterSelect2" index="1"]
+material = SubResource("ShaderMaterial_q16te")
+
+[node name="CharacterSelect3" parent="MarginContainer/TabContainer/CharacterSelection/Container" index="2"]
+material = SubResource("ShaderMaterial_yf6ay")

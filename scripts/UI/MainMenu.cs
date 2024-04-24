@@ -12,7 +12,7 @@ namespace UI;
 public partial class MainMenu : Control
 {
 
-	public GameResourceManager<CanvasItem> ResourceManager;
+	public GameNodeManagerBase<CanvasItem> ResourceManager;
 
 	public AudioManager AudioManager
 	{
@@ -95,9 +95,21 @@ public partial class MainMenu : Control
 		SingleCharacterMenuScene = SceneManager.CreateInstance<Control>(GodotFilePath.Menus.SingleCharacterMenu, "SingleCharacterMenu");
 
 		SceneManager.AddScenesToRootDeferred();
-		AudioManager.AddScenesToRootDeferred();
 
 		SceneManager.SetScene(this);
+
+		AudioManager.OnAudioReady += () =>
+		{
+			var intro = AudioManager.PreloadedAudios["Intro"];
+
+			intro.Finished += () =>
+			{
+				intro.Seek(0);
+				intro.Play();
+			};
+
+			intro.Play();
+		};
 
 		SetButtonEvents();
 	}
@@ -111,7 +123,7 @@ public partial class MainMenu : Control
 		{
 			if (!b.Disabled)
 			{
-				AudioManager["MenuButtonConfirm"].Play();
+				AudioManager.PreloadedAudios["MenuConfirmAction"].Play();
 			}
 
 			b.ReleaseFocus();
@@ -121,7 +133,7 @@ public partial class MainMenu : Control
 		{
 			if (!b.Disabled)
 			{
-				AudioManager["MenuButtonHover"].Play();
+				AudioManager.PreloadedAudios["MenuHoverAction"].Play();
 			}
 		});
 	}

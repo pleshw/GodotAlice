@@ -26,7 +26,7 @@ public static class GodotFolderPath
     SceneMenus = Scenes + "menus/";
     Stages = Scenes + "stages/";
     Prefabs = Resources + "prefabs/";
-    Sounds = Prefabs + "sounds/";
+    Sounds = Assets + "sounds/";
     Entities = Prefabs + "entities/";
     UIPrefabs = Prefabs + "ui/";
     MenuPrefabs = UIPrefabs + "menu/";
@@ -141,12 +141,18 @@ public static partial class GodotFileName
 {
   public static class Sounds
   {
+    public static readonly StringName Intro;
     public static readonly StringName MenuHoverAction;
-    public static readonly StringName MenuMajorAction;
+    public static readonly StringName MenuConfirmAction;
+    public static readonly StringName MenuMinorConfirm;
+    public static readonly StringName MenuMinorConfirm2;
     static Sounds()
     {
-      MenuHoverAction = "menu_hover_action.tscn";
-      MenuMajorAction = "menu_confirm_action.tscn";
+      Intro = "Intro.mp3";
+      MenuHoverAction = "MenuHoverAction.wav";
+      MenuConfirmAction = "MenuConfirmAction.wav";
+      MenuMinorConfirm = "MenuMinorConfirm.mp3";
+      MenuMinorConfirm2 = "MenuMinorConfirm2.mp3";
     }
   }
 }
@@ -155,12 +161,18 @@ public static partial class GodotFilePath
 {
   public static class Sounds
   {
+    public static readonly StringName Intro;
     public static readonly StringName MenuHoverAction;
     public static readonly StringName MenuConfirmAction;
+    public static readonly StringName MenuMinorConfirm;
+    public static readonly StringName MenuMinorConfirm2;
     static Sounds()
     {
+      Intro = GodotFolderPath.Sounds + GodotFileName.Sounds.Intro;
       MenuHoverAction = GodotFolderPath.Sounds + GodotFileName.Sounds.MenuHoverAction;
-      MenuConfirmAction = GodotFolderPath.Sounds + GodotFileName.Sounds.MenuMajorAction;
+      MenuConfirmAction = GodotFolderPath.Sounds + GodotFileName.Sounds.MenuConfirmAction;
+      MenuMinorConfirm = GodotFolderPath.Sounds + GodotFileName.Sounds.MenuMinorConfirm;
+      MenuMinorConfirm2 = GodotFolderPath.Sounds + GodotFileName.Sounds.MenuMinorConfirm2;
     }
   }
 }

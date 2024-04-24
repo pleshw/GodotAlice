@@ -9,7 +9,7 @@ using UI;
 
 namespace GameManager;
 
-public partial class InputManager() : GameResourceManager<GameCursor>(GodotFolderPath.CursorsPrefabs, GodotFileName.UI.DefaultCursor)
+public partial class InputManager() : GameNodeManagerBase<GameCursor>(GodotFolderPath.CursorsPrefabs, GodotFileName.UI.DefaultCursor)
 {
   public GameCursor Cursor;
 

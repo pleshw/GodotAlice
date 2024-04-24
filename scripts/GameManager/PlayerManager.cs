@@ -17,17 +17,26 @@ public partial class PlayerManager() : EntityManager<Player>(GodotFolderPath.Mai
 
   public Player MainPlayerInstance;
 
-  public Player InstantiatePlayerByName(StringName entityFileName, StageLoader stageLoader)
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entitySceneName">The name of the player scene at  the main_characters folder </param>
+  /// <param name="playerDisplayName"></param>
+  /// <returns></returns>
+  public Player GetPlayerInstance(StringName entitySceneName, string playerDisplayName = "porra games")
   {
-    Player playerInstance = GetEntityInstanceByName(entityFileName, stageLoader);
+    Player playerInstance = GetEntityInstance(entitySceneName);
 
     PlayerCamera = playerInstance.Camera;
+
     if (AllPlayers.Count == 0)
     {
       MainPlayerInstance = playerInstance;
     }
+
     AllPlayers.Add(playerInstance);
-    playerInstance.DisplayName = "porra games";
+    playerInstance.DisplayName = playerDisplayName;
     return playerInstance;
   }
 }

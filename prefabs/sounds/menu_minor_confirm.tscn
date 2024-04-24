@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvumo2de4xuwv"]
+
+[ext_resource type="PackedScene" uid="uid://b146ngackhicr" path="res://prefabs/sounds/sound_parent.tscn" id="1_1s4j2"]
+[ext_resource type="AudioStream" uid="uid://gspgf8wrigij" path="res://assets/sounds/MenuMinorConfirm.mp3" id="2_q4e27"]
+
+[node name="MenuMinorConfirm" instance=ExtResource("1_1s4j2")]
+stream = ExtResource("2_q4e27")

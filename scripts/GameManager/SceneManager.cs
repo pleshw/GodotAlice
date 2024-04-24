@@ -8,7 +8,7 @@ using System;
 
 namespace GameManager;
 
-public partial class SceneManager : GameResourceManager<CanvasItem>
+public partial class SceneManager : GameNodeManagerBase<CanvasItem>
 {
   public readonly StageLoader StageLoader;
 
@@ -55,7 +55,7 @@ public partial class SceneManager : GameResourceManager<CanvasItem>
     BackSceneButton.Pressed += () =>
     {
       Back();
-      AudioManager["MenuButtonConfirm"].Play();
+      AudioManager.PreloadedAudios["MenuConfirmAction"].Play();
     };
 
     OverCanvasLayer.AddChild(BackSceneButton);

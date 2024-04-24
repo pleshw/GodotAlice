@@ -93,11 +93,10 @@ centered = false
 [node name="FirstMenu" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.47526
-anchor_top = 0.449537
-anchor_right = 0.52474
-anchor_bottom = 0.550463
-offset_right = 6.10352e-05
+anchor_left = 0.438281
+anchor_top = 0.406944
+anchor_right = 0.561719
+anchor_bottom = 0.593056
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
@@ -107,17 +106,22 @@ metadata/_edit_use_anchors_ = true
 [node name="LoadGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
 theme = ExtResource("1_0mu7t")
+theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Load Game"
 
 [node name="NewGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("1_0mu7t")
+theme_override_font_sizes/font_size = 40
 text = "New Game"
 
 [node name="QuitGameButton" type="Button" parent="FirstMenu"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("1_0mu7t")
+theme_override_font_sizes/font_size = 35
 text = "Quit"
 
 [node name="MultiplayerController" type="Node" parent="."]

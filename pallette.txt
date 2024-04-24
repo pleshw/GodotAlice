@@ -1,0 +1,7 @@
+#32213a purple 
+#383b53 dark blue
+#66717e gray
+#d4d6b9 light yellow
+#d1caa1 darker yellow
+#3f3f3f black
+#f0f0f0 white
