@@ -24,6 +24,16 @@ public partial class SelectCharacterMenu : Control
   public Godot.Collections.Dictionary ItemList = [];
 
 
+  private GridContainer _spriteOptionsHead;
+  public GridContainer SpriteOptionsHead
+  {
+    get
+    {
+      _spriteOptionsHead ??= SpriteOptions.GetNode<GridContainer>("Head");
+      return _spriteOptionsHead;
+    }
+  }
+
   public PlayerManager PlayerManager
   {
     get
@@ -48,10 +58,18 @@ public partial class SelectCharacterMenu : Control
     }
   }
 
+  public CommonFilesManager CommonFilesManager
+  {
+    get
+    {
+      return GetNode<CommonFilesManager>("/root/CommonFilesManager");
+    }
+  }
+
 
   public SelectCharacterMenu()
   {
-
+    // ResourceLoader.Load();
   }
 
   public void ConfirmCharacterCreation()
