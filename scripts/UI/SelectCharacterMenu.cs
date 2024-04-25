@@ -10,8 +10,21 @@ using Godot;
 
 namespace UI;
 
+public class SpriteFileJson
+{
+  public required string[] SpriteList { get; set; }
+}
+
+
 public partial class SelectCharacterMenu : Control
 {
+
+  private string[] spriteList;
+
+  private GameResourceManagerBase<Resource> SpritesResourceManager = new(GodotFolderPath.ItemResources);
+
+  private GameNodeManagerBase<Button> FramesResourceManager = new();
+
   [Export]
   public TabContainer SpriteOptions;
 
@@ -24,15 +37,15 @@ public partial class SelectCharacterMenu : Control
   public Godot.Collections.Dictionary ItemList = [];
 
 
-  private GridContainer _spriteOptionsHead;
-  public GridContainer SpriteOptionsHead
-  {
-    get
-    {
-      _spriteOptionsHead ??= SpriteOptions.GetNode<GridContainer>("Head");
-      return _spriteOptionsHead;
-    }
-  }
+
+  [Export]
+  public GridContainer GridHats;
+
+  [Export]
+  public GridContainer GridBody;
+
+  [Export]
+  public GridContainer GridPants;
 
   public PlayerManager PlayerManager
   {
@@ -66,10 +79,67 @@ public partial class SelectCharacterMenu : Control
     }
   }
 
+  private Player playerInstance;
 
   public SelectCharacterMenu()
   {
-    // ResourceLoader.Load();
+    spriteList = CommonFilesManager.GetFileDeserialized<SpriteFileJson>("mainSprites.json").SpriteList;
+    FramesResourceManager.Preload(["res://prefabs/items/custom_sprite_frame.tscn"]);
+  }
+
+  public override void _Ready()
+  {
+    base._Ready();
+    CallDeferred(nameof(CreatePlayerModel));
+
+    SpriteOptions.TabHovered += (long tab) =>
+    {
+      if (tab != SpriteOptions.CurrentTab)
+      {
+        AudioManager.PreloadedAudios["MenuHoverAction"].Play();
+      }
+    };
+
+    SpriteOptions.TabChanged += (long tab) =>
+    {
+      AudioManager.PreloadedAudios["MenuMinorConfirm2"].Play();
+    };
+
+    CallDeferred(nameof(InstantiateSprites));
+  }
+
+  public void InstantiateSprites()
+  {
+    foreach (var sprite in spriteList)
+    {
+      Button customFrameButton = FramesResourceManager.CreateInstance<Button>("res://prefabs/items/custom_sprite_frame.tscn", "custom_sprite_frame" + Path.GetFileNameWithoutExtension(sprite));
+      AnimatedSprite2D customFrameSprite = customFrameButton.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+      SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
+      spriteInstance.ResourceLocalToScene = true;
+
+      Vector2 currentSize = spriteInstance.GetFrameTexture("default", 0).GetSize();
+
+      int frameSizeInPixels = 80;
+
+      // Calculate the scale factor
+      Vector2 scaleFactor = new(frameSizeInPixels / currentSize.X, frameSizeInPixels / currentSize.Y);
+
+      // Set the scale of the sprite
+      customFrameButton.Size = Vector2.One * frameSizeInPixels;
+      customFrameSprite.Scale = scaleFactor;
+      customFrameSprite.Centered = false;
+
+      customFrameSprite.SpriteFrames = spriteInstance;
+      customFrameSprite.Play("default");
+
+
+      customFrameButton.Pressed += () =>
+      {
+        playerInstance.AnimatedBody.ChangePart("Hat", customFrameSprite.SpriteFrames);
+      };
+
+      GridHats.AddChild(customFrameButton);
+    }
   }
 
   public void ConfirmCharacterCreation()
@@ -91,29 +161,9 @@ public partial class SelectCharacterMenu : Control
     }));
   }
 
-
-  public override void _Ready()
-  {
-    base._Ready();
-    CallDeferred(nameof(CreatePlayerModel));
-
-    SpriteOptions.TabHovered += (long tab) =>
-    {
-      if (tab != SpriteOptions.CurrentTab)
-      {
-        AudioManager.PreloadedAudios["MenuHoverAction"].Play();
-      }
-    };
-
-    SpriteOptions.TabChanged += (long tab) =>
-    {
-      AudioManager.PreloadedAudios["MenuMinorConfirm2"].Play();
-    };
-  }
-
   public void CreatePlayerModel()
   {
-    Player playerInstance = PlayerManager.GetPlayerInstance(GodotFileName.MainCharacters.Pawn);
+    playerInstance = PlayerManager.GetPlayerInstance(GodotFileName.MainCharacters.Pawn);
     playerInstance.Scale = Vector2.One * 3;
 
     Vector2 playerCenterPosition = (GetViewportRect().Size / 2) - (playerInstance.AnimatedBody.Size / 2);

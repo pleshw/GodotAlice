@@ -5,6 +5,7 @@ namespace Extras;
 
 public static class GodotFolderPath
 {
+  public static readonly StringName Root;
   public static readonly StringName Resources;
   public static readonly StringName Scenes;
   public static readonly StringName Stages;
@@ -15,17 +16,20 @@ public static class GodotFolderPath
   public static readonly StringName Entities;
   public static readonly StringName UIPrefabs;
   public static readonly StringName MenuPrefabs;
+  public static readonly StringName ItemResources;
   public static readonly StringName CursorsPrefabs;
   public static readonly StringName MainCharacters;
 
   static GodotFolderPath()
   {
-    Resources = "res://";
-    Assets = Resources + "assets/";
-    Scenes = Resources + "scenes/";
+    Root = "res://";
+    Resources = Root + "resources/";
+    Assets = Root + "assets/";
+    Scenes = Root + "scenes/";
+    ItemResources = Resources + "items/";
     SceneMenus = Scenes + "menus/";
     Stages = Scenes + "stages/";
-    Prefabs = Resources + "prefabs/";
+    Prefabs = Root + "prefabs/";
     Sounds = Assets + "sounds/";
     Entities = Prefabs + "entities/";
     UIPrefabs = Prefabs + "ui/";

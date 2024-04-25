@@ -22,6 +22,7 @@ SceneManager="*res://scripts/GameManager/SceneManager.cs"
 PlayerManager="*res://scripts/GameManager/PlayerManager.cs"
 InputManager="*res://scripts/GameManager/InputManager.cs"
 SaveFilesManager="*res://scripts/GameManager/SaveFilesManager.cs"
+CommonFilesManager="*res://scripts/GameManager/CommonFilesManager.cs"
 
 [display]
 

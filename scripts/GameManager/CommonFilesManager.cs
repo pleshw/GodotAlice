@@ -33,19 +33,21 @@ public partial class CommonFilesManager : Node
     CreateFile(fileName, JsonSerializer.Serialize(fileData));
   }
 
-  public static T DeserializeFromFile<T>(string filePath)
+  public static T GetFileDeserialized<T>(string fileName)
   {
     T data;
 
-    if (!File.Exists(filePath))
+    fileName = Path.Join(UserData, fileName);
+
+    if (!File.Exists(fileName))
     {
-      GD.Print("File not found: " + filePath);
+      GD.Print("File not found: " + fileName);
       return default;
     }
 
     try
     {
-      string fileContent = File.ReadAllText(filePath);
+      string fileContent = File.ReadAllText(fileName);
       data = JsonSerializer.Deserialize<T>(fileContent);
       return data;
     }
@@ -55,5 +57,4 @@ public partial class CommonFilesManager : Node
       return default;
     }
   }
-
 }

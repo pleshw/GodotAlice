@@ -6,7 +6,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkliv"]
 bg_color = Color(0.196078, 0.129412, 0.227451, 1)
 
-[node name="SelectCharacterMenu" type="Control" node_paths=PackedStringArray("SpriteOptions", "PlayerFrame", "AttributesPanel")]
+[node name="SelectCharacterMenu" type="Control" node_paths=PackedStringArray("SpriteOptions", "PlayerFrame", "AttributesPanel", "GridHats", "GridBody", "GridPants")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +19,9 @@ script = ExtResource("1_o1liw")
 SpriteOptions = NodePath("MarginContainer/MainPanel/SpriteOptions")
 PlayerFrame = NodePath("MarginContainer/MainPanel/PlayerFrame")
 AttributesPanel = NodePath("MarginContainer/MainPanel/AttributesPanel")
+GridHats = NodePath("MarginContainer/MainPanel/SpriteOptions/Hat/GridHats")
+GridBody = NodePath("MarginContainer/MainPanel/SpriteOptions/Shirt/GridShirts")
+GridPants = NodePath("MarginContainer/MainPanel/SpriteOptions/Pants/GridPants")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -76,12 +79,12 @@ custom_minimum_size = Vector2(400, 600)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.737363
-anchor_top = 0.193878
-anchor_right = 0.957143
+anchor_top = 0.205
+anchor_right = 0.957
 anchor_bottom = 0.806122
 offset_left = -0.00012207
-offset_top = -0.000427246
-offset_right = 0.000244141
+offset_top = -9.7878
+offset_right = 0.246216
 offset_bottom = 0.000427246
 grow_horizontal = 2
 grow_vertical = 2
@@ -91,14 +94,34 @@ tab_alignment = 1
 tab_focus_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Head" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
+[node name="Hat" type="ScrollContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="GridHats" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions/Hat"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme = ExtResource("2_riivq")
+columns = 5
 
-[node name="Body" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
+[node name="Shirt" type="ScrollContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
 visible = false
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="Legs" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
-visible = false
+[node name="GridShirts" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions/Shirt"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+theme = ExtResource("2_riivq")
+columns = 5
+
+[node name="Pants" type="ScrollContainer" parent="MarginContainer/MainPanel/SpriteOptions"]
+visible = false
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="GridPants" type="GridContainer" parent="MarginContainer/MainPanel/SpriteOptions/Pants"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme = ExtResource("2_riivq")
+columns = 5
