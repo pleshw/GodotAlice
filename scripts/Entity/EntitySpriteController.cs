@@ -15,18 +15,23 @@ public partial class EntitySpriteController : GameResourceManagerBase<SpriteFram
     Entity = entity;
   }
 
-  public void ChangeHead(SpriteFrames newSprite)
+  public void ChangeHat(SpriteFrames newSprite)
   {
-    Entity.AnimatedBody.ChangePart("Head", newSprite);
+    Entity.AnimatedBody.ChangePart("Hat", newSprite);
+  }
+
+  public void ChangeShirt(SpriteFrames newSprite)
+  {
+    Entity.AnimatedBody.ChangePart("Shirt", newSprite);
+  }
+
+  public void ChangePants(SpriteFrames newSprite)
+  {
+    Entity.AnimatedBody.ChangePart("Pants", newSprite);
   }
 
   public void ChangeBody(SpriteFrames newSprite)
   {
     Entity.AnimatedBody.ChangePart("Body", newSprite);
-  }
-
-  public void ChangeLegs(SpriteFrames newSprite)
-  {
-    Entity.AnimatedBody.ChangePart("Legs", newSprite);
   }
 }

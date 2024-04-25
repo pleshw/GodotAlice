@@ -224,12 +224,12 @@ animation = &"Idle"
 frame_progress = 0.325032
 
 [node name="Hat" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -117)
+position = Vector2(0, -19)
 
 [node name="Shirt" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -19)
+position = Vector2(0, 14)
 scale = Vector2(0.734375, 0.53125)
 
 [node name="Pants" type="AnimatedSprite2D" parent="."]
-position = Vector2(-2.38419e-07, 87)
+position = Vector2(0, 23)
 scale = Vector2(1.84375, 1.67188)

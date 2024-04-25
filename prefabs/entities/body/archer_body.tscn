@@ -245,12 +245,9 @@ sprite_frames = SubResource("SpriteFrames_nodc0")
 animation = &"Attacking"
 
 [node name="Hat" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -117)
 
 [node name="Shirt" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -19)
 scale = Vector2(0.734375, 0.53125)
 
 [node name="Pants" type="AnimatedSprite2D" parent="."]
-position = Vector2(-2.38419e-07, 87)
 scale = Vector2(1.84375, 1.67188)

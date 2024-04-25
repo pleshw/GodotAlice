@@ -1,4 +1,8 @@
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Entity;
 using Extras;
 using GameManager;
@@ -17,6 +21,8 @@ public partial class SelectCharacterMenu : Control
   [Export]
   public Panel AttributesPanel;
 
+  public Godot.Collections.Dictionary ItemList = [];
+
 
   public PlayerManager PlayerManager
   {
@@ -34,11 +40,34 @@ public partial class SelectCharacterMenu : Control
     }
   }
 
+  public SaveFilesManager SaveFilesManager
+  {
+    get
+    {
+      return GetNode<SaveFilesManager>("/root/SaveFilesManager");
+    }
+  }
+
 
   public SelectCharacterMenu()
   {
-
+    SaveFilesManager.CreateNewPlayerSaveFile(System.Text.Json.JsonSerializer.Serialize(new PlayerSaveData()
+    {
+      Name = "",
+      AttributePointsByName = new Dictionary<string, int>
+      {
+        ["Agility"] = 2,
+        ["Vitality"] = 8
+      },
+      SpriteFramesByPosition = new Dictionary<string, string>
+      {
+        ["Body"] = "",
+        ["Hat"] = "test_item.res"
+      },
+      Location = "none",
+    }));
   }
+
 
   public override void _Ready()
   {

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://drijat5vmr0ab"]
 
 [ext_resource type="Script" path="res://scripts/Entity/Player/Player.cs" id="1_5pdam"]
-[ext_resource type="PackedScene" uid="uid://c1h1o65tnyjiy" path="res://prefabs/entities/main_characters/body/archer_body.tscn" id="2_vomts"]
+[ext_resource type="PackedScene" uid="uid://c1h1o65tnyjiy" path="res://prefabs/entities/body/archer_body.tscn" id="2_vomts"]
 [ext_resource type="PackedScene" uid="uid://b8yaqpudlblmq" path="res://prefabs/effects/default_helper.tscn" id="4_6s2nu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6pus8"]
