@@ -64,16 +64,13 @@ public partial class EntityAnimatedBody : Node2D
 	public void ChangePart(StringName partName, SpriteFrames newSprite)
 	{
 		Stop();
-		Freeze = true;
 
 		List<AnimatedSprite2D> selectedParts = Parts.Where(p => p.Name == partName).ToList();
 		selectedParts.ForEach(p =>
 		{
-			p.Free();
 			p.SpriteFrames = newSprite;
+			p.Play();
 		});
-
-		Freeze = false;
 	}
 
 

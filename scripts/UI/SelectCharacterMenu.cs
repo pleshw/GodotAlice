@@ -117,7 +117,7 @@ public partial class SelectCharacterMenu : Control
       SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
       spriteInstance.ResourceLocalToScene = true;
 
-      Vector2 currentSize = spriteInstance.GetFrameTexture("default", 0).GetSize();
+      Vector2 currentSize = spriteInstance.GetFrameTexture("Idle", 0).GetSize();
 
       int frameSizeInPixels = 80;
 
@@ -130,12 +130,12 @@ public partial class SelectCharacterMenu : Control
       customFrameSprite.Centered = false;
 
       customFrameSprite.SpriteFrames = spriteInstance;
-      customFrameSprite.Play("default");
-
+      customFrameSprite.Play("Idle");
 
       customFrameButton.Pressed += () =>
       {
-        playerInstance.AnimatedBody.ChangePart("Hat", customFrameSprite.SpriteFrames);
+        SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(sprite, "test" + sprite) as SpriteFrames;
+        playerInstance.AnimatedBody.ChangePart("Hat", spriteInstance2);
       };
 
       GridHats.AddChild(customFrameButton);
