@@ -51,9 +51,10 @@ public partial class SelectCharacterMenu : Control
 
   public SelectCharacterMenu()
   {
-    SaveFilesManager.CreateNewPlayerSaveFile(System.Text.Json.JsonSerializer.Serialize(new PlayerSaveData()
+    SaveFilesManager.CreateNewPlayerSaveFile(System.Text.Json.JsonSerializer.Serialize<PlayerSaveData>(new()
     {
       Name = "",
+      Location = "none",
       AttributePointsByName = new Dictionary<string, int>
       {
         ["Agility"] = 2,
@@ -64,7 +65,6 @@ public partial class SelectCharacterMenu : Control
         ["Body"] = "",
         ["Hat"] = "test_item.res"
       },
-      Location = "none",
     }));
   }
 

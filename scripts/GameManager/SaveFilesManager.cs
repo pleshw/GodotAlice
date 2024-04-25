@@ -64,7 +64,7 @@ public partial class SaveFilesManager
 
   private static string GetLastPlayerSaveFile()
   {
-    string[] saveFiles = Directory.GetFiles(UserSavesDirectory, "playerSave*");
+    string[] saveFiles = Directory.GetFiles(UserSavesDirectory, "saveFile*");
 
     return saveFiles.OrderByDescending(f => new FileInfo(f).LastWriteTime).FirstOrDefault();
   }
