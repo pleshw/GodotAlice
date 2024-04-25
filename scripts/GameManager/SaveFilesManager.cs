@@ -5,7 +5,7 @@ using Godot;
 
 namespace GameManager;
 
-public partial class SaveFilesManager
+public partial class SaveFilesManager : Node
 {
   public static string UserData
   {

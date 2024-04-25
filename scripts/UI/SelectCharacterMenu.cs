@@ -51,6 +51,11 @@ public partial class SelectCharacterMenu : Control
 
   public SelectCharacterMenu()
   {
+
+  }
+
+  public void ConfirmCharacterCreation()
+  {
     SaveFilesManager.CreateNewPlayerSaveFile(System.Text.Json.JsonSerializer.Serialize<PlayerSaveData>(new()
     {
       Name = "",
