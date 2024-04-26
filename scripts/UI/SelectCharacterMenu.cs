@@ -23,7 +23,6 @@ public class JsonSprite
     shirtSprites = ShirtSprites;
     pantsSprites = PantsSprites;
   }
-
 }
 
 
@@ -129,17 +128,32 @@ public partial class SelectCharacterMenu : Control
 
   public void InstantiateSprites()
   {
-    SetupSpritesForGridContainer(HatSprites, GridHats, playerInstance.SpriteController.ChangeHat);
-    SetupSpritesForGridContainer(ShirtSprites, GridShirts, playerInstance.SpriteController.ChangeShirt);
-    SetupSpritesForGridContainer(PantsSprites, GridPants, playerInstance.SpriteController.ChangePants);
+    SetupSpritesForGridContainer("hatShowcase", HatSprites, GridHats, playerInstance.SpriteController.ChangeHat);
+    SetupSpritesForGridContainer("shirtShowcase", ShirtSprites, GridShirts, playerInstance.SpriteController.ChangeShirt);
+    SetupSpritesForGridContainer("pantsShowcase", PantsSprites, GridPants, playerInstance.SpriteController.ChangePants);
   }
 
-  public void SetupSpritesForGridContainer(JsonSpriteInfo spriteInfo, GridContainer gridContainer, Action<SpriteFrames> changePartAction)
+  private Dictionary<string, SpriteFrames> temporarySpritesInstances = [];
+  public void SetupSpritesForGridContainer(string showcaseId, JsonSpriteInfo spriteInfo, GridContainer gridContainer, Action<SpriteFrames> changePartAction)
   {
-    Button defaultHatSpriteButton = CreateSpriteShowcaseFrame(spriteInfo.DefaultSprite, () =>
+    void _setTestSprite(string tempSpriteName)
     {
-      SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(spriteInfo.DefaultSprite, playerInstance.Name + "ShowcaseSpriteFrame") as SpriteFrames;
-      changePartAction(spriteInstance2);
+      string spriteTemporaryId = playerInstance.Name + "TemporarySpriteName" + showcaseId;
+
+      if (temporarySpritesInstances.TryGetValue(spriteTemporaryId, out SpriteFrames dictSpriteInstance))
+      {
+        dictSpriteInstance.Free();
+        temporarySpritesInstances.Remove(spriteTemporaryId);
+      }
+
+      SpriteFrames newSpriteInstance = SpritesResourceManager.CreateInstance(tempSpriteName, spriteTemporaryId) as SpriteFrames;
+      temporarySpritesInstances.Add(spriteTemporaryId, newSpriteInstance);
+      changePartAction(newSpriteInstance);
+    }
+
+    Button defaultHatSpriteButton = CreateSpriteShowcaseFrame(showcaseId, spriteInfo.DefaultSprite, () =>
+    {
+      _setTestSprite(spriteInfo.DefaultSprite);
     });
 
     defaultHatSpriteButton.MouseDefaultCursorShape = CursorShape.PointingHand;
@@ -148,10 +162,9 @@ public partial class SelectCharacterMenu : Control
 
     foreach (var sprite in spriteInfo.SpriteList)
     {
-      Button customFrameButton = CreateSpriteShowcaseFrame(sprite, () =>
+      Button customFrameButton = CreateSpriteShowcaseFrame(showcaseId, sprite, () =>
       {
-        SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(sprite, playerInstance.Name + "PartSpriteFrame") as SpriteFrames;
-        changePartAction(spriteInstance2);
+        _setTestSprite(sprite);
       });
 
       customFrameButton.MouseDefaultCursorShape = CursorShape.PointingHand;
@@ -159,11 +172,11 @@ public partial class SelectCharacterMenu : Control
     }
   }
 
-  public Button CreateSpriteShowcaseFrame(string sprite, Action onPressed)
+  public Button CreateSpriteShowcaseFrame(string showcaseId, string sprite, Action onPressed)
   {
-    Button customFrameButton = FramesResourceManager.CreateInstance<Button>("res://prefabs/items/custom_sprite_frame.tscn", "custom_sprite_frame" + Path.GetFileNameWithoutExtension(sprite));
+    Button customFrameButton = FramesResourceManager.CreateInstance<Button>("res://prefabs/items/custom_sprite_frame.tscn", "custom_sprite_frame" + showcaseId + Path.GetFileNameWithoutExtension(sprite));
     AnimatedSprite2D customFrameSprite = customFrameButton.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-    SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
+    SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, showcaseId + sprite) as SpriteFrames;
     spriteInstance.ResourceLocalToScene = true;
 
     int frameSizeInPixels = 80;

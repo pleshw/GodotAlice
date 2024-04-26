@@ -68,6 +68,7 @@ public partial class EntityAnimatedBody : Node2D
 		List<AnimatedSprite2D> selectedParts = Parts.Where(p => p.Name == partName).ToList();
 		selectedParts.ForEach(p =>
 		{
+			newSprite.ResourceName = Name + partName + "SpriteFrames";
 			p.SpriteFrames = newSprite;
 			p.Play();
 		});

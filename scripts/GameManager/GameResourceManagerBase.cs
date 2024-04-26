@@ -74,11 +74,14 @@ public partial class GameResourceManagerBase<T> : Node where T : Resource
 
     /// Importing scene and saving the resource for later use
     result = GD.Load<T>(resourcePath);
-    Preloader.AddResource(resourcePath, result);
 
     result.ResourceName = nodeName;
 
-    Resources.Add(nodeName, result);
+    if (!Resources.TryAdd(nodeName, result))
+    {
+      Resources[nodeName].Free();
+      Resources[nodeName] = result;
+    }
 
     return result;
   }

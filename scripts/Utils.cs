@@ -56,7 +56,14 @@ public static class Utils
     SpriteFrames spriteFrames = animatedSprite.SpriteFrames;
     string referenceAnimation = spriteFrames.GetAnimationNames()[0] ?? throw new Exception("Sprite have no animations");
 
-    Vector2 currentSize = spriteFrames.GetFrameTexture(referenceAnimation, 0).GetSize();
+    Texture2D spriteTexture = spriteFrames.GetFrameTexture(referenceAnimation, 0);
+
+    if (spriteTexture == null)
+    {
+      return;
+    }
+
+    Vector2 currentSize = spriteTexture.GetSize();
     Vector2 scaleFactor = new(sizeToFit.X / currentSize.X, sizeToFit.Y / currentSize.Y);
     animatedSprite.Scale = scaleFactor;
   }

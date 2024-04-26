@@ -6,7 +6,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkliv"]
 bg_color = Color(0.196078, 0.129412, 0.227451, 1)
 
-[node name="SelectCharacterMenu" type="Control" node_paths=PackedStringArray("SpriteOptions", "PlayerFrame", "AttributesPanel", "GridHats", "GridBody", "GridPants")]
+[node name="SelectCharacterMenu" type="Control" node_paths=PackedStringArray("SpriteOptions", "PlayerFrame", "AttributesPanel", "GridHats", "GridShirts", "GridPants")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ SpriteOptions = NodePath("MarginContainer/MainPanel/SpriteOptions")
 PlayerFrame = NodePath("MarginContainer/MainPanel/PlayerFrame")
 AttributesPanel = NodePath("MarginContainer/MainPanel/AttributesPanel")
 GridHats = NodePath("MarginContainer/MainPanel/SpriteOptions/Hat/GridHats")
-GridBody = NodePath("MarginContainer/MainPanel/SpriteOptions/Shirt/GridShirts")
+GridShirts = NodePath("MarginContainer/MainPanel/SpriteOptions/Shirt/GridShirts")
 GridPants = NodePath("MarginContainer/MainPanel/SpriteOptions/Pants/GridPants")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
