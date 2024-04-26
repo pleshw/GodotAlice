@@ -142,6 +142,8 @@ public partial class SelectCharacterMenu : Control
       changePartAction(spriteInstance2);
     });
 
+    defaultHatSpriteButton.MouseDefaultCursorShape = CursorShape.PointingHand;
+
     gridContainer.AddChild(defaultHatSpriteButton);
 
     foreach (var sprite in spriteInfo.SpriteList)
@@ -152,6 +154,7 @@ public partial class SelectCharacterMenu : Control
         changePartAction(spriteInstance2);
       });
 
+      customFrameButton.MouseDefaultCursorShape = CursorShape.PointingHand;
       gridContainer.AddChild(customFrameButton);
     }
   }
