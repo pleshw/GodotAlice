@@ -117,19 +117,14 @@ public partial class SelectCharacterMenu : Control
       SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
       spriteInstance.ResourceLocalToScene = true;
 
-      Vector2 currentSize = spriteInstance.GetFrameTexture("Idle", 0).GetSize();
-
       int frameSizeInPixels = 80;
-
-      // Calculate the scale factor
-      Vector2 scaleFactor = new(frameSizeInPixels / currentSize.X, frameSizeInPixels / currentSize.Y);
 
       // Set the scale of the sprite
       customFrameButton.Size = Vector2.One * frameSizeInPixels;
-      customFrameSprite.Scale = scaleFactor;
       customFrameSprite.Centered = false;
 
       customFrameSprite.SpriteFrames = spriteInstance;
+      customFrameSprite.ResizeUsingScale(customFrameButton.Size);
       customFrameSprite.Play("Idle");
 
       customFrameButton.Pressed += () =>

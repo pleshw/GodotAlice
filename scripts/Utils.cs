@@ -50,6 +50,16 @@ public static class Utils
     float randomY = (float)GD.RandRange(minY, maxY);
     return new Vector2(randomX, randomY);
   }
+
+  public static void ResizeUsingScale(this AnimatedSprite2D animatedSprite, Vector2 sizeToFit)
+  {
+    SpriteFrames spriteFrames = animatedSprite.SpriteFrames;
+    string referenceAnimation = spriteFrames.GetAnimationNames()[0] ?? throw new Exception("Sprite have no animations");
+
+    Vector2 currentSize = spriteFrames.GetFrameTexture(referenceAnimation, 0).GetSize();
+    Vector2 scaleFactor = new(sizeToFit.X / currentSize.X, sizeToFit.Y / currentSize.Y);
+    animatedSprite.Scale = scaleFactor;
+  }
 }
 
 
