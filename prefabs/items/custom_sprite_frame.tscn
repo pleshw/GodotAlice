@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://brrildqt5jovp"]
 
 [ext_resource type="Theme" uid="uid://coq1prp0uovmw" path="res://assets/themes/main_theme.tres" id="1_600fh"]
-[ext_resource type="SpriteFrames" uid="uid://m0d1k3mmu7ti" path="res://resources/items/test.tres" id="1_f0jff"]
+[ext_resource type="SpriteFrames" uid="uid://m0d1k3mmu7ti" path="res://resources/items/empty_hat.tres" id="1_f0jff"]
 
 [node name="CustomSpriteFrame" type="Button"]
 custom_minimum_size = Vector2(80, 80)

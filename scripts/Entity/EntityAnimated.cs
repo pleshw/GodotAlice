@@ -14,6 +14,8 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
   [Export]
   public EntityAnimatedBody AnimatedBody;
 
+  public EntitySpriteController SpriteController;
+
   public bool LockAnimations = false;
 
 
@@ -26,6 +28,7 @@ public abstract partial class EntityAnimated(Vector2 initialPosition) : Entity(i
   public override void Setup(Vector2 initialPosition = default, int gridCellWidth = 32)
   {
     base.Setup(initialPosition, gridCellWidth);
+    SpriteController = new(this);
   }
 
   public override void _Ready()

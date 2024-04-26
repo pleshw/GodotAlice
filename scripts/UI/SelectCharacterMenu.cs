@@ -10,16 +10,35 @@ using Godot;
 
 namespace UI;
 
-public class SpriteFileJson
+
+public class JsonSprite
 {
+  public required JsonSpriteInfo HatSprites { get; set; }
+  public required JsonSpriteInfo ShirtSprites { get; set; }
+  public required JsonSpriteInfo PantsSprites { get; set; }
+
+  public void Deconstruct(out JsonSpriteInfo hatSprites, out JsonSpriteInfo shirtSprites, out JsonSpriteInfo pantsSprites)
+  {
+    hatSprites = HatSprites;
+    shirtSprites = ShirtSprites;
+    pantsSprites = PantsSprites;
+  }
+
+}
+
+
+public class JsonSpriteInfo
+{
+  public required string DefaultSprite { get; set; }
   public required string[] SpriteList { get; set; }
 }
 
 
 public partial class SelectCharacterMenu : Control
 {
-
-  private string[] spriteList;
+  private readonly JsonSpriteInfo HatSprites;
+  private readonly JsonSpriteInfo ShirtSprites;
+  private readonly JsonSpriteInfo PantsSprites;
 
   private GameResourceManagerBase<Resource> SpritesResourceManager = new(GodotFolderPath.ItemResources);
 
@@ -42,7 +61,7 @@ public partial class SelectCharacterMenu : Control
   public GridContainer GridHats;
 
   [Export]
-  public GridContainer GridBody;
+  public GridContainer GridShirts;
 
   [Export]
   public GridContainer GridPants;
@@ -83,7 +102,7 @@ public partial class SelectCharacterMenu : Control
 
   public SelectCharacterMenu()
   {
-    spriteList = CommonFilesManager.GetFileDeserialized<SpriteFileJson>("mainSprites.json").SpriteList;
+    (HatSprites, ShirtSprites, PantsSprites) = CommonFilesManager.GetFileDeserialized<JsonSprite>("mainSprites.json");
     FramesResourceManager.Preload(["res://prefabs/items/custom_sprite_frame.tscn"]);
   }
 
@@ -110,31 +129,56 @@ public partial class SelectCharacterMenu : Control
 
   public void InstantiateSprites()
   {
-    foreach (var sprite in spriteList)
+    SetupSpritesForGridContainer(HatSprites, GridHats, playerInstance.SpriteController.ChangeHat);
+    SetupSpritesForGridContainer(ShirtSprites, GridShirts, playerInstance.SpriteController.ChangeShirt);
+    SetupSpritesForGridContainer(PantsSprites, GridPants, playerInstance.SpriteController.ChangePants);
+  }
+
+  public void SetupSpritesForGridContainer(JsonSpriteInfo spriteInfo, GridContainer gridContainer, Action<SpriteFrames> changePartAction)
+  {
+    Button defaultHatSpriteButton = CreateSpriteShowcaseFrame(spriteInfo.DefaultSprite, () =>
     {
-      Button customFrameButton = FramesResourceManager.CreateInstance<Button>("res://prefabs/items/custom_sprite_frame.tscn", "custom_sprite_frame" + Path.GetFileNameWithoutExtension(sprite));
-      AnimatedSprite2D customFrameSprite = customFrameButton.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-      SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
-      spriteInstance.ResourceLocalToScene = true;
+      SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(spriteInfo.DefaultSprite, playerInstance.Name + "ShowcaseSpriteFrame") as SpriteFrames;
+      changePartAction(spriteInstance2);
+    });
 
-      int frameSizeInPixels = 80;
+    gridContainer.AddChild(defaultHatSpriteButton);
 
-      // Set the scale of the sprite
-      customFrameButton.Size = Vector2.One * frameSizeInPixels;
-      customFrameSprite.Centered = false;
-
-      customFrameSprite.SpriteFrames = spriteInstance;
-      customFrameSprite.ResizeUsingScale(customFrameButton.Size);
-      customFrameSprite.Play("Idle");
-
-      customFrameButton.Pressed += () =>
+    foreach (var sprite in spriteInfo.SpriteList)
+    {
+      Button customFrameButton = CreateSpriteShowcaseFrame(sprite, () =>
       {
-        SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(sprite, "test" + sprite) as SpriteFrames;
-        playerInstance.AnimatedBody.ChangePart("Hat", spriteInstance2);
-      };
+        SpriteFrames spriteInstance2 = SpritesResourceManager.CreateInstance(sprite, playerInstance.Name + "PartSpriteFrame") as SpriteFrames;
+        changePartAction(spriteInstance2);
+      });
 
-      GridHats.AddChild(customFrameButton);
+      gridContainer.AddChild(customFrameButton);
     }
+  }
+
+  public Button CreateSpriteShowcaseFrame(string sprite, Action onPressed)
+  {
+    Button customFrameButton = FramesResourceManager.CreateInstance<Button>("res://prefabs/items/custom_sprite_frame.tscn", "custom_sprite_frame" + Path.GetFileNameWithoutExtension(sprite));
+    AnimatedSprite2D customFrameSprite = customFrameButton.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+    SpriteFrames spriteInstance = SpritesResourceManager.CreateInstance(sprite, sprite) as SpriteFrames;
+    spriteInstance.ResourceLocalToScene = true;
+
+    int frameSizeInPixels = 80;
+
+    // Set the scale of the sprite
+    customFrameButton.Size = Vector2.One * frameSizeInPixels;
+    customFrameSprite.Centered = false;
+
+    customFrameSprite.SpriteFrames = spriteInstance;
+    customFrameSprite.ResizeUsingScale(customFrameButton.Size);
+    customFrameSprite.Play("Showcase");
+
+    customFrameButton.Pressed += () =>
+    {
+      onPressed();
+    };
+
+    return customFrameButton;
   }
 
   public void ConfirmCharacterCreation()

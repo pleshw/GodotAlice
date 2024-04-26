@@ -6,14 +6,9 @@ using Scene;
 
 namespace Entity;
 
-public partial class EntitySpriteController : GameResourceManagerBase<SpriteFrames>
+public partial class EntitySpriteController(EntityAnimated entity) : GameResourceManagerBase<SpriteFrames>()
 {
-  public EntityAnimated Entity;
-
-  public EntitySpriteController(EntityAnimated entity) : base()
-  {
-    Entity = entity;
-  }
+  public EntityAnimated Entity = entity;
 
   public void ChangeHat(SpriteFrames newSprite)
   {
