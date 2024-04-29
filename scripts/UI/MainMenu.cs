@@ -30,12 +30,22 @@ public partial class MainMenu : Control
 		}
 	}
 
+	private Control _menuContainer;
+	public Control MenuContainer
+	{
+		get
+		{
+			_menuContainer ??= GetNode<NinePatchRect>("MenuContainer");
+			return _menuContainer;
+		}
+	}
+
 	private Control _firstMenu;
 	public Control FirstMenu
 	{
 		get
 		{
-			_firstMenu ??= GetNode<VBoxContainer>("FirstMenu");
+			_firstMenu ??= MenuContainer.GetNode<VBoxContainer>("FirstMenu");
 			return _firstMenu;
 		}
 	}

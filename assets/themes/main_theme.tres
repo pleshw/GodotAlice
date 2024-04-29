@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=13 format=3 uid="uid://coq1prp0uovmw"]
 
-[ext_resource type="FontFile" uid="uid://e4jyb1gd1oyv" path="res://assets/fonts/Lugrasimo-Regular.ttf" id="1_236fy"]
+[ext_resource type="FontFile" uid="uid://dl2sjffljaa1b" path="res://assets/fonts/PixelOperator8.ttf" id="1_rx6pl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8eb3v"]
 
@@ -50,7 +50,7 @@ border_color = Color(0, 0, 0, 1)
 
 [resource]
 Button/colors/font_hover_color = Color(0.678942, 0.678944, 0.678945, 1)
-Button/fonts/font = ExtResource("1_236fy")
+Button/fonts/font = ExtResource("1_rx6pl")
 Button/styles/disabled = SubResource("StyleBoxEmpty_8eb3v")
 Button/styles/focus = SubResource("StyleBoxEmpty_78i6e")
 Button/styles/hover = SubResource("StyleBoxEmpty_345a5")
@@ -60,13 +60,13 @@ Label/colors/font_color = Color(0.247059, 0.247059, 0.247059, 1)
 Label/colors/font_outline_color = Color(0.47451, 0.47451, 0.47451, 0.627451)
 Label/constants/outline_size = 3
 Label/font_sizes/font_size = 22
-Label/fonts/font = ExtResource("1_236fy")
+Label/fonts/font = ExtResource("1_rx6pl")
 Panel/styles/panel = SubResource("StyleBoxEmpty_fcwwn")
 TabContainer/colors/font_selected_color = Color(0.248399, 0.248401, 0.248401, 1)
 TabContainer/colors/font_unselected_color = Color(0.942823, 0.942823, 0.942823, 1)
 TabContainer/constants/side_margin = 0
-TabContainer/font_sizes/font_size = 18
-TabContainer/fonts/font = ExtResource("1_236fy")
+TabContainer/font_sizes/font_size = 14
+TabContainer/fonts/font = ExtResource("1_rx6pl")
 TabContainer/styles/panel = SubResource("StyleBoxFlat_tjuij")
 TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_u04jj")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_4fslq")

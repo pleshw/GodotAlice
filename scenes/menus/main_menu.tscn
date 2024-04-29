@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhnoppu8mrbsb"]
+[gd_scene load_steps=16 format=3 uid="uid://dhnoppu8mrbsb"]
 
 [ext_resource type="Theme" uid="uid://coq1prp0uovmw" path="res://assets/themes/main_theme.tres" id="1_0mu7t"]
 [ext_resource type="Script" path="res://scripts/UI/MainMenu.cs" id="1_nxj0n"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dq1cfyuwrlvc" path="res://assets/packs/parallax-mountain/parallax-mountain-mountains.png" id="5_qcrgi"]
 [ext_resource type="Texture2D" uid="uid://dy1236l76eahm" path="res://assets/packs/parallax-mountain/parallax-mountain-trees.png" id="6_s1lc6"]
 [ext_resource type="Texture2D" uid="uid://dbnawovusn02k" path="res://assets/packs/parallax-mountain/parallax-mountain-foreground-trees.png" id="7_3bdqe"]
+[ext_resource type="Texture2D" uid="uid://dto8penhlc18a" path="res://assets/packs/Sprout Lands - UI Pack - Basic pack/Sprite sheets/Setting menu.png" id="9_gplo8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ixs65"]
 
@@ -90,34 +91,44 @@ scale = Vector2(3.52941, 6.75)
 texture = ExtResource("7_3bdqe")
 centered = false
 
-[node name="FirstMenu" type="VBoxContainer" parent="."]
+[node name="MenuContainer" type="NinePatchRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.438281
-anchor_top = 0.406944
-anchor_right = 0.561719
-anchor_bottom = 0.593056
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-alignment = 1
+anchor_left = 0.0578125
+anchor_top = 0.55
+anchor_right = 0.359896
+anchor_bottom = 0.897222
+grow_vertical = 0
+texture = ExtResource("9_gplo8")
+region_rect = Rect2(139, 12, 106, 122)
 metadata/_edit_use_anchors_ = true
 
-[node name="LoadGameButton" type="Button" parent="FirstMenu"]
+[node name="FirstMenu" type="VBoxContainer" parent="MenuContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0mu7t")
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="LoadGameButton" type="Button" parent="MenuContainer/FirstMenu"]
 layout_mode = 2
 theme = ExtResource("1_0mu7t")
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Load Game"
 
-[node name="NewGameButton" type="Button" parent="FirstMenu"]
+[node name="NewGameButton" type="Button" parent="MenuContainer/FirstMenu"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_0mu7t")
 theme_override_font_sizes/font_size = 40
 text = "New Game"
 
-[node name="QuitGameButton" type="Button" parent="FirstMenu"]
+[node name="QuitGameButton" type="Button" parent="MenuContainer/FirstMenu"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_0mu7t")

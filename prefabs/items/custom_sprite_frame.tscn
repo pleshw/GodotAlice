@@ -17,3 +17,4 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_1foqy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("1_f0jff")
+animation = &"Idle"

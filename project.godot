@@ -43,3 +43,7 @@ folder_colors={
 "res://resources/": "yellow",
 "res://scenes/": "green"
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
